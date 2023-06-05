@@ -6,6 +6,7 @@ import com.project.schoolmanagment.payload.response.ContactMessageResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.ContactMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,10 +20,26 @@ public class ContactMessageService {
 	public ResponseMessage<ContactMessageResponse> save(ContactMessageRequest contactMessageRequest){
 
 		ContactMessage contactMessage = createContactMessage(contactMessageRequest);
-		return null;
+		ContactMessage savedData = contactMessageRepository.save(contactMessage);
+		return ResponseMessage.<ContactMessageResponse>builder()
+				.message("Contact Message Created Successfully")
+				.httpStatus(HttpStatus.CREATED)
+				.object(createResponse(savedData))
+				.build();
+	}
+
+	private ContactMessageResponse createResponse(ContactMessage contactMessage){
+		return ContactMessageResponse.builder()
+				.name(contactMessage.getName())
+				.subject(contactMessage.getSubject())
+				.message(contactMessage.getMessage())
+				.email(contactMessage.getEmail())
+				.date(LocalDate.now())
+				.build();
 	}
 
 	//TODO please check builder design pattern
+	//I would give this method a name like mapContactMessageRequestToContactMessage
 	private ContactMessage createContactMessage(ContactMessageRequest contactMessageRequest){
 		return ContactMessage.builder()
 				.name(contactMessageRequest.getName())

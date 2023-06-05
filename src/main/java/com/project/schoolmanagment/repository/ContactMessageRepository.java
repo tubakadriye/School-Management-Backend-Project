@@ -1,4 +1,7 @@
 package com.project.schoolmanagment.repository;
 
-public interface ContactMessageRepository {
+import com.project.schoolmanagment.entity.concretes.ContactMessage;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ContactMessageRepository extends JpaRepository<ContactMessage,Long> {
 }
