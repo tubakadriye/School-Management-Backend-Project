@@ -19,6 +19,9 @@ public class ContactMessageService {
 
 	public ResponseMessage<ContactMessageResponse> save(ContactMessageRequest contactMessageRequest){
 
+		//it is expected to create one message in day with the same email
+
+
 		ContactMessage contactMessage = createContactMessage(contactMessageRequest);
 		ContactMessage savedData = contactMessageRepository.save(contactMessage);
 		return ResponseMessage.<ContactMessageResponse>builder()
