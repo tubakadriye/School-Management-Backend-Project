@@ -39,8 +39,7 @@ public class ContactMessageController {
 			@RequestParam(value = "size",defaultValue = "10") int size,
 			@RequestParam(value = "sort",defaultValue = "date") String sort,
 			@RequestParam(value = "type", defaultValue = "desc") String type){
-		return contactMessageService.find
-		return null;
+		return contactMessageService.searchByEmail(email,page,size,sort,type);
 	}
 
 
