@@ -6,6 +6,7 @@ import com.project.schoolmanagment.payload.request.ContactMessageRequest;
 import com.project.schoolmanagment.payload.response.ContactMessageResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.ContactMessageRepository;
+import com.project.schoolmanagment.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ public class ContactMessageService {
 				contactMessageRepository.existsByEmailEqualsAndDateEquals(contactMessageRequest.getEmail(), LocalDate.now());
 
 		if(isSameMessageWithSameEmailForToday){
-			throw new ConflictException("hey it is not excepted");
+			throw new ConflictException(Messages.ALREADY_SEND_A_MESSAGE_TODAY);
 		}
-
 
 		ContactMessage contactMessage = createContactMessage(contactMessageRequest);
 		ContactMessage savedData = contactMessageRepository.save(contactMessage);
 		return ResponseMessage.<ContactMessageResponse>builder()
+				// this message should be moved to Messages class and called from there.
 				.message("Contact Message Created Successfully")
 				.httpStatus(HttpStatus.CREATED)
 				.object(createResponse(savedData))
