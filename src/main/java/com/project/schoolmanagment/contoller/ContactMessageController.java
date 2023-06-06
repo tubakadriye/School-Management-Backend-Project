@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("contactMessages")
 @RequiredArgsConstructor
-public class ContactMessageContoller {
+public class ContactMessageController {
 
 	private final ContactMessageService contactMessageService;
 
@@ -30,6 +30,17 @@ public class ContactMessageContoller {
 			@RequestParam(value = "sort",defaultValue = "date") String sort,
 			@RequestParam(value = "type", defaultValue = "desc") String type){
 		return contactMessageService.getAll(page,size,sort,type);
+	}
+
+	@GetMapping("/searchByEmail")
+	public Page<ContactMessageResponse> searchByEmail(
+			@RequestParam(value = "email") String email,
+			@RequestParam(value = "page",defaultValue = "0") int page,
+			@RequestParam(value = "size",defaultValue = "10") int size,
+			@RequestParam(value = "sort",defaultValue = "date") String sort,
+			@RequestParam(value = "type", defaultValue = "desc") String type){
+		return contactMessageService.
+		return null;
 	}
 
 
