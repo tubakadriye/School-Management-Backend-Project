@@ -1,6 +1,7 @@
 package com.project.schoolmanagment.service;
 
 import com.project.schoolmanagment.entity.concretes.ContactMessage;
+import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.payload.request.ContactMessageRequest;
 import com.project.schoolmanagment.payload.response.ContactMessageResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
@@ -19,7 +20,13 @@ public class ContactMessageService {
 
 	public ResponseMessage<ContactMessageResponse> save(ContactMessageRequest contactMessageRequest){
 
-		//it is expected to create one message in day with the same email
+		//it is expected to create one message in a day with the same email
+		boolean isSameMessageWithSameEmailForToday =
+				contactMessageRepository.existsByEmailEqualsAndDateEquals(contactMessageRequest.getEmail(), LocalDate.now());
+
+		if(isSameMessageWithSameEmailForToday){
+			throw new ConflictException("hey it is not excepted");
+		}
 
 
 		ContactMessage contactMessage = createContactMessage(contactMessageRequest);
