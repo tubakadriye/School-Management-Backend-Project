@@ -13,11 +13,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @MappedSuperclass
+// properties will be used in child classes
+// since we do not have @Entity annotation, this class is not a table
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//https://www.baeldung.com/lombok-builder-inheritance
 @SuperBuilder
+//https://www.baeldung.com/lombok-builder-inheritance
+//is a kind of builder design pattern implementation
+//no relation for entity inheritance
 public abstract class User {
 
 	@Id
