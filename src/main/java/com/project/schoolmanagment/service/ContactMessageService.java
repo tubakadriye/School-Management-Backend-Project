@@ -74,7 +74,7 @@ public class ContactMessageService {
 		if(Objects.equals(type,"desc")){
 			pageable = PageRequest.of(page, size,Sort.by(sort).descending());
 		}
-		return null;
+		return contactMessageRepository.findBySubjectEquals(subject,pageable).map(this::createResponse);
 	}
 
 	private ContactMessageResponse createResponse(ContactMessage contactMessage){
