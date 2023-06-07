@@ -50,8 +50,6 @@ public class ContactMessageController {
 			@RequestParam(value = "sort",defaultValue = "date") String sort,
 			@RequestParam(value = "type", defaultValue = "desc") String type){
 		return null;
-
-
 	}
 
 	//TODO please add more endpoints for
