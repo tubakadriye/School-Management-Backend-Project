@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -44,7 +45,7 @@ public class Student extends User {
 			joinColumns = @JoinColumn(name = "student_id"),
 			inverseJoinColumns = @JoinColumn(name = "lesson_program_id")
 	)
-	private Set<LessonProgram> lessonProgramList;
+	private Set<LessonProgram> lessonsProgramList;
 
 
 	@JsonIgnore

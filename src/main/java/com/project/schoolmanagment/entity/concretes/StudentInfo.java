@@ -2,7 +2,6 @@ package com.project.schoolmanagment.entity.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.schoolmanagment.entity.enums.Note;
-import com.sun.tools.javap.TypeAnnotationWriter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,6 +41,10 @@ public class StudentInfo {
 
 	@Enumerated(EnumType.STRING)
 	private Note letterGrade;
+
+	@OneToOne
+	private EducationTerm educationTerm;
+
 
 
 
