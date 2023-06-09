@@ -33,6 +33,11 @@ public class LessonProgram {
 	private LocalTime stopTime;
 
 	@ManyToMany
+	@JoinTable(
+			name = "lesson_program_lesson",
+			joinColumns = @JoinColumn(name = "lessonprogram_id"),
+			inverseJoinColumns = @JoinColumn(name = "lesson_id")
+	)
 	private Set<Lesson>lesson;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
