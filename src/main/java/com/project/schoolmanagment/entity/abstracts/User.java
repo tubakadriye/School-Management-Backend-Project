@@ -42,7 +42,7 @@ public abstract class User {
 	@JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd")
 	private LocalDate birthDay;
 
-	private String birtPlace;
+	private String birthPlace;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
