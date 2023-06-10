@@ -117,4 +117,8 @@ public class AdminService {
 		}
 	}
 
+	public long countAllAdmins(){
+		return adminRepository.count();
+	}
+
 }
