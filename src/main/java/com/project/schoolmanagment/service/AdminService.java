@@ -4,10 +4,12 @@ import com.project.schoolmanagment.entity.concretes.Admin;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.payload.request.AdminRequest;
+import com.project.schoolmanagment.payload.response.AdminResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.*;
 import com.project.schoolmanagment.utils.Messages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ConcurrentModificationException;
@@ -33,6 +35,7 @@ public class AdminService {
 
 
 	public ResponseMessage save (AdminRequest adminRequest){
+
 		checkDuplicate(adminRequest.getUsername(), adminRequest.getSsn(), adminRequest.getPhoneNumber());
 
 		Admin admin = mapAdminRequestToAdmin(adminRequest);
@@ -45,8 +48,27 @@ public class AdminService {
 
 		admin.setUserRole(userRoleService.getUserRole(RoleType.ADMIN));
 
+		//we will implement password encoder here
 
+		Admin savedAdmin = adminRepository.save(admin);
 
+		return ResponseMessage.<AdminResponse>builder()
+				.message("Admin Saved")
+				.httpStatus(HttpStatus.CREATED)
+				.object(mapAdminToAdminResponse(savedAdmin))
+				.build();
+	}
+
+	private AdminResponse mapAdminToAdminResponse(Admin admin){
+		return AdminResponse.builder()
+				.userId(admin.getId())
+				.username(admin.getUsername())
+				.name(admin.getName())
+				.surname(admin.getSurname())
+				.phoneNumber(admin.getPhoneNumber())
+				.gender(admin.getGender())
+				.ssn(admin.getSsn())
+				.build();
 	}
 
 	private Admin mapAdminRequestToAdmin(AdminRequest adminRequest){
