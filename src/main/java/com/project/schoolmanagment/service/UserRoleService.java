@@ -5,10 +5,10 @@ import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.repository.UserRoleRepository;
 import com.project.schoolmanagment.utils.Messages;
-import jdk.nashorn.internal.ir.Optimistic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +34,18 @@ public class UserRoleService {
 				()-> new ConflictException(Messages.ROLE_NOT_FOUND));
 
 
+	}
+
+	public List<UserRole>getAllUserRole(){
+		return userRoleRepository.findAll();
+	}
+
+	public UserRole save (RoleType roleType){
+		if(userRoleRepository.existsByEnumRoleEquals(roleType)){
+			throw new ConflictException(Messages.ROLE_ALREADY_EXIST);
+		}
+		UserRole userRole = UserRole.builder().roleType(roleType).build();
+		return userRoleRepository.save(userRole);
 	}
 
 

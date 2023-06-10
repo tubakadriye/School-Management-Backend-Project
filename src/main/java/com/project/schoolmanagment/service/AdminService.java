@@ -52,6 +52,7 @@ public class AdminService {
 
 		Admin savedAdmin = adminRepository.save(admin);
 
+		//In response message savedAdmin instance may not be sent back to front-end.
 		return ResponseMessage.<AdminResponse>builder()
 				.message("Admin Saved")
 				.httpStatus(HttpStatus.CREATED)
