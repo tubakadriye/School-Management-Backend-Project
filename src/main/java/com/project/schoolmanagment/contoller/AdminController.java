@@ -1,5 +1,7 @@
 package com.project.schoolmanagment.contoller;
 
+import com.project.schoolmanagment.payload.request.AdminRequest;
+import com.project.schoolmanagment.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdminController {
 
+	private final AdminService adminService;
+
 	@PostMapping("/save")
 	public ResponseEntity<?>save(AdminRequest adminRequest){
+
 		return null;
 	}
 
