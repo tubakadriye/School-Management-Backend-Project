@@ -3,8 +3,6 @@ package com.project.schoolmanagment.security.service;
 import com.project.schoolmanagment.entity.concretes.*;
 import com.project.schoolmanagment.repository.*;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
