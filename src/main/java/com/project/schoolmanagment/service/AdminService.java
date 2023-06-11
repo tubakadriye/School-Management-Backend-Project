@@ -9,6 +9,8 @@ import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.*;
 import com.project.schoolmanagment.utils.Messages;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
@@ -57,6 +59,11 @@ public class AdminService {
 				.object(mapAdminToAdminResponse(savedAdmin))
 				.build();
 	}
+
+	public Page<Admin> getAllAdmins(Pageable pageable){
+		return adminRepository.findAll(pageable);
+	}
+
 
 	private AdminResponse mapAdminToAdminResponse(Admin admin){
 		return AdminResponse.builder()
