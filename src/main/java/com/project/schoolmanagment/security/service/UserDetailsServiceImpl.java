@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -20,6 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Admin admin = adminRepository.findByUsernameEquals(username);
 		Teacher teacher = teacherRepository.findByUsernameEquals(username);
@@ -50,6 +53,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					false,
 					admin.getPassword(),
 					admin.getUserRole().getRoleType().name());
+		}else if (dean!=null) {
+			return new UserDetailsImpl(
+					dean.getId(),
+					dean.getUsername(),
+					dean.getName(),
+					false,
+					dean.getPassword(),
+					dean.getUserRole().getRoleType().name());
+		}else if (viceDean!=null) {
+			return new UserDetailsImpl(
+					viceDean.getId(),
+					viceDean.getUsername(),
+					viceDean.getName(),
+					false,
+					viceDean.getPassword(),
+					viceDean.getUserRole().getRoleType().name());
 		}
+		throw new UsernameNotFoundException("User '" + username+ "  ' not found");
 	}
 }
