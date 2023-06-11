@@ -11,8 +11,6 @@ import com.project.schoolmanagment.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
 @Service
@@ -68,6 +66,8 @@ public class AdminService {
 				.surname(admin.getSurname())
 				.phoneNumber(admin.getPhoneNumber())
 				.gender(admin.getGender())
+				.birthDay(admin.getBirthDay())
+				.birthPlace(admin.getBirthPlace())
 				.ssn(admin.getSsn())
 				.build();
 	}

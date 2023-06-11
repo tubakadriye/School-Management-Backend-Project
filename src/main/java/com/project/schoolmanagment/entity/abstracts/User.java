@@ -54,6 +54,7 @@ public abstract class User {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private UserRole userRole;
 
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 
