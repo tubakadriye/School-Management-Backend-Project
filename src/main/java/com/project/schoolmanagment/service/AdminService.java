@@ -43,8 +43,8 @@ public class AdminService {
 		admin.setBuilt_in(false);
 
 		//if username is also Admin we are setting built_in prop. to FALSE
-		if(Objects.equals(adminRequest.getName(),"Admin")){
-			admin.setBuilt_in(false);
+		if(Objects.equals(adminRequest.getUsername(),"Admin")){
+			admin.setBuilt_in(true);
 		}
 
 		admin.setUserRole(userRoleService.getUserRole(RoleType.ADMIN));
@@ -68,6 +68,18 @@ public class AdminService {
 	public String deleteAdmin(Long id){
 		//we should check the database if it really exists
 		Optional<Admin>admin = adminRepository.findById(id);
+		//TODO please divide the cases and throw meaningful response messages
+		if(admin.isPresent() && admin.get().isBuilt_in()){
+			throw new ConflictException(Messages.NOT_PERMITTED_METHOD_MESSAGE);
+		}
+
+		if (admin.isPresent()){
+			adminRepository.deleteById(id);
+			//TODO move this hard coded part to Messages class and call this property.
+			return "Admin is deleted successfully";
+		}
+
+		return String.format(Messages.NOT_FOUND_USER_MESSAGE,id);
 
 	}
 

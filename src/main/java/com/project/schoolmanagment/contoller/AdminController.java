@@ -49,7 +49,7 @@ public class AdminController {
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id){
-		return ResponseEntity.ok(adminService)
+		return ResponseEntity.ok(adminService.deleteAdmin(id));
 	}
 
 
