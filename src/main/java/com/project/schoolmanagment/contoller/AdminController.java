@@ -45,8 +45,16 @@ public class AdminController {
 		//TODO return type should be an DTO (AdminResponse) this should be done in SERVICE
 		Page<Admin>admins = adminService.getAllAdmins(pageable);
 		return new ResponseEntity<>(admins, HttpStatus.OK);
-
 	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<String> delete(@PathVariable Long id){
+		return ResponseEntity.ok(adminService)
+	}
+
+
+
+
 
 
 }

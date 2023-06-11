@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +63,12 @@ public class AdminService {
 
 	public Page<Admin> getAllAdmins(Pageable pageable){
 		return adminRepository.findAll(pageable);
+	}
+
+	public String deleteAdmin(Long id){
+		//we should check the database if it really exists
+		Optional<Admin>admin = adminRepository.findById(id);
+
 	}
 
 
