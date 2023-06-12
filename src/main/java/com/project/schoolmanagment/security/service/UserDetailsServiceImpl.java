@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.security.service;
 
+import com.project.schoolmanagment.entity.abstracts.User;
 import com.project.schoolmanagment.entity.concretes.*;
 import com.project.schoolmanagment.repository.*;
 import lombok.AllArgsConstructor;
@@ -53,7 +54,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					false,
 					admin.getPassword(),
 					admin.getUserRole().getRoleType().name());
-		}else if (dean!=null) {
+		} else if (dean!=null) {
 			return new UserDetailsImpl(
 					dean.getId(),
 					dean.getUsername(),
@@ -61,7 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					false,
 					dean.getPassword(),
 					dean.getUserRole().getRoleType().name());
-		}else if (viceDean!=null) {
+		} else if (viceDean!=null) {
 			return new UserDetailsImpl(
 					viceDean.getId(),
 					viceDean.getUsername(),
