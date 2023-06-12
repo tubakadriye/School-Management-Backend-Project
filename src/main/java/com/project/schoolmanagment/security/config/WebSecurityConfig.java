@@ -45,15 +45,18 @@ public class WebSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and()
 				.csrf().disable()
-				//we
+				//we configured unauthorized exception handler
 				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+				//we configured session management
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				// we added white list
 				.authorizeRequests().antMatchers(AUTH_WHITE_LIST).permitAll()
+				// except white list we authenticate all request
 				.anyRequest().authenticated();
 
 		http.headers().frameOptions().sameOrigin();
 		http.authenticationProvider(authenticationProvider());
-		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 
@@ -65,7 +68,7 @@ public class WebSecurityConfig {
 	 * ,this will be our token filer.
 	 */
 	@Bean
-	public AuthTokenFilter authTokenFilter(){
+	public AuthTokenFilter authenticationJwtTokenFilter() {
 		return new AuthTokenFilter();
 	}
 
