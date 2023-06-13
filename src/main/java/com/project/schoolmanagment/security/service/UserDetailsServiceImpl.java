@@ -73,4 +73,44 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
 		throw new UsernameNotFoundException("User '" + username+ "  ' not found");
 	}
+
+//
+//	//TODO please use inheritance and refactor this method.
+//	@Override
+//	@Transactional
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//
+//		User student = studentRepository.findByUsernameEquals(username);
+//		if (student != null) {
+//			return mapUserToUserDetailsImpl(student);
+//		}
+//		User teacher = teacherRepository.findByUsernameEquals(username);
+//		if (teacher != null) {
+//			return mapUserToUserDetailsImpl(teacher);
+//		}
+//		User admin = adminRepository.findByUsernameEquals(username);
+//		if (admin != null) {
+//			return mapUserToUserDetailsImpl(admin);
+//		}
+//		User dean = deanRepository.findByUsernameEquals(username); //200ms
+//		if (dean!=null) {
+//			return mapUserToUserDetailsImpl(dean);
+//		}
+//
+//		User viceDean = viceDeanRepository.findByUsernameEquals(username); //200ms
+//		if (viceDean!=null) {
+//			return mapUserToUserDetailsImpl(viceDean);
+//		}
+//		throw new UsernameNotFoundException("User '" + username+ "  ' not found");
+//	}
+//
+//	private UserDetailsImpl mapUserToUserDetailsImpl(User user){
+//		return new UserDetailsImpl(
+//				user.getId(),
+//				user.getUsername(),
+//				user.getName(),
+//				false,
+//				user.getPassword(),
+//				user.getUserRole().getRoleType().name());
+//	}
 }

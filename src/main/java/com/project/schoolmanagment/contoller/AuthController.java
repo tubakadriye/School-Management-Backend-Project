@@ -59,7 +59,7 @@ public class AuthController {
 		// another way of using builder
 		AuthResponse.AuthResponseBuilder authResponse = AuthResponse.builder();
 		authResponse.username(userDetails.getUsername());
-		authResponse.token(token);
+		authResponse.token(token.substring(7));
 		authResponse.name(userDetails.getName());
 
 		if(role.isPresent()){
