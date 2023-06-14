@@ -1,6 +1,5 @@
 package com.project.schoolmanagment.security.service;
 
-import com.project.schoolmanagment.entity.abstracts.User;
 import com.project.schoolmanagment.entity.concretes.*;
 import com.project.schoolmanagment.repository.*;
 import lombok.AllArgsConstructor;
