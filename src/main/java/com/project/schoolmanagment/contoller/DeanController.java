@@ -5,7 +5,6 @@ import com.project.schoolmanagment.payload.response.DeanResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.service.DeanService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.SpringVersion;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,7 @@ public class DeanController {
 
 	@PostMapping("/save")
 	public ResponseMessage<DeanResponse> save (@RequestBody @Valid DeanRequest deanRequest){
-		return null;
+		return deanService.save(deanRequest);
 	}
 
 
