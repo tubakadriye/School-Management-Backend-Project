@@ -34,8 +34,8 @@ public class DeanService {
 	private final DeanRepository deanRepository;
 
 	//TODO use mapsturct in your 3. repository
-	public ResponseMessage<DeanResponse>save(DeanRequest deanRequest){
-		fieldControl.checkDuplicate(deanRequest.getUsername(),deanRequest.getSsn(),deanRequest.getPhoneNumber());
+	public ResponseMessage<DeanResponse> save(DeanRequest deanRequest) {
+		fieldControl.checkDuplicate(deanRequest.getUsername(), deanRequest.getSsn(), deanRequest.getPhoneNumber());
 		Dean dean = deanDto.mapDeanRequestToDean(deanRequest);
 		dean.setUserRole(userRoleService.getUserRole(RoleType.MANAGER));
 		dean.setPassword(passwordEncoder.encode(dean.getPassword()));
@@ -49,30 +49,53 @@ public class DeanService {
 				.build();
 	}
 
-	public ResponseMessage<DeanResponse>update(DeanRequest deanRequest,Long deanId){
-		Optional<Dean>dean = deanRepository.findById(deanId);
+	public ResponseMessage<DeanResponse> update(DeanRequest deanRequest, Long deanId) {
+		Optional<Dean> dean = isDeanExist(deanId);
 
-		//do we really have a dean with this ID
-		if(!dean.isPresent()){
-			throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,deanId));
-		} else if (!CheckParameterUpdateMethod.checkUniqueProperties(dean.get(),deanRequest)) {
+			//we are preventing the user to change the username + ssn + phoneNumber
+		if (CheckParameterUpdateMethod.checkUniqueProperties(dean.get(), deanRequest)) {
 			fieldControl.checkDuplicate(deanRequest.getUsername(),
-										deanRequest.getSsn(),
-										deanRequest.getPhoneNumber());
+					deanRequest.getSsn(),
+					deanRequest.getPhoneNumber());
 		}
 
-		Dean updatedDean = deanDto.mapDeanRequestToUpdatedDean(deanRequest,deanId);
+		Dean updatedDean = deanDto.mapDeanRequestToUpdatedDean(deanRequest, deanId);
 		updatedDean.setPassword(passwordEncoder.encode(deanRequest.getPassword()));
-		deanRepository.save(updatedDean);
+		Dean savedDean = deanRepository.save(updatedDean);
+
+		return ResponseMessage.<DeanResponse>builder()
+				.message("Dean Updated Successfully")
+				.httpStatus(HttpStatus.OK)
+				.object(deanDto.mapDeanToDeanResponse(savedDean))
+				.build();
 
 	}
 
+	private Optional<Dean> isDeanExist(Long deanId) {
+		Optional<Dean> dean = deanRepository.findById(deanId);
+
+//		Optional<Dean> dean = deanRepository.findById(deanId)
+//				.orElseThrow(()-> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE, deanId)));
+
+		if (!deanRepository.findById(deanId).isPresent()) {
+			throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE, deanId));
+		} else {
+			return dean;
+		}
+	}
 
 
+	public ResponseMessage<?> deleteDeanById(Long deanId) {
 
+		isDeanExist(deanId);
 
+		deanRepository.deleteById(deanId);
 
-
+		return ResponseMessage.builder()
+				.message("Dean deleted")
+				.httpStatus(HttpStatus.OK)
+				.build();
+	}
 
 
 }

@@ -27,6 +27,13 @@ public class DeanController {
 		return deanService.update(deanRequest,userId);
 	}
 
+	@DeleteMapping("/delete/{userId}")
+	public ResponseMessage<?> deleteDeanById(@PathVariable Long userId){
+		return deanService.deleteDeanById(userId);
+	}
+
+	//TODO HOMEWORK write this delete messega again with requestParam
+
 
 
 
