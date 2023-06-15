@@ -5,9 +5,11 @@ import com.project.schoolmanagment.payload.response.DeanResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.service.DeanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +40,25 @@ public class DeanController {
 	public ResponseMessage<DeanResponse> getDeanById(@PathVariable Long userId){
 		return deanService.getDeanById(userId);
 	}
+
+	@GetMapping("/getAll")
+	public List<DeanResponse> getAllDeans(){
+
+		return deanService.getAllDeans();
+	}
+
+
+	@GetMapping("/search")
+	public Page<DeanResponse> getAllDeansByPage(
+			@RequestParam(value = "page")int page,
+			@RequestParam(value = "size") int size,
+			@RequestParam(value = "sort") String sort,
+			@RequestParam(value = "type") String type
+	){
+		return deanService.getAllDeansByPage(page,size,sort,type);
+	}
+
+
 
 
 
