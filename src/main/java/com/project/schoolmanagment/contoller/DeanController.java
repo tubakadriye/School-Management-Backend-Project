@@ -34,7 +34,10 @@ public class DeanController {
 
 	//TODO HOMEWORK write this delete messega again with requestParam
 
-	public
+	@GetMapping("/getManagerById/{userId}")
+	public ResponseMessage<DeanResponse> getDeanById(@PathVariable Long userId){
+		return deanService.getDeanById(userId);
+	}
 
 
 

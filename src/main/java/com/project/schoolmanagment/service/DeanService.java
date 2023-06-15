@@ -98,4 +98,15 @@ public class DeanService {
 	}
 
 
+	public ResponseMessage<DeanResponse>getDeanById(Long deanId){
+
+		return ResponseMessage.<DeanResponse>builder()
+				.message("Dean successfully found")
+				.httpStatus(HttpStatus.OK)
+				.object(deanDto.mapDeanToDeanResponse(isDeanExist(deanId).get()))
+				.build();
+
+	}
+
+
 }
