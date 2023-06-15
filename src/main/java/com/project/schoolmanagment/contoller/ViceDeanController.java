@@ -6,10 +6,7 @@ import com.project.schoolmanagment.payload.response.ViceDeanResponse;
 import com.project.schoolmanagment.service.ViceDeanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,6 +23,14 @@ public class ViceDeanController {
 	public ResponseMessage<ViceDeanResponse> saveViceDean(@RequestBody @Valid ViceDeanRequest viceDeanRequest){
 		return viceDeanService.saveViceDean(viceDeanRequest);
 	}
+
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+	@DeleteMapping("/delete/{userId}")
+	public ResponseMessage<?> deleteViceDeanByAdmin(@PathVariable Long userId){
+		return viceDeanService.deleteViceDeanByUserId(userId);
+	}
+
+	//10 minutes -> findById AND deleteById
 
 
 

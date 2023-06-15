@@ -3,16 +3,20 @@ package com.project.schoolmanagment.service;
 import com.project.schoolmanagment.entity.concretes.Dean;
 import com.project.schoolmanagment.entity.concretes.ViceDean;
 import com.project.schoolmanagment.entity.enums.RoleType;
+import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.ViceDeanDto;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
 import com.project.schoolmanagment.repository.ViceDeanRepository;
 import com.project.schoolmanagment.utils.FieldControl;
+import com.project.schoolmanagment.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +33,7 @@ public class ViceDeanService {
 	public final UserRoleService userRoleService;
 
 
-	public ResponseMessage<ViceDeanResponse> saveViceDean(ViceDeanRequest viceDeanRequest){
+	public ResponseMessage<ViceDeanResponse> saveViceDean(ViceDeanRequest viceDeanRequest) {
 
 		fieldControl.checkDuplicate(viceDeanRequest.getUsername(),
 				viceDeanRequest.getSsn(),
@@ -39,7 +43,7 @@ public class ViceDeanService {
 		viceDean.setPassword(passwordEncoder.encode(viceDeanRequest.getPassword()));
 		viceDean.setUserRole(userRoleService.getUserRole(RoleType.ASSISTANT_MANAGER));
 
-		ViceDean savedViceDean =  viceDeanRepository.save(viceDean);
+		ViceDean savedViceDean = viceDeanRepository.save(viceDean);
 
 		return ResponseMessage.<ViceDeanResponse>builder()
 				.message("Vice Dean Saved")
@@ -48,7 +52,24 @@ public class ViceDeanService {
 				.build();
 	}
 
+	private Optional<ViceDean> isViceDeanExist(Long viceDeanId) {
+		Optional<ViceDean> viceDean = viceDeanRepository.findById(viceDeanId);
+		if (!viceDeanRepository.findById(viceDeanId).isPresent()) {
+			throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE, viceDeanId));
+		} else {
+			return viceDean;
+		}
+	}
 
+	public ResponseMessage<?> deleteViceDeanByUserId(Long viceDeanId) {
+
+		viceDeanRepository.deleteById(viceDeanId);
+
+		return ResponseMessage.builder()
+				.message("Vice Dean deleted")
+				.httpStatus(HttpStatus.OK)
+				.build();
+	}
 
 
 }
