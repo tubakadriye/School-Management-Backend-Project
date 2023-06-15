@@ -72,4 +72,13 @@ public class ViceDeanService {
 	}
 
 
+	public ResponseMessage<ViceDeanResponse>getViceDeanByViceDeanId(Long viceDeanId){
+		return ResponseMessage.<ViceDeanResponse>builder()
+				.message("Vice Dean Found")
+				.httpStatus(HttpStatus.OK)
+				.object(viceDeanDto.mapViceDeanToViceDeanResponse(isViceDeanExist(viceDeanId).get()))
+				.build();
+	}
+
+
 }

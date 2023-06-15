@@ -23,6 +23,13 @@ public class ViceDeanController {
 	public ResponseMessage<ViceDeanResponse> saveViceDean(@RequestBody @Valid ViceDeanRequest viceDeanRequest){
 		return viceDeanService.saveViceDean(viceDeanRequest);
 	}
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+	@PutMapping("/update/{userId}")
+	public ResponseMessage<ViceDeanResponse> updateViceDean(@RequestBody @Valid ViceDeanRequest viceDeanRequest
+															,@PathVariable Long viceDeanId){
+		return viceDeanService.updateViceDean(viceDeanRequest,viceDeanId);
+	}
+
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
 	@DeleteMapping("/delete/{userId}")
@@ -30,7 +37,11 @@ public class ViceDeanController {
 		return viceDeanService.deleteViceDeanByUserId(userId);
 	}
 
-	//10 minutes -> findById AND deleteById
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+	@GetMapping("getViceDeanById/{userId}")
+	public ResponseMessage<ViceDeanResponse> findViceDeanByViceDeanId(@PathVariable Long userId){
+		return viceDeanService.getViceDeanByViceDeanId(userId);
+	}
 
 
 
