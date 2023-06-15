@@ -53,10 +53,10 @@ public class DeanService {
 		Optional<Dean> dean = isDeanExist(deanId);
 
 			//we are preventing the user to change the username + ssn + phoneNumber
-		if (CheckParameterUpdateMethod.checkUniqueProperties(dean.get(), deanRequest)) {
+		if (!CheckParameterUpdateMethod.checkUniqueProperties(dean.get(), deanRequest)) {   //DEAN -> DEAN2
 			fieldControl.checkDuplicate(deanRequest.getUsername(),
-					deanRequest.getSsn(),
-					deanRequest.getPhoneNumber());
+										deanRequest.getSsn(),
+										deanRequest.getPhoneNumber());
 		}
 
 		Dean updatedDean = deanDto.mapDeanRequestToUpdatedDean(deanRequest, deanId);
