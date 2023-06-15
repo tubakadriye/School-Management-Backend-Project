@@ -9,6 +9,7 @@ import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
 import com.project.schoolmanagment.repository.ViceDeanRepository;
+import com.project.schoolmanagment.utils.CheckParameterUpdateMethod;
 import com.project.schoolmanagment.utils.FieldControl;
 import com.project.schoolmanagment.utils.Messages;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +79,18 @@ public class ViceDeanService {
 				.httpStatus(HttpStatus.OK)
 				.object(viceDeanDto.mapViceDeanToViceDeanResponse(isViceDeanExist(viceDeanId).get()))
 				.build();
+	}
+
+	public ResponseMessage<ViceDeanResponse> updateViceDean(ViceDeanRequest viceDeanRequest, Long viceDeanId){
+		Optional<ViceDean>viceDean = isViceDeanExist(viceDeanId);
+
+		if(!CheckParameterUpdateMethod.checkUniqueProperties(viceDean.get(),viceDeanRequest)){
+			fieldControl.checkDuplicate(viceDeanRequest.getUsername(),
+										viceDeanRequest.getSsn(),
+										viceDeanRequest.getPhoneNumber());
+		}
+
+		ViceDean viceDean = viceDeanDto.mapViceDeanRequestToViceDean(viceDeanRequest);
 	}
 
 
