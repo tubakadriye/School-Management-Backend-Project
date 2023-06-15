@@ -6,6 +6,7 @@ import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.ViceDeanDto;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
+import com.project.schoolmanagment.payload.response.DeanResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
 import com.project.schoolmanagment.repository.ViceDeanRepository;
@@ -90,7 +91,15 @@ public class ViceDeanService {
 										viceDeanRequest.getPhoneNumber());
 		}
 
-		ViceDean viceDean = viceDeanDto.mapViceDeanRequestToViceDean(viceDeanRequest);
+		ViceDean updatedViceDean = viceDeanDto.mapViceDeanRequestToUpdatedViceDean(viceDeanRequest,viceDeanId);
+		updatedViceDean.setPassword(passwordEncoder.encode(viceDeanRequest.getPassword()));
+		ViceDean savedViceDean = viceDeanRepository.save(updatedViceDean);
+
+		return ResponseMessage.<ViceDeanResponse>builder()
+				.message("Vice Dean Updated")
+				.httpStatus(HttpStatus.OK)
+				.object(viceDeanDto.mapViceDeanToViceDeanResponse(savedViceDean))
+				.build();
 	}
 
 

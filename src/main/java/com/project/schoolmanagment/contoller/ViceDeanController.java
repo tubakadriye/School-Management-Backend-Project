@@ -26,8 +26,8 @@ public class ViceDeanController {
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
 	@PutMapping("/update/{userId}")
 	public ResponseMessage<ViceDeanResponse> updateViceDean(@RequestBody @Valid ViceDeanRequest viceDeanRequest
-															,@PathVariable Long viceDeanId){
-		return viceDeanService.updateViceDean(viceDeanRequest,viceDeanId);
+															,@PathVariable Long userId){
+		return viceDeanService.updateViceDean(viceDeanRequest,userId);
 	}
 
 
