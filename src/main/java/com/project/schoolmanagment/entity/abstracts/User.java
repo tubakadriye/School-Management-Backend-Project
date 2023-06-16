@@ -24,6 +24,7 @@ import java.time.LocalDate;
 //no relation for entity inheritance
 public abstract class User {
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,10 +32,8 @@ public abstract class User {
 	@Column(unique = true)
 	private String username;
 
-
 	@Column(unique = true)
 	private String ssn;
-
 
 	private String name;
 
