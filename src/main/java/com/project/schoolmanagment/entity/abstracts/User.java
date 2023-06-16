@@ -34,6 +34,7 @@ public abstract class User {
 	@Column(unique = true)
 	private String ssn;
 
+
 	private String name;
 
 	private String surname;
