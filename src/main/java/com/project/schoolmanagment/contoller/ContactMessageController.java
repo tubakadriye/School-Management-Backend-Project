@@ -41,7 +41,7 @@ public class ContactMessageController {
 	 * @return ContactMessageResponse
 	 */
 	@GetMapping("/getAll")
-	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
 	public Page<ContactMessageResponse> getAll(
 			@RequestParam(value = "page",defaultValue = "0") int page,
 			@RequestParam(value = "size",defaultValue = "10") int size,
@@ -51,7 +51,7 @@ public class ContactMessageController {
 	}
 
 	@GetMapping("/searchByEmail")
-	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
 	public Page<ContactMessageResponse> searchByEmail(
 			@RequestParam(value = "email") String email,
 			@RequestParam(value = "page",defaultValue = "0") int page,
@@ -62,7 +62,7 @@ public class ContactMessageController {
 	}
 
 	@GetMapping("/searchBySubject")
-	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
 	public Page<ContactMessageResponse> searchBySubject(
 			@RequestParam(value = "subject") String subject,
 			@RequestParam(value = "page",defaultValue = "0") int page,

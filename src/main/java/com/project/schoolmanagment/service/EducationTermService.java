@@ -6,9 +6,13 @@ import com.project.schoolmanagment.payload.mappers.EducationTermDto;
 import com.project.schoolmanagment.payload.request.EducationTermRequest;
 import com.project.schoolmanagment.payload.response.EducationTermResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
+import com.project.schoolmanagment.payload.response.ViceDeanResponse;
 import com.project.schoolmanagment.repository.EducationTermRepository;
 import com.project.schoolmanagment.utils.Messages;
+import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +26,8 @@ public class EducationTermService {
 	private final EducationTermRepository educationTermRepository;
 
 	private final EducationTermDto educationTermDto;
+
+	private final ServiceHelpers serviceHelpers;
 
 
 	public ResponseMessage<EducationTermResponse> saveEducationTerm(EducationTermRequest educationTermRequest){
@@ -56,6 +62,46 @@ public class EducationTermService {
 		return educationTermDto.mapEducationTermToEducationTermResponse(term);
 
 	}
+
+
+	public ResponseMessage<?>deleteEducationTermById(Long id){
+
+		isEducationTermExist(id);
+
+		educationTermRepository.deleteById(id);
+
+		return ResponseMessage.builder()
+				.message("Education Term Deleted Successfully")
+				.httpStatus(HttpStatus.OK)
+				.build();
+	}
+
+
+	public Page<EducationTermResponse> getAllEducationTermsByPage (int page,int size,String sort,String type){
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
+
+		return educationTermRepository.findAll(pageable).map(educationTermDto::mapEducationTermToEducationTermResponse);
+	}
+
+	public ResponseMessage<EducationTermResponse>updateEducationTerm(Long id,EducationTermRequest educationTermRequest){
+
+		isEducationTermExist(id);
+
+		validateEducationTermDates(educationTermRequest);
+
+		EducationTerm educationTermUpdated = educationTermRepository.save(educationTermDto.mapEducationTermRequestToUpdatedEducationTerm(id,educationTermRequest));
+
+		return ResponseMessage.<EducationTermResponse>builder()
+				.message("Education Term Updated")
+				.httpStatus(HttpStatus.OK)
+				.object(educationTermDto.mapEducationTermToEducationTermResponse(educationTermUpdated))
+				.build();
+
+	}
+
+
+
+
 
 	private EducationTerm isEducationTermExist(Long id){
 		EducationTerm term = educationTermRepository.findByIdEquals(id);
