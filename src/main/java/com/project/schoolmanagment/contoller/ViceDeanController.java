@@ -55,7 +55,7 @@ public class ViceDeanController {
 	@GetMapping("/search")
 	public Page<ViceDeanResponse> getAllViceDeansByPage(
 			@RequestParam(value = "page",defaultValue = "0",required = false) int page,
-			@RequestParam(value = "size", defaultValue = "10") int size,
+			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort",defaultValue = "name") String sort,
 			@RequestParam(value = "type",defaultValue = "desc") String type){
 
