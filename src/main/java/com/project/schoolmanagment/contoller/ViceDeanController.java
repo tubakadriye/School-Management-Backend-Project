@@ -28,6 +28,7 @@ public class ViceDeanController {
 	public ResponseMessage<ViceDeanResponse> updateViceDean(@RequestBody @Valid ViceDeanRequest viceDeanRequest
 															,@PathVariable Long userId){
 		return viceDeanService.updateViceDean(viceDeanRequest,userId);
+
 	}
 
 
