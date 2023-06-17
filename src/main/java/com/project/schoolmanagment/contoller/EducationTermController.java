@@ -55,10 +55,13 @@ public class EducationTermController {
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
 	@PutMapping("/update/{id}")
-	private ResponseMessage<EducationTermResponse>updateEducationTerm(@PathVariable Long id,
+	public ResponseMessage<EducationTermResponse>updateEducationTerm(@PathVariable Long id,
 	                                                                  @RequestBody @Valid EducationTermRequest educationTermRequest ){
 		return educationTermService.updateEducationTerm(id,educationTermRequest);
 	}
+
+	//TODO homework  please write down a request that gets all education term starts dates later then entered Date
+	//  hint - > should be post request
 
 
 
