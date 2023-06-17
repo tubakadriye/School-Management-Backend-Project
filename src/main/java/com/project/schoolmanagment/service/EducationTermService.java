@@ -35,6 +35,29 @@ public class EducationTermService {
 
 	}
 
+
+	public EducationTermResponse getEducationTermById(Long id){
+
+//		return educationTermDto.mapEducationTermToEducationTermResponse
+//				(educationTermRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Could not find Education term with id " + id)));
+
+		EducationTerm term = isEducationTermExist(id);
+
+		return educationTermDto.mapEducationTermToEducationTermResponse(term);
+
+	}
+
+	private EducationTerm isEducationTermExist(Long id){
+		EducationTerm term = educationTermRepository.findByIdEquals(id);
+		if(term==null){
+			throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE,id));
+		} else {
+			return term;
+		}
+	}
+
+
+
 	private void validateEducationTermDates(EducationTermRequest educationTermRequest){
 
 		//TODO another requirement can be needed for validating ->  registration > end
