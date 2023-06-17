@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class EducationTermService {
@@ -28,11 +31,18 @@ public class EducationTermService {
 		EducationTerm savedEducationTerm = educationTermRepository.save(educationTermDto.mapEducationTermRequestToEducationTerm(educationTermRequest));
 
 		return ResponseMessage.<EducationTermResponse>builder()
-				.message("Education Term Saved")
-				.object(educationTermDto.mapEducationTermToEducationTermResponse(savedEducationTerm))
-				.httpStatus(HttpStatus.CREATED)
-				.build();
+													.message("Education Term Saved")
+													.object(educationTermDto.mapEducationTermToEducationTermResponse(savedEducationTerm))
+													.httpStatus(HttpStatus.CREATED)
+													.build();
 
+	}
+
+	public List<EducationTermResponse> getAllEducationTerms(){
+		return educationTermRepository.findAll()
+										.stream()
+										.map(educationTermDto::mapEducationTermToEducationTermResponse)
+										.collect(Collectors.toList());
 	}
 
 

@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("educationTerms")
@@ -28,5 +29,16 @@ public class EducationTermController {
 	public EducationTermResponse getEducationTermById(@PathVariable Long id){
 		return educationTermService.getEducationTermById(id);
 	}
+
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER','TEACHER')")
+	@GetMapping("getAll")
+	public List<EducationTermResponse> getAllEducationTerms(){
+		return educationTermService.getAllEducationTerms();
+	}
+
+
+
+
+
 
 }
