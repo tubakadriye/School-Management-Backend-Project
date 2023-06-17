@@ -5,10 +5,12 @@ import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
 import com.project.schoolmanagment.service.ViceDeanService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("vicedean")
@@ -43,6 +45,24 @@ public class ViceDeanController {
 	public ResponseMessage<ViceDeanResponse> findViceDeanByViceDeanId(@PathVariable Long userId){
 		return viceDeanService.getViceDeanByViceDeanId(userId);
 	}
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+	@GetMapping("/getAll")
+	public List<ViceDeanResponse> getAllViceDeans(){
+		return viceDeanService.getAllViceDeans();
+	}
+
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+	@GetMapping("/search")
+	public Page<ViceDeanResponse> getAllViceDeansByPage(
+			@RequestParam(value = "page",defaultValue = "0",required = false) int page,
+			@RequestParam(value = "size", defaultValue = "10") int size,
+			@RequestParam(value = "sort",defaultValue = "name") String sort,
+			@RequestParam(value = "type",defaultValue = "desc") String type){
+
+		return viceDeanService.getAllViceDeansByPage(page,size,sort,type);
+	}
+
+
 
 
 

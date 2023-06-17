@@ -7,7 +7,7 @@ import com.project.schoolmanagment.payload.request.AdminRequest;
 import com.project.schoolmanagment.payload.response.AdminResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.*;
-import com.project.schoolmanagment.utils.FieldControl;
+import com.project.schoolmanagment.utils.ServiceHelpers;
 import com.project.schoolmanagment.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,12 +25,12 @@ public class AdminService {
 
 	private final UserRoleService userRoleService;
 
-	private final FieldControl fieldControl;
+	private final ServiceHelpers serviceHelpers;
 
 
 	public ResponseMessage save (AdminRequest adminRequest){
 
-		fieldControl.checkDuplicate(adminRequest.getUsername(), adminRequest.getSsn(), adminRequest.getPhoneNumber());
+		serviceHelpers.checkDuplicate(adminRequest.getUsername(), adminRequest.getSsn(), adminRequest.getPhoneNumber());
 
 		Admin admin = mapAdminRequestToAdmin(adminRequest);
 		admin.setBuilt_in(false);
@@ -76,6 +76,8 @@ public class AdminService {
 
 	}
 
+	// TODO move this mappers to mappers package and create a Admin class
+	// make the same implementation as we do on DeanDto and ViceDeanDto classes
 
 	private AdminResponse mapAdminToAdminResponse(Admin admin){
 		return AdminResponse.builder()
