@@ -9,7 +9,11 @@ import com.project.schoolmanagment.payload.response.LessonResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.LessonRepository;
 import com.project.schoolmanagment.utils.Messages;
+import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,8 @@ public class LessonService {
 	private final LessonDto lessonDto;
 
 	private final LessonRepository lessonRepository;
+
+	private final ServiceHelpers serviceHelpers;
 
 
 	public ResponseMessage<LessonResponse>saveLesson(LessonRequest lessonRequest){
@@ -46,11 +52,24 @@ public class LessonService {
 				.build();
 	}
 
+	public ResponseMessage<LessonResponse>getLessonByLessonName(String lessonName){
+		return ResponseMessage.<LessonResponse>builder()
+				.message("Lesson is successfully found")
+				.object(lessonDto.mapLessonToLessonResponse(lessonRepository.getLessonByLessonName(lessonName).get()))
+				.build();
+	}
+
+	public Page<LessonResponse> search (int page, int size, String sort, String type){
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
+		return lessonRepository.findAll(pageable).map(lessonDto::mapLessonToLessonResponse);
+	}
+
+
 
 	private boolean isLessonExistByLessonName(String lessonName){
 		boolean lessonExist = lessonRepository.existsLessonByLessonNameEqualsIgnoreCase(lessonName);
 		if(lessonExist){
-			throw new ResourceNotFoundException(String.format(Messages.ALREADY_REGISTER_LESSON_MESSAGE, lessonName));
+			throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_LESSON_MESSAGE, lessonName));
 		} else {
 			return false;
 		}
