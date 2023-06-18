@@ -15,4 +15,5 @@ public class LessonResponse {
 	private String lessonName;
 	private int creditScore;
 	private boolean isCompulsory;
+
 }
