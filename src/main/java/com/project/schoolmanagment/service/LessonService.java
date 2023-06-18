@@ -59,7 +59,7 @@ public class LessonService {
 				.build();
 	}
 
-	public Page<LessonResponse> search (int page, int size, String sort, String type){
+	public Page<LessonResponse> findLessonByPage (int page, int size, String sort, String type){
 		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
 		return lessonRepository.findAll(pageable).map(lessonDto::mapLessonToLessonResponse);
 	}
