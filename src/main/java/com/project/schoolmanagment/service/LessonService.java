@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class LessonService {
@@ -62,6 +64,11 @@ public class LessonService {
 	public Page<LessonResponse> findLessonByPage (int page, int size, String sort, String type){
 		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
 		return lessonRepository.findAll(pageable).map(lessonDto::mapLessonToLessonResponse);
+	}
+
+
+	public Set<Lesson> getLessonByLessonIdSet(Set<Long> lessons){
+		return lessonRepository.getLessonByLessonIdList(lessons);
 	}
 
 

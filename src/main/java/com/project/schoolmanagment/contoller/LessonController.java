@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.contoller;
 
+import com.project.schoolmanagment.entity.concretes.Lesson;
 import com.project.schoolmanagment.payload.request.LessonRequest;
 import com.project.schoolmanagment.payload.response.LessonResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @RequestMapping("lessons")
@@ -45,6 +47,14 @@ public class LessonController {
 			@RequestParam(value = "type") String type){
 		return lessonService.findLessonByPage(page,size,sort,type);
 	}
+
+	@GetMapping("/getAllLessonByLessonId")
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+	public Set<Lesson> getAllLessonsByLessonId(@RequestParam(name = "lessonId") Set<Long> idSet){
+		return lessonService.getLessonByLessonIdSet(idSet);
+	}
+
+	//TODO please make an update end-point
 
 
 
