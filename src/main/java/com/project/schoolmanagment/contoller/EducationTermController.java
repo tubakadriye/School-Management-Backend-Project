@@ -61,7 +61,7 @@ public class EducationTermController {
 	}
 
 	//TODO homework  please write down a request that gets all education term starts dates later then entered Date
-	//  hint - > should be post request
+	//  hint - > should be get request with parameter
 
 
 
