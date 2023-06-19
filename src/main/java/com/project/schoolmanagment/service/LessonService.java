@@ -67,6 +67,7 @@ public class LessonService {
 	}
 
 
+	//TODO in case of returning empty collection, exception handling may be implemented
 	public Set<Lesson> getLessonByLessonIdSet(Set<Long> lessons){
 		return lessonRepository.getLessonByLessonIdList(lessons);
 	}
