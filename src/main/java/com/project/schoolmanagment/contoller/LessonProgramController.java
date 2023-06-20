@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,13 @@ public class LessonProgramController {
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
 	public List<LessonProgramResponse>getAllAssigned(){
 		return lessonProgramService.getAllAssigned();
+	}
+
+
+	@DeleteMapping("/delete/{id}")
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+	public ResponseMessage deleteLessonProgramById(@PathVariable Long id){
+		return lessonProgramService.deleteLessonProgramById(id);
 	}
 
 

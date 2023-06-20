@@ -66,9 +66,8 @@ public class LessonProgramService {
 	}
 
 	public LessonProgramResponse getLessonProgramById(Long id){
-		LessonProgram lessonProgram = lessonProgramRepository.findById(id)
-				.orElseThrow(()-> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_LESSON_PROGRAM_MESSAGE, id)));
-		return lessonProgramDto.mapLessonProgramtoLessonProgramResponse(lessonProgram);
+		isLessonProgramExistById(id);
+		return lessonProgramDto.mapLessonProgramtoLessonProgramResponse(lessonProgramRepository.findById(id).get());
 	}
 
 	public List<LessonProgramResponse>getAllLessonProgramUnassigned(){
@@ -83,6 +82,20 @@ public class LessonProgramService {
 				.stream()
 				.map(lessonProgramDto::mapLessonProgramtoLessonProgramResponse)
 				.collect(Collectors.toList());
+	}
+
+	public ResponseMessage deleteLessonProgramById(Long id) {
+		isLessonProgramExistById(id);
+		lessonProgramRepository.deleteById(id);
+		return ResponseMessage.builder()
+				.message("Lesson program is deleted successfully")
+				.httpStatus(HttpStatus.OK)
+				.build();
+	}
+
+	private void isLessonProgramExistById(Long id){
+		lessonProgramRepository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_LESSON_PROGRAM_MESSAGE,id)));
 	}
 
 }
