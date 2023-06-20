@@ -16,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +54,14 @@ public class LessonProgramService {
 				.httpStatus(HttpStatus.CREATED)
 				.object(lessonProgramDto.mapLessonProgramtoLessonProgramResponse(savedLessonProgram))
 				.build();
+	}
+
+
+	public List<LessonProgramResponse> getAllLessonProgramList(){
+		return lessonProgramRepository
+				.findAll()
+				.stream()
+				.map(lessonProgramDto::mapLessonProgramtoLessonProgramResponse)
+				.collect(Collectors.toList());
 	}
 }

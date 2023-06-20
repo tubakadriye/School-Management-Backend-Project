@@ -6,12 +6,10 @@ import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.service.LessonProgramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/lessonPrograms")
@@ -28,6 +26,21 @@ public class LessonProgramController {
 		return lessonProgramService.saveLessonProgram(lessonProgramRequest);
 
 	}
+
+	@GetMapping("/getAll")
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
+	public List<LessonProgramResponse> getAllLessonProgramByList(){
+		return lessonProgramService.getAllLessonProgramList();
+	}
+
+	@GetMapping("getById/{id}")
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+	public LessonProgramResponse getLessonProgramById(@PathVariable Long id){
+		return lessonProgramService.getLessonProgramById(id);
+	}
+
+
+
 
 
 
