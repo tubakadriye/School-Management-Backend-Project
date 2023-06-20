@@ -62,6 +62,14 @@ public class LessonProgramService {
 				.build();
 	}
 
+	//TODO add a validation for empty collection and send a meaningful response
+
+	public Set<LessonProgramResponse> getLessonProgramByTeacher(String username){
+		return lessonProgramRepository.getLessonProgramByTeachersUsername(username)
+				.stream().map(lessonProgramDto::mapLessonProgramtoLessonProgramResponse)
+				.collect(Collectors.toSet());
+	}
+
 
 	public List<LessonProgramResponse> getAllLessonProgramList(){
 		return lessonProgramRepository
