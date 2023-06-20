@@ -64,4 +64,18 @@ public class LessonProgramService {
 				.map(lessonProgramDto::mapLessonProgramtoLessonProgramResponse)
 				.collect(Collectors.toList());
 	}
+
+	public LessonProgramResponse getLessonProgramById(Long id){
+		LessonProgram lessonProgram = lessonProgramRepository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_LESSON_PROGRAM_MESSAGE, id)));
+		return lessonProgramDto.mapLessonProgramtoLessonProgramResponse(lessonProgram);
+	}
+
+	public List<LessonProgramResponse>getAllLessonProgramUnassigned(){
+			return lessonProgramRepository.findByTeachers_IdNull()
+					.stream()
+					.map(lessonProgramDto::mapLessonProgramtoLessonProgramResponse)
+					.collect(Collectors.toList());
+	}
+
 }
