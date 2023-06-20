@@ -7,12 +7,16 @@ import com.project.schoolmanagment.exception.BadRequestException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.LessonProgramDto;
 import com.project.schoolmanagment.payload.request.LessonProgramRequest;
+import com.project.schoolmanagment.payload.response.EducationTermResponse;
 import com.project.schoolmanagment.payload.response.LessonProgramResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.LessonProgramRepository;
 import com.project.schoolmanagment.utils.Messages;
+import com.project.schoolmanagment.utils.ServiceHelpers;
 import com.project.schoolmanagment.utils.TimeControl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +35,8 @@ public class LessonProgramService {
 	private final EducationTermService educationTermService;
 
 	private final LessonProgramDto lessonProgramDto;
+
+	private final ServiceHelpers serviceHelpers;
 
 
 	public ResponseMessage<LessonProgramResponse>saveLessonProgram(LessonProgramRequest lessonProgramRequest){
@@ -63,6 +69,11 @@ public class LessonProgramService {
 				.stream()
 				.map(lessonProgramDto::mapLessonProgramtoLessonProgramResponse)
 				.collect(Collectors.toList());
+	}
+
+	public Page<LessonProgramResponse> getAllLessonProgramByPage(int page,int size, String sort,String type){
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page,size,sort,type);
+		return lessonProgramRepository.findAll(pageable).map(lessonProgramDto::mapLessonProgramtoLessonProgramResponse);
 	}
 
 	public LessonProgramResponse getLessonProgramById(Long id){
