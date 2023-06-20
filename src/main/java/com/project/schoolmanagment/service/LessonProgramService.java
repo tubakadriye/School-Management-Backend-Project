@@ -4,7 +4,6 @@ import com.project.schoolmanagment.entity.concretes.EducationTerm;
 import com.project.schoolmanagment.entity.concretes.Lesson;
 import com.project.schoolmanagment.entity.concretes.LessonProgram;
 import com.project.schoolmanagment.exception.BadRequestException;
-import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.LessonProgramDto;
 import com.project.schoolmanagment.payload.request.LessonProgramRequest;
