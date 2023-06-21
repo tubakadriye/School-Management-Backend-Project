@@ -117,4 +117,14 @@ public class LessonProgramService {
 				.orElseThrow(()-> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_LESSON_PROGRAM_MESSAGE,id)));
 	}
 
+	public Set<LessonProgram> getLessonProgramById(Set<Long> lessonIdSet){
+
+		Set<LessonProgram> lessonPrograms = lessonProgramRepository.getLessonProgramByLessonProgramIdList(lessonIdSet);
+
+		if(lessonPrograms.isEmpty()){
+			throw new BadRequestException(Messages.NOT_FOUND_LESSON_PROGRAM_MESSAGE_WITHOUT_ID_INFO);
+		}
+		return lessonPrograms;
+	}
+
 }
