@@ -1,6 +1,7 @@
 package com.project.schoolmanagment.entity.concretes;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.schoolmanagment.entity.abstracts.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -19,6 +20,7 @@ import java.util.Set;
 public class Teacher extends User {
 
 	//TODO learn about cascade types and orphanRemoval
+	@JsonIgnore
 	@OneToOne(mappedBy = "teacher", cascade = CascadeType.PERSIST ,orphanRemoval = true)
 	private AdvisoryTeacher advisoryTeacher;
 
@@ -32,6 +34,7 @@ public class Teacher extends User {
 	@OneToMany(mappedBy = "teacher",cascade = CascadeType.REMOVE)
 	private List<StudentInfo> studentInfos;
 
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 			name = "teacher_lessonprogram",
