@@ -130,9 +130,19 @@ public class TeacherService {
 		}
 
 		Teacher updatedTeacher = teacherDto.mapTeacherRequestToUpdatedTeacher(teacherRequest,userId);
+		//props. that does not exist in mappers
+		updatedTeacher.setPassword(passwordEncoder.encode(teacherRequest.getPassword()));
 		updatedTeacher.setLessonsProgramList(lessonPrograms);
+		updatedTeacher.setUserRole(userRoleService.getUserRole(RoleType.TEACHER));
+
 		Teacher savedTeacher = teacherRepository.save(updatedTeacher);
 		advisoryTeacherService.updateAdvisoryTeacher(teacherRequest.isAdvisorTeacher(),savedTeacher);
+
+		return ResponseMessage.<TeacherResponse>builder()
+				.object(teacherDto.mapTeacherToTeacherResponse(savedTeacher))
+				.message("Teacher successfully updated")
+				.httpStatus(HttpStatus.OK)
+				.build();
 	}
 
 

@@ -33,15 +33,24 @@ public class AdvisoryTeacherService {
 
 
 	public void updateAdvisoryTeacher(boolean status, Teacher teacher){
+		//we are checking the DB to find the correct advisory teacher
 		Optional<AdvisoryTeacher>advisoryTeacher = advisoryTeacherRepository.getAdvisoryTeacherByTeacher_Id(teacher.getId());
 
+		AdvisoryTeacher.AdvisoryTeacherBuilder advisoryTeacherBuilder = AdvisoryTeacher.builder()
+				.teacher(teacher)
+				.userRole(userRoleService.getUserRole(RoleType.ADVISORY_TEACHER));
+
+		//do we really have an advisory teacher in DB
 		if(advisoryTeacher.isPresent()){
+			//will be this new updated teacher really an advisory teacher
 			if(status){
-				advisoryTeacher.get().setId();
+				advisoryTeacherBuilder.id(advisoryTeacher.get().getId());
+				advisoryTeacherRepository.save(advisoryTeacherBuilder.build());
+			} else {
+				//these teacher is not advisory teacher anymore
+				advisoryTeacherRepository.deleteById(advisoryTeacher.get().getId());
 			}
 		}
-
-
 	}
 
 

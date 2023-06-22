@@ -20,9 +20,7 @@ public class CheckParameterUpdateMethod {
 	}
 
 	public static boolean checkUniquePropertiesForTeacher(Teacher teacher, TeacherRequest teacherRequest){
-		return teacher.getSsn().equalsIgnoreCase(teacherRequest.getSsn())
-				|| teacher.getPhoneNumber().equalsIgnoreCase(teacherRequest.getPhoneNumber())
-				|| teacher.getUsername().equalsIgnoreCase(teacherRequest.getUsername())
+		return checkUniquePropertiesForTeacher(teacher,teacherRequest)
 				|| teacher.getEmail().equalsIgnoreCase(teacherRequest.getEmail());
 	}
 
