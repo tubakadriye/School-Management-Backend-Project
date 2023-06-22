@@ -12,6 +12,7 @@ import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.TeacherResponse;
 import com.project.schoolmanagment.repository.TeacherRepository;
 import com.project.schoolmanagment.utils.CheckParameterUpdateMethod;
+import com.project.schoolmanagment.utils.CheckSameLessonProgram;
 import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,8 @@ public class TeacherService {
 
 	private final AdvisoryTeacherService advisoryTeacherService;
 
+	private final CheckSameLessonProgram checkSameLessonProgram;
+
 	public ResponseMessage<TeacherResponse>saveTeacher(TeacherRequest teacherRequest){
 		//need to get lessonPrograms
 		Set<LessonProgram> lessonProgramSet = lessonProgramService.getLessonProgramById(teacherRequest.getLessonsIdList());
@@ -52,7 +55,6 @@ public class TeacherService {
 										teacherRequest.getSsn(),
 										teacherRequest.getPhoneNumber(),
 										teacherRequest.getEmail());
-
 
 		Teacher teacher = teacherDto.mapTeacherRequestToTeacher(teacherRequest);
 		teacher.setUserRole(userRoleService.getUserRole(RoleType.TEACHER));
@@ -70,7 +72,6 @@ public class TeacherService {
 				.object(teacherDto.mapTeacherToTeacherResponse(savedTeacher))
 				.build();
 	}
-
 
 	public List<TeacherResponse>getAllTeacher(){
 		return teacherRepository.findAll()
@@ -95,8 +96,6 @@ public class TeacherService {
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
-
-
 	private Teacher isTeacherExist(Long id){
 		return teacherRepository.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,id)));
 	}
@@ -146,6 +145,17 @@ public class TeacherService {
 		Set<LessonProgram>lessonPrograms = lessonProgramService.getLessonProgramById(chooseLessonTeacherRequest.getLessonProgramId());
 
 		Set<LessonProgram>teachersLessonProgram = teacher.getLessonsProgramList();
+
+		checkSameLessonProgram.checkLessonPrgrams(teachersLessonProgram ,lessonPrograms);
+		teachersLessonProgram.addAll(lessonPrograms);
+		teacher.setLessonsProgramList(teachersLessonProgram);
+		Teacher updatedTeacher = teacherRepository.save(teacher);
+
+		return ResponseMessage.<TeacherResponse>builder()
+				.message("Lesson Program added to teacher")
+				.httpStatus(HttpStatus.CREATED)
+				.object(teacherDto.mapTeacherToTeacherResponse(updatedTeacher))
+				.build();
 
 	}
 
