@@ -6,6 +6,7 @@ import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.BadRequestException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.TeacherDto;
+import com.project.schoolmanagment.payload.request.ChooseLessonTeacherRequest;
 import com.project.schoolmanagment.payload.request.TeacherRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.TeacherResponse;
@@ -42,7 +43,6 @@ public class TeacherService {
 	private final PasswordEncoder passwordEncoder;
 
 	private final AdvisoryTeacherService advisoryTeacherService;
-
 
 	public ResponseMessage<TeacherResponse>saveTeacher(TeacherRequest teacherRequest){
 		//need to get lessonPrograms
@@ -103,7 +103,6 @@ public class TeacherService {
 
 	public ResponseMessage<TeacherResponse>getTeacherById(Long id){
 
-
 		return ResponseMessage.<TeacherResponse>builder()
 				.object(teacherDto.mapTeacherToTeacherResponse(isTeacherExist(id)))
 				.message("Teacher successfully found")
@@ -118,17 +117,13 @@ public class TeacherService {
 
 	public ResponseMessage<TeacherResponse>updateTeacher(TeacherRequest teacherRequest, Long userId){
 		Teacher teacher = isTeacherExist(userId);
-
 		Set<LessonProgram>lessonPrograms = lessonProgramService.getLessonProgramById(teacherRequest.getLessonsIdList());
-
-
 		if(!CheckParameterUpdateMethod.checkUniquePropertiesForTeacher(teacher,teacherRequest)){
 			serviceHelpers.checkDuplicate(teacherRequest.getUsername(),
 					teacherRequest.getSsn(),
 					teacherRequest.getPhoneNumber(),
 					teacherRequest.getEmail());
 		}
-
 		Teacher updatedTeacher = teacherDto.mapTeacherRequestToUpdatedTeacher(teacherRequest,userId);
 		//props. that does not exist in mappers
 		updatedTeacher.setPassword(passwordEncoder.encode(teacherRequest.getPassword()));
@@ -143,6 +138,15 @@ public class TeacherService {
 				.message("Teacher successfully updated")
 				.httpStatus(HttpStatus.OK)
 				.build();
+	}
+
+	public ResponseMessage<TeacherResponse>chooseLesson (ChooseLessonTeacherRequest chooseLessonTeacherRequest){
+		Teacher teacher = isTeacherExist(chooseLessonTeacherRequest.getTeacherId());
+
+		Set<LessonProgram>lessonPrograms = lessonProgramService.getLessonProgramById(chooseLessonTeacherRequest.getLessonProgramId());
+
+		Set<LessonProgram>teachersLessonProgram = teacher.getLessonsProgramList();
+
 	}
 
 
