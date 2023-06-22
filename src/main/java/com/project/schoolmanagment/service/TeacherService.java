@@ -10,6 +10,7 @@ import com.project.schoolmanagment.payload.request.TeacherRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.TeacherResponse;
 import com.project.schoolmanagment.repository.TeacherRepository;
+import com.project.schoolmanagment.utils.CheckParameterUpdateMethod;
 import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -95,15 +97,15 @@ public class TeacherService {
 	}
 
 
-	private void isTeacherExist(Long id){
-		teacherRepository.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,id)));
+	private Teacher isTeacherExist(Long id){
+		return teacherRepository.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,id)));
 	}
 
 	public ResponseMessage<TeacherResponse>getTeacherById(Long id){
-		isTeacherExist(id);
+
 
 		return ResponseMessage.<TeacherResponse>builder()
-				.object(teacherDto.mapTeacherToTeacherResponse(teacherRepository.findById(id).get()))
+				.object(teacherDto.mapTeacherToTeacherResponse(isTeacherExist(id)))
 				.message("Teacher successfully found")
 				.httpStatus(HttpStatus.OK)
 				.build();
@@ -112,6 +114,25 @@ public class TeacherService {
 	public Page<TeacherResponse> findTeacherByPage(int page,int size,String sort,String type){
 		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
 		return teacherRepository.findAll(pageable).map(teacherDto::mapTeacherToTeacherResponse);
+	}
+
+	public ResponseMessage<TeacherResponse>updateTeacher(TeacherRequest teacherRequest, Long userId){
+		Teacher teacher = isTeacherExist(userId);
+
+		Set<LessonProgram>lessonPrograms = lessonProgramService.getLessonProgramById(teacherRequest.getLessonsIdList());
+
+
+		if(!CheckParameterUpdateMethod.checkUniquePropertiesForTeacher(teacher,teacherRequest)){
+			serviceHelpers.checkDuplicate(teacherRequest.getUsername(),
+					teacherRequest.getSsn(),
+					teacherRequest.getPhoneNumber(),
+					teacherRequest.getEmail());
+		}
+
+		Teacher updatedTeacher = teacherDto.mapTeacherRequestToUpdatedTeacher(teacherRequest,userId);
+		updatedTeacher.setLessonsProgramList(lessonPrograms);
+		Teacher savedTeacher = teacherRepository.save(updatedTeacher);
+		advisoryTeacherService.updateAdvisoryTeacher(teacherRequest.isAdvisorTeacher(),savedTeacher);
 	}
 
 

@@ -7,6 +7,9 @@ import com.project.schoolmanagment.payload.mappers.AdvisoryTeacherDto;
 import com.project.schoolmanagment.repository.AdvisoryTeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,19 @@ public class AdvisoryTeacherService {
 		advisoryTeacher.setUserRole(userRoleService.getUserRole(RoleType.ADVISORY_TEACHER));
 
 		advisoryTeacherRepository.save(advisoryTeacher);
+
+	}
+
+
+	public void updateAdvisoryTeacher(boolean status, Teacher teacher){
+		Optional<AdvisoryTeacher>advisoryTeacher = advisoryTeacherRepository.getAdvisoryTeacherByTeacher_Id(teacher.getId());
+
+		if(advisoryTeacher.isPresent()){
+			if(status){
+				advisoryTeacher.get().setId();
+			}
+		}
+
 
 	}
 
