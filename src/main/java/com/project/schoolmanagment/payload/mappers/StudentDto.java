@@ -2,7 +2,12 @@ package com.project.schoolmanagment.payload.mappers;
 
 import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.payload.request.StudentRequest;
+import com.project.schoolmanagment.payload.response.StudentResponse;
+import lombok.Data;
+import org.springframework.stereotype.Component;
 
+@Component
+@Data
 public class StudentDto {
 
 	public Student mapStudentRequestToStudent(StudentRequest studentRequest){
@@ -19,6 +24,24 @@ public class StudentDto {
 				.email(studentRequest.getEmail())
 				.phoneNumber(studentRequest.getPhoneNumber())
 				.gender(studentRequest.getGender())
+				.build();
+	}
+
+	public StudentResponse mapStudentToStudentResponse(Student student){
+		return StudentResponse.builder()
+				.userId(student.getId())
+				.username(student.getUsername())
+				.name(student.getName())
+				.surname(student.getSurname())
+				.birthDay(student.getBirthDay())
+				.birthPlace(student.getBirthPlace())
+				.phoneNumber(student.getPhoneNumber())
+				.gender(student.getGender())
+				.email(student.getEmail())
+				.fatherName(student.getFatherName())
+				.motherName(student.getMotherName())
+				.studentNumber(student.getStudentNumber())
+				.isActive(student.isActive())
 				.build();
 	}
 }
