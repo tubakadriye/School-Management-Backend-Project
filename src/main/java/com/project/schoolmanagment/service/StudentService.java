@@ -105,7 +105,19 @@ public class StudentService {
 					studentRequest.getEmail());
 		}
 
-		Student studentForUpdate = studentDto.mapStudentRequestToStudent(studentRequest,studentId);
+		Student studentForUpdate = studentDto.mapStudentRequestToUpdatedStudent(studentRequest,studentId);
+		studentForUpdate.setPassword(passwordEncoder.encode(studentRequest.getPassword()));
+		studentForUpdate.setAdvisoryTeacher(advisoryTeacher);
+		studentForUpdate.setStudentNumber(student.getStudentNumber());
+		studentForUpdate.setUserRole(userRoleService.getUserRole(RoleType.STUDENT));
+		studentForUpdate.setActive(true);
+		studentRepository.save(studentForUpdate);
+
+		return ResponseMessage.<StudentResponse>builder()
+				.object(studentDto.mapStudentToStudentResponse(studentRepository.save(studentForUpdate)))
+				.message("Student updated successfully")
+				.httpStatus(HttpStatus.OK)
+				.build();
 	}
 
 
