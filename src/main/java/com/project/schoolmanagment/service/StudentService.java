@@ -147,6 +147,13 @@ public class StudentService {
 		return isStudentsExist(id);
 	}
 
+	public List<StudentResponse>getAllByAdvisoryUsername(String advisoryTeacherUserName){
+		return studentRepository.getStudentByAdvisoryTeacher_Username(advisoryTeacherUserName)
+				.stream()
+				.map(studentDto::mapStudentToStudentResponse)
+				.collect(Collectors.toList());
+	}
+
 
 
 

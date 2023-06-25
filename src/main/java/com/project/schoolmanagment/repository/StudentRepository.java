@@ -27,6 +27,10 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 	int getMaxStudentNumber();
 
 
+	@Query(value = "SELECT s FROM Student s WHERE s.advisoryTeacher.teacher.username =:username")
+	List<Student>getStudentByAdvisoryTeacher_Username(String username);
+
+
 	@Modifying
 	@Query("DELETE FROM Student s WHERE s.id = :id")
 	void deleteById(@Param("id") Long id);

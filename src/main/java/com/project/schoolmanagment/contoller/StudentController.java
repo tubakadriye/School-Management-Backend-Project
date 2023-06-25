@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -73,6 +74,14 @@ public class StudentController {
 	@GetMapping ("/getStudentById")
 	public Student getStudentById(@RequestParam(name = "id") Long id){
 		return studentService.getStudentById(id);
+	}
+
+	//TODO URL of this API is not suitable!!!!
+	@PreAuthorize("hasAnyAuthority('TEACHER','ADMIN')")
+	@GetMapping("/getAllByAdvisorId")
+	public List<StudentResponse>getAllByAdvisoryTeacherUsername(HttpServletRequest request){
+		String userName = request.getHeader("username");
+		return studentService.getAllByAdvisoryUsername(userName);
 	}
 
 
