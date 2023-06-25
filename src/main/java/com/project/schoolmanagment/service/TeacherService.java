@@ -56,6 +56,7 @@ public class TeacherService {
 										teacherRequest.getPhoneNumber(),
 										teacherRequest.getEmail());
 
+
 		Teacher teacher = teacherDto.mapTeacherRequestToTeacher(teacherRequest);
 		teacher.setUserRole(userRoleService.getUserRole(RoleType.TEACHER));
 		teacher.setLessonsProgramList(lessonProgramSet);
@@ -72,6 +73,7 @@ public class TeacherService {
 				.object(teacherDto.mapTeacherToTeacherResponse(savedTeacher))
 				.build();
 	}
+
 
 	public List<TeacherResponse>getAllTeacher(){
 		return teacherRepository.findAll()
@@ -96,6 +98,7 @@ public class TeacherService {
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
+
 	private Teacher isTeacherExist(Long id){
 		return teacherRepository.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,id)));
 	}
