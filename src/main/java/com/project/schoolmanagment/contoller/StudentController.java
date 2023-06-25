@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.contoller;
 
+import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
@@ -65,6 +66,13 @@ public class StudentController {
 			@RequestParam(value = "type") String type
 	){
 		return studentService.search(page,size,sort,type);
+	}
+
+	//TODO instead of returning entity type, DTO type should be returned
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+	@GetMapping ("/getStudentById")
+	public Student getStudentById(@RequestParam(name = "id") Long id){
+		return studentService.getStudentById(id);
 	}
 
 

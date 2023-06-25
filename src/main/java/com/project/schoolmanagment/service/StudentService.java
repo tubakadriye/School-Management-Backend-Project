@@ -14,6 +14,8 @@ import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.LifecycleState;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -133,6 +135,16 @@ public class StudentService {
 				.stream()
 				.map(studentDto::mapStudentToStudentResponse)
 				.collect(Collectors.toList());
+	}
+
+	public Page<StudentResponse>search(int page,int size,String sort,String type){
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
+		return studentRepository.findAll(pageable)
+				.map(studentDto::mapStudentToStudentResponse);
+	}
+
+	public Student getStudentById(Long id){
+		return isStudentsExist(id);
 	}
 
 
