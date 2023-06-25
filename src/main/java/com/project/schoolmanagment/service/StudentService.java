@@ -3,13 +3,16 @@ package com.project.schoolmanagment.service;
 import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
 import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.entity.enums.RoleType;
+import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.StudentDto;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
 import com.project.schoolmanagment.repository.StudentRepository;
+import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +35,7 @@ public class StudentService {
 
 	public ResponseMessage<StudentResponse>saveStudent(StudentRequest studentRequest){
 		//we need to find the advisory teacher of this student
-		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisoryTeacherById(studentRequest.getAdvisorTeacherId());,
+		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisoryTeacherById(studentRequest.getAdvisorTeacherId());
 		//we need to check duplication
 		//correct order since we have varargs
 		serviceHelpers.checkDuplicate(studentRequest.getUsername()
@@ -47,15 +50,10 @@ public class StudentService {
 		student.setActive(true);
 		student.setStudentNumber(getLastNumber());
 
-		studentRepository.save(student);
-
 		return ResponseMessage.<StudentResponse>builder()
-				.object()
+				.object(studentDto.mapStudentToStudentResponse(studentRepository.save(student)))
 				.message("Student saved Successfully")
 				.build();
-
-
-
 	}
 
 	private int getLastNumber(){
@@ -65,6 +63,22 @@ public class StudentService {
 			return 1000;
 		}
 		return studentRepository.getMaxStudentNumber() + 1;
+	}
+
+	public ResponseMessage changeStatus(Long studentId,boolean status){
+		Student student = isStudentsExist(studentId);
+		student.setActive(status);
+		studentRepository.save(student);
+		return ResponseMessage.builder()
+				.message("Student is " + (status ? "active" : "passive"))
+				.httpStatus(HttpStatus.OK)
+				.build();
+	}
+
+	private Student isStudentsExist(Long studentId){
+		return studentRepository
+				.findById(studentId)
+				.orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,studentId)));
 	}
 
 
