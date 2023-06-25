@@ -1,6 +1,7 @@
 package com.project.schoolmanagment.contoller;
 
 import com.project.schoolmanagment.entity.concretes.Student;
+import com.project.schoolmanagment.payload.request.ChooseLessonProgramWithId;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
@@ -86,9 +87,10 @@ public class StudentController {
 
 	@PreAuthorize("hasAnyAuthority('STUDENT','ADMIN')")
 	@PostMapping("/chooseLesson")
-	public ResponseMessage<StudentResponse>chooseLesson(HttpServletRequest request
-											@RequestBody @Valid ){
-
+	public ResponseMessage<StudentResponse>chooseLesson(HttpServletRequest request,
+											@RequestBody @Valid ChooseLessonProgramWithId chooseLessonProgramWithId){
+		String userName = request.getHeader("username");
+		return studentService.chooseLesson(userName,chooseLessonProgramWithId);
 	}
 
 

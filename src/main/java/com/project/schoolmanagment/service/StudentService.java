@@ -1,15 +1,18 @@
 package com.project.schoolmanagment.service;
 
 import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
+import com.project.schoolmanagment.entity.concretes.LessonProgram;
 import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.StudentDto;
+import com.project.schoolmanagment.payload.request.ChooseLessonProgramWithId;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
 import com.project.schoolmanagment.repository.StudentRepository;
 import com.project.schoolmanagment.utils.CheckParameterUpdateMethod;
+import com.project.schoolmanagment.utils.CheckSameLessonProgram;
 import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +42,10 @@ public class StudentService {
 	private final PasswordEncoder passwordEncoder;
 
 	private final UserRoleService userRoleService;
+
+	private final LessonProgramService lessonProgramService;
+
+	private final CheckSameLessonProgram checkSameLessonProgram;
 
 
 	public ResponseMessage<StudentResponse>saveStudent(StudentRequest studentRequest){
@@ -86,6 +94,14 @@ public class StudentService {
 		return studentRepository
 				.findById(studentId)
 				.orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,studentId)));
+	}
+
+	private Student isStudentsExistByUsername(String username){
+		Student student =  studentRepository.findByUsernameEquals(username);
+		if(student.getId()==null){
+			throw new ResourceNotFoundException(Messages.NOT_FOUND_USER_MESSAGE);
+		}
+		return student;
 	}
 
 	public List<StudentResponse> getAllStudents(){
@@ -152,6 +168,25 @@ public class StudentService {
 				.stream()
 				.map(studentDto::mapStudentToStudentResponse)
 				.collect(Collectors.toList());
+	}
+
+	public ResponseMessage<StudentResponse>chooseLesson(String username,
+	                                                    ChooseLessonProgramWithId chooseLessonProgramWithId){
+		Student student = isStudentsExistByUsername(username);
+		Set<LessonProgram> lessonProgramSet = lessonProgramService.getLessonProgramById(chooseLessonProgramWithId.getLessonProgramId());
+		Set<LessonProgram>studentCurrentLessonProgram = student.getLessonsProgramList();
+		checkSameLessonProgram.checkLessonPrgrams(lessonProgramSet,studentCurrentLessonProgram);
+		studentCurrentLessonProgram.addAll(lessonProgramSet);
+		//we are updating the lesson program of the student
+		student.setLessonsProgramList(studentCurrentLessonProgram);
+
+		Student savedStudent = studentRepository.save(student);
+
+		return ResponseMessage.<StudentResponse>builder()
+				.message("Lessons added to student")
+				.object(studentDto.mapStudentToStudentResponse(savedStudent))
+				.httpStatus(HttpStatus.OK)
+				.build();
 	}
 
 
