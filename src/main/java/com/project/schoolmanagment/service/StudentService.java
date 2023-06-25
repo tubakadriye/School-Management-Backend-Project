@@ -9,12 +9,17 @@ import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
 import com.project.schoolmanagment.repository.StudentRepository;
+import com.project.schoolmanagment.utils.CheckParameterUpdateMethod;
 import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.LifecycleState;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,6 +84,28 @@ public class StudentService {
 		return studentRepository
 				.findById(studentId)
 				.orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,studentId)));
+	}
+
+	public List<StudentResponse> getAllStudents(){
+		return studentRepository.findAll()
+				.stream()
+				.map(studentDto::mapStudentToStudentResponse)
+				.collect(Collectors.toList());
+	}
+
+	public ResponseMessage<StudentResponse>updateStudent(Long studentId, StudentRequest studentRequest){
+		Student student = isStudentsExist(studentId);
+
+		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisoryTeacherById(studentRequest.getAdvisorTeacherId());
+
+		if(!CheckParameterUpdateMethod.checkUniquePropertiesForStudent(student,studentRequest)){
+			serviceHelpers.checkDuplicate(studentRequest.getUsername(),
+					studentRequest.getSsn(),
+					studentRequest.getPhoneNumber(),
+					studentRequest.getEmail());
+		}
+
+		Student studentForUpdate = studentDto.mapStudentRequestToStudent(studentRequest,studentId);
 	}
 
 

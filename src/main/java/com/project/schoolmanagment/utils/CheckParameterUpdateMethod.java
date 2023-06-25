@@ -1,7 +1,9 @@
 package com.project.schoolmanagment.utils;
 
 import com.project.schoolmanagment.entity.abstracts.User;
+import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.entity.concretes.Teacher;
+import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.request.TeacherRequest;
 import com.project.schoolmanagment.payload.request.abstracts.BaseUserRequest;
 
@@ -22,6 +24,11 @@ public class CheckParameterUpdateMethod {
 	public static boolean checkUniquePropertiesForTeacher(Teacher teacher, TeacherRequest teacherRequest){
 		return checkUniqueProperties(teacher,teacherRequest)
 				|| teacher.getEmail().equalsIgnoreCase(teacherRequest.getEmail());
+	}
+
+	public static boolean checkUniquePropertiesForStudent(Student student, StudentRequest studentRequest){
+		return checkUniqueProperties(student,studentRequest)
+				|| student.getEmail().equalsIgnoreCase(studentRequest.getEmail());
 	}
 
 

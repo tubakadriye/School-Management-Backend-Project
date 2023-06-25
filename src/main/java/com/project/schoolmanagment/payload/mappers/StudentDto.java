@@ -27,6 +27,12 @@ public class StudentDto {
 				.build();
 	}
 
+	public Student mapStudentRequestToUpdatedStudent(StudentRequest studentRequest, Long studentId){
+		Student student = mapStudentRequestToStudent(studentRequest);
+		student.setId(studentId);
+		return student;
+	}
+
 	public StudentResponse mapStudentToStudentResponse(Student student){
 		return StudentResponse.builder()
 				.userId(student.getId())
