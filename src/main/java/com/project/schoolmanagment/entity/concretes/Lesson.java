@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.entity.concretes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Lesson {
 
 	private Boolean isCompulsory;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "lesson")
 	private Set<LessonProgram> lessonPrograms;
 

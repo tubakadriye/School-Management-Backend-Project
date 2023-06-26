@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.entity.concretes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.schoolmanagment.entity.enums.Note;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class StudentInfo {
 	private String infoNote;
 
 	@ManyToOne
-	@JsonIgnoreProperties("teacher")
+	@JsonIgnore
 	private Teacher teacher;
 
 	@ManyToOne
