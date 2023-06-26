@@ -16,7 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
-@ToString(callSuper = true)
 public class Teacher extends User {
 
 	//TODO learn about cascade types and orphanRemoval
