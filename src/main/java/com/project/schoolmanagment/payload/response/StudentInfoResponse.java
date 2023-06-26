@@ -26,7 +26,7 @@ public class StudentInfoResponse {
 	private boolean isCompulsory;
 	private Term educationTerm;
 	private Double average;
-	private Note Note;
+	private Note note;
 	private StudentResponse studentResponse;
 
 }
