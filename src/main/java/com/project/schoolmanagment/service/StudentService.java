@@ -90,7 +90,7 @@ public class StudentService {
 				.build();
 	}
 
-	private Student isStudentsExist(Long studentId){
+	public Student isStudentsExist(Long studentId){
 		return studentRepository
 				.findById(studentId)
 				.orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,studentId)));
