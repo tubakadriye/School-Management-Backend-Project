@@ -6,12 +6,14 @@ import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.AdvisoryTeacherDto;
 import com.project.schoolmanagment.payload.response.AdvisorTeacherResponse;
+import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.AdvisoryTeacherRepository;
 import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.ServiceHelpers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -81,6 +83,15 @@ public class AdvisoryTeacherService {
 		return advisoryTeacherRepository
 				.findAll(pageable)
 				.map(advisoryTeacherDto::mapAdvisorTeacherToAdvisorTeacherResponse);
+	}
+
+	public ResponseMessage deleteAdvisorTeacherById(Long id){
+		AdvisoryTeacher advisoryTeacher = getAdvisoryTeacherById(id);
+		advisoryTeacherRepository.deleteById(advisoryTeacher.getId());
+		return ResponseMessage.<AdvisoryTeacher>builder()
+				.message("Advisor Teacher Deleted Successfully")
+				.httpStatus(HttpStatus.OK)
+				.build();
 	}
 
 
