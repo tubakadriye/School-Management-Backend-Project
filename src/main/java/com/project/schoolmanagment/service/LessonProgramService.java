@@ -47,9 +47,12 @@ public class LessonProgramService {
 
 		if(lessons.size()==0){
 			throw new ResourceNotFoundException(Messages.NOT_FOUND_LESSON_IN_LIST);
-		} else if (TimeControl.checkTime(lessonProgramRequest.getStartTime(),lessonProgramRequest.getStopTime())) {
-			throw new BadRequestException(Messages.TIME_NOT_VALID_MESSAGE);
 		}
+		// old usage
+//		else if (TimeControl.checkTime(lessonProgramRequest.getStartTime(),lessonProgramRequest.getStopTime())) {
+//			throw new BadRequestException(Messages.TIME_NOT_VALID_MESSAGE);
+//		}
+		TimeControl.checkTimeWithException(lessonProgramRequest.getStartTime(),lessonProgramRequest.getStopTime());
 
 		LessonProgram lessonProgram = lessonProgramDto.mapLessonProgramRequestToLessonProgram(lessonProgramRequest,lessons,educationTerm);
 
