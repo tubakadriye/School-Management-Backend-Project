@@ -22,4 +22,10 @@ public interface StudentInfoRepository extends JpaRepository<StudentInfo,Long> {
 	@Query("select s from StudentInfo s where s.student.username= ?1")
 	Page<StudentInfo>findByStudentId_UsernameEquals(String username, Pageable pageable);
 
+	@Query("SELECT (count (s)>0) from StudentInfo s WHERE s.student.id= ?1")
+	boolean existsByStudent_IdEquals(Long studentId);
+
+	@Query("SELECT s FROM StudentInfo s WHERE s.student.id= ?1")
+	List<StudentInfo>findByStudent_IdEquals(Long studentId);
+
 }

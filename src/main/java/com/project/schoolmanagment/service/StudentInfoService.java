@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,6 +115,26 @@ public class StudentInfoService {
 		return studentInfoRepository
 				.findByTeacherId_UsernameEquals(username,pageable)
 				.map(studentInfoDto::mapStudentInfoToStudentInfoResponse);
+	}
+
+	public Page<StudentInfoResponse>getAllForStudent(HttpServletRequest httpServletRequest, int page, int size){
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size);
+		String username = (String) httpServletRequest.getAttribute("username");
+		return studentInfoRepository
+				.findByStudentId_UsernameEquals(username,pageable)
+				.map(studentInfoDto::mapStudentInfoToStudentInfoResponse);
+	}
+
+	public List<StudentInfoResponse> getStudentInfoByStudentId(Long studentId){
+		studentService.isStudentsExist(studentId);
+		if(!studentInfoRepository.existsByStudent_IdEquals(studentId)){
+			throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND_BY_STUDENT_ID,studentId));
+		}
+
+		return studentInfoRepository.findByStudent_IdEquals(studentId)
+				.stream()
+				.map(studentInfoDto::mapStudentInfoToStudentInfoResponse)
+				.collect(Collectors.toList());
 	}
 
 

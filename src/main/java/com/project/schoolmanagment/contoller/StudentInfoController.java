@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/studentInfo")
@@ -62,6 +63,23 @@ public class StudentInfoController {
 			@RequestParam(value = "size") int size
 	){
 		return new ResponseEntity<>(studentInfoService.getAllForTeacher(httpServletRequest, page, size), HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasAnyAuthority('STUDENT')")
+	@GetMapping("/getAllForStudent")
+	public ResponseEntity<Page<StudentInfoResponse>> getAllForStudent(
+			HttpServletRequest httpServletRequest,
+			@RequestParam(value = "page") int page,
+			@RequestParam(value = "size") int size
+	){
+		return new ResponseEntity<>(studentInfoService.getAllForStudent(httpServletRequest, page, size), HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER')")
+	@GetMapping("/getByStudentId/{studentId}")
+	public ResponseEntity<List<StudentInfoResponse>>getStudentInfoByStudentId(@PathVariable Long studentId){
+		List<StudentInfoResponse>studentInfoResponse = studentInfoService.getStudentInfoByStudentId(studentId);
+		return ResponseEntity.ok(studentInfoResponse);
 	}
 
 }
