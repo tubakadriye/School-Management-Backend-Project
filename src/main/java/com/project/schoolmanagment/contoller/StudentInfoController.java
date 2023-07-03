@@ -7,6 +7,7 @@ import com.project.schoolmanagment.payload.response.StudentInfoResponse;
 import com.project.schoolmanagment.service.StudentInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +61,7 @@ public class StudentInfoController {
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size
 	){
-		return studentInfoService.getAllForTeacher(httpServletRequest, page, size);
+		return new ResponseEntity<>(studentInfoService.getAllForTeacher(httpServletRequest, page, size), HttpStatus.OK);
 	}
 
 }

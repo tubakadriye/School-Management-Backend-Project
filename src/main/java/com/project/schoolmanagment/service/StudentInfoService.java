@@ -110,7 +110,9 @@ public class StudentInfoService {
 	public Page<StudentInfoResponse>getAllForTeacher(HttpServletRequest httpServletRequest, int page, int size){
 		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size);
 		String username = (String) httpServletRequest.getAttribute("username");
-		return studentInfoRepository.fin
+		return studentInfoRepository
+				.findByTeacherId_UsernameEquals(username,pageable)
+				.map(studentInfoDto::mapStudentInfoToStudentInfoResponse);
 	}
 
 
