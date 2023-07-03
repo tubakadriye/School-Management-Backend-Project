@@ -1,11 +1,13 @@
 package com.project.schoolmanagment.contoller;
 
 import com.project.schoolmanagment.payload.request.StudentInfoRequest;
+import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentInfoResponse;
 import com.project.schoolmanagment.service.StudentInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,22 @@ public class StudentInfoController {
 			@RequestParam(value = "type") String type
 	) {
 		return  studentInfoService.search(page,size,sort,type);
+	}
+	@PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")
+	@PutMapping("/update/{studentInfo}")
+	public ResponseMessage<StudentInfoResponse>update(@RequestBody @Valid UpdateStudentInfoRequest studentInfoRequest,
+	                                                  @PathVariable Long studentInfo){
+		return studentInfoService.update(studentInfoRequest,studentInfo);
+	}
+
+	@PreAuthorize("hasAnyAuthority('TEACHER')")
+	@GetMapping("/getAllForTeacher")
+	public ResponseEntity<Page<StudentInfoResponse>> getAllForTeacher(
+			HttpServletRequest httpServletRequest,
+			@RequestParam(value = "page") int page,
+			@RequestParam(value = "size") int size
+	){
+		return studentInfoService.getAllForTeacher(httpServletRequest, page, size);
 	}
 
 }

@@ -6,6 +6,7 @@ import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.StudentInfoDto;
 import com.project.schoolmanagment.payload.request.StudentInfoRequest;
+import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentInfoResponse;
 import com.project.schoolmanagment.repository.StudentInfoRepository;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +72,31 @@ public class StudentInfoService {
 
 	}
 
+	public ResponseMessage<StudentInfoResponse>update(UpdateStudentInfoRequest studentInfoRequest,Long studentInfoId){
+		Lesson lesson = lessonService.isLessonExistById(studentInfoRequest.getLessonId());
+		StudentInfo studentInfo = isStudentInfoExistById(studentInfoId);
+		EducationTerm educationTerm = educationTermService.getEducationTermById(studentInfoRequest.getEducationTermId());
+
+		Double noteAverage = calculateExamAverage(studentInfo.getMidtermExam(), studentInfo.getFinalExam());
+		Note note = checkLetterGrade(noteAverage);
+		StudentInfo studentInfoForUpdate = studentInfoDto.mapStudentInfoUpdateToStudentInfo(studentInfoRequest,
+																studentInfoId,
+																lesson,
+																educationTerm,
+																note,
+																noteAverage);
+		//TODO move this setters to mapper
+		studentInfoForUpdate.setStudent(studentInfo.getStudent());
+		studentInfoForUpdate.setTeacher(studentInfo.getTeacher());
+		StudentInfo updatedStudentInfo = studentInfoRepository.save(studentInfoForUpdate);
+		return ResponseMessage.<StudentInfoResponse>builder()
+				.message("Student info updated successfully")
+				.httpStatus(HttpStatus.OK)
+				.object(studentInfoDto.mapStudentInfoToStudentInfoResponse(updatedStudentInfo))
+				.build();
+
+	}
+
 
 	private void checkSameLesson(Long studentId,String lessonName){
 		boolean isLessonDupliucationExist = studentInfoRepository.getAllByStudentId_Id(studentId)
@@ -77,6 +105,12 @@ public class StudentInfoService {
 		if(isLessonDupliucationExist){
 			throw new ConflictException(String.format(Messages.ALREADY_REGISTER_LESSON_MESSAGE,lessonName));
 		}
+	}
+
+	public Page<StudentInfoResponse>getAllForTeacher(HttpServletRequest httpServletRequest, int page, int size){
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size);
+		String username = (String) httpServletRequest.getAttribute("username");
+		return studentInfoRepository.fin
 	}
 
 
