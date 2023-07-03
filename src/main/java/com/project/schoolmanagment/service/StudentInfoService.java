@@ -137,6 +137,10 @@ public class StudentInfoService {
 				.collect(Collectors.toList());
 	}
 
+	public StudentInfoResponse findStudentInfoById(Long id){
+		return studentInfoDto.mapStudentInfoToStudentInfoResponse(isStudentInfoExistById(id));
+	}
+
 
 
 	private Double calculateExamAverage(Double midtermExam, Double finalExam){
@@ -178,7 +182,7 @@ public class StudentInfoService {
 	public StudentInfo isStudentInfoExistById(Long id){
 		boolean isExist = studentInfoRepository.existsByIdEquals(id);
 		if(!isExist){
-			throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND));
+			throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND,id));
 		} else {
 			return studentInfoRepository.findById(id).get();
 		}
