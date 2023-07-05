@@ -1,6 +1,7 @@
 package com.project.schoolmanagment.contoller;
 
 import com.project.schoolmanagment.payload.request.MeetRequest;
+import com.project.schoolmanagment.payload.request.UpdateMeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.service.MeetService;

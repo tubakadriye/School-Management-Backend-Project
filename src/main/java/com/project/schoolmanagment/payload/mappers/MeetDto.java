@@ -2,6 +2,7 @@ package com.project.schoolmanagment.payload.mappers;
 
 import com.project.schoolmanagment.entity.concretes.Meet;
 import com.project.schoolmanagment.payload.request.MeetRequest;
+import com.project.schoolmanagment.payload.request.UpdateMeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,15 @@ public class MeetDto {
 				.startTime(meetRequest.getStartTime())
 				.stopTime(meetRequest.getStopTime())
 				.description(meetRequest.getDescription())
+				.build();
+	}
+	public Meet mapMeetUpdateRequestToMeet(UpdateMeetRequest updateMeetRequest,Long meetId){
+		return Meet.builder()
+				.id(meetId)
+				.startTime(updateMeetRequest.getStartTime())
+				.stopTime(updateMeetRequest.getStopTime())
+				.date(updateMeetRequest.getDate())
+				.description(updateMeetRequest.getDescription())
 				.build();
 	}
 

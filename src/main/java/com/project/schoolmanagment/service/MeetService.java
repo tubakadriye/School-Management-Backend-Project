@@ -7,6 +7,7 @@ import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.MeetDto;
 import com.project.schoolmanagment.payload.request.MeetRequest;
+import com.project.schoolmanagment.payload.request.UpdateMeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.MeetRepository;
@@ -67,6 +68,32 @@ public class MeetService {
 				throw new ConflictException("meet hours has conflict with existing meets");
 			}
 		}
+	}
+
+	public ResponseMessage<MeetResponse>updateMeet(UpdateMeetRequest updateMeetRequest,Long meetId){
+		Meet meet = isMeetExistById(meetId);
+		TimeControl.checkTimeWithException(updateMeetRequest.getStartTime(),updateMeetRequest.getStopTime());
+		if(!(meet.getDate().equals(updateMeetRequest.getDate()) &&
+				meet.getStartTime().equals(updateMeetRequest.getStartTime()) &&
+				meet.getStopTime().equals(updateMeetRequest.getStopTime()))){
+			for (Long studentId : updateMeetRequest.getStudentIds()){
+				checkMeetConflict(studentId,updateMeetRequest.getDate()
+						,updateMeetRequest.getStartTime()
+						,updateMeetRequest.getStopTime());
+			}
+		}
+
+		List<Student>students = studentService.getStudentById(updateMeetRequest.getStudentIds());
+		Meet updateMeet = meetDto.mapMeetUpdateRequestToMeet(updateMeetRequest,meetId);
+		updateMeet.setStudentList(students);
+		//TODO write new API for update the teacher
+		updateMeet.setAdvisoryTeacher(meet.getAdvisoryTeacher());
+		Meet updatedMeet = meetRepository.save(updateMeet);
+		return ResponseMessage.<MeetResponse>builder()
+				.message("Meet is Updated successfully")
+				.httpStatus(HttpStatus.OK)
+				.object(meetDto.mapMeetToMeetResponse(updatedMeet))
+				.build();
 	}
 
 	public List<MeetResponse>getAll(){
