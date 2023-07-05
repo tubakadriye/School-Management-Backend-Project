@@ -10,8 +10,13 @@ import org.springframework.stereotype.Component;
 @Data
 public class MeetDto {
 
-	public Meet mapMeetRequestToMeet(MeetRequest meetRequest){
-		return null;
+	public Meet mapMeetRequestToMeet(MeetRequest meetRequest) {
+		return Meet.builder()
+				.date(meetRequest.getDate())
+				.startTime(meetRequest.getStartTime())
+				.stopTime(meetRequest.getStopTime())
+				.description(meetRequest.getDescription())
+				.build();
 	}
 
 

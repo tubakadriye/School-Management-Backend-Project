@@ -41,12 +41,8 @@ public class MeetService {
 			checkMeetConflict(studentId,meetRequest.getDate(),meetRequest.getStartTime(),meetRequest.getStopTime());
 		}
 		List<Student>students = studentService.getStudentById(meetRequest.getStudentIds());
-		Meet meet = new Meet();
-		meet.setDate(meetRequest.getDate());
-		meet.setStartTime(meetRequest.getStartTime());
-		meet.setStopTime(meetRequest.getStopTime());
+		Meet meet = meetDto.mapMeetRequestToMeet(meetRequest);
 		meet.setStudentList(students);
-		meet.setDescription(meetRequest.getDescription());
 		meet.setAdvisoryTeacher(advisoryTeacher);
 		Meet savedMeet = meetRepository.save(meet);
 
@@ -92,6 +88,15 @@ public class MeetService {
 		return meetRepository
 				.findById(meetId).orElseThrow(
 				()->new ResourceNotFoundException(String.format(Messages.MEET_NOT_FOUND_MESSAGE,meetId)));
+	}
+
+	public ResponseMessage delete(Long meetId){
+		isMeetExistById(meetId);
+		meetRepository.deleteById(meetId);
+		return ResponseMessage.builder()
+				.message("Meet deleted successfully")
+				.httpStatus(HttpStatus.OK)
+				.build();
 	}
 
 

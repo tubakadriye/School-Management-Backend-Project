@@ -36,8 +36,20 @@ public class MeetController {
 	@PreAuthorize("hasAnyAuthority( 'ADMIN')")
 	@GetMapping("/getMeetById/{meetId}")
 	public ResponseMessage<MeetResponse> getMeetById(@PathVariable Long meetId){
-
 		return meetService.getMeetById(meetId);
+	}
+
+	@PreAuthorize("hasAnyAuthority('TEACHER','ADMIN' )")
+	@DeleteMapping("/delete/{meetId}")
+	public ResponseMessage delete(@PathVariable Long meetId){
+		return meetService.delete(meetId);
+	}
+
+	@PreAuthorize("hasAnyAuthority('TEACHER','ADMIN' )")
+	@PutMapping("/update/{meetId}")
+	public ResponseMessage<MeetResponse>updateMeet(@RequestBody @Valid UpdateMeetRequest updateMeetRequest,
+	                                               @PathVariable Long meetId){
+		return meetService.updateMeet(updateMeetRequest,meetId);
 	}
 
 
