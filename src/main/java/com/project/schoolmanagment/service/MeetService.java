@@ -3,7 +3,6 @@ package com.project.schoolmanagment.service;
 import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
 import com.project.schoolmanagment.entity.concretes.Meet;
 import com.project.schoolmanagment.entity.concretes.Student;
-import com.project.schoolmanagment.exception.BadRequestException;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.payload.mappers.MeetDto;
 import com.project.schoolmanagment.payload.request.MeetRequest;
@@ -11,16 +10,14 @@ import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.MeetRepository;
 import com.project.schoolmanagment.repository.StudentRepository;
-import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.TimeControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.stylesheets.LinkStyle;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,6 +69,13 @@ public class MeetService {
 				throw new ConflictException("meet hours has conflict with existing meets");
 			}
 		}
+	}
+
+	public List<MeetResponse>getAll(){
+		return meetRepository.findAll()
+				.stream()
+				.map(meetDto::mapMeetToMeetResponse)
+				.collect(Collectors.toList());
 	}
 
 
