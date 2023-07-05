@@ -38,4 +38,7 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 	//TODO contains and containing
 	List<Student>getStudentByNameContaining(String studentName);
 
+	@Query("SELECT s from Student s where s.id IN :id")
+	List<Student>findByIdsEquals(Long [] id);
+
 }

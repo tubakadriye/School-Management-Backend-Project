@@ -189,6 +189,10 @@ public class StudentService {
 				.build();
 	}
 
+	public List<Student>getStudentById(Long[]studentIds){
+		return studentRepository.findByIdsEquals(studentIds);
+	}
+
 
 
 
