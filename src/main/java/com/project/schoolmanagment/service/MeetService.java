@@ -4,12 +4,14 @@ import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
 import com.project.schoolmanagment.entity.concretes.Meet;
 import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.exception.ConflictException;
+import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.MeetDto;
 import com.project.schoolmanagment.payload.request.MeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.MeetRepository;
 import com.project.schoolmanagment.repository.StudentRepository;
+import com.project.schoolmanagment.utils.Messages;
 import com.project.schoolmanagment.utils.TimeControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -78,6 +80,19 @@ public class MeetService {
 				.collect(Collectors.toList());
 	}
 
+	public ResponseMessage<MeetResponse>getMeetById(Long meetId){
+		return ResponseMessage.<MeetResponse>builder()
+				.message("Meet Successfully found")
+				.httpStatus(HttpStatus.OK)
+				.object(meetDto.mapMeetToMeetResponse(isMeetExistById(meetId)))
+				.build();
+	}
+
+	private Meet isMeetExistById(Long meetId){
+		return meetRepository
+				.findById(meetId).orElseThrow(
+				()->new ResourceNotFoundException(String.format(Messages.MEET_NOT_FOUND_MESSAGE,meetId)));
+	}
 
 
 }
