@@ -6,6 +6,8 @@ import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.service.MeetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +54,37 @@ public class MeetController {
 	                                               @PathVariable Long meetId){
 		return meetService.updateMeet(updateMeetRequest,meetId);
 	}
+
+	@PreAuthorize("hasAnyAuthority('TEACHER' )")
+	@GetMapping("/getAllMeetByAdvisorTeacherAsList")
+	public ResponseEntity<List<MeetResponse>> getAllMeetByTeacher(HttpServletRequest httpServletRequest){
+		return meetService.getAllMeetByTeacher(httpServletRequest);
+	}
+
+	@PreAuthorize("hasAnyAuthority('STUDENT' )")
+	@GetMapping("/getAllMeetByStudent")
+	public List<MeetResponse>getAllMeetByStudent(HttpServletRequest httpServletRequest){
+		return meetService.getAllMeetByStudent(httpServletRequest);
+	}
+
+	@PreAuthorize("hasAnyAuthority( 'ADMIN')")
+	@GetMapping("/search")
+	public Page<MeetResponse> search(
+			@RequestParam(value = "page") int page,
+			@RequestParam(value = "size") int size
+	){
+		return meetService.search(page,size);
+	}
+	@PreAuthorize("hasAnyAuthority('TEACHER')")
+	@GetMapping("/getAllMeetByAdvisorAsPage")
+	public ResponseEntity<Page<MeetResponse>>getAllMeetByTeacher(
+			HttpServletRequest httpServletRequest,
+			@RequestParam(value = "page") int page,
+			@RequestParam(value = "size") int size
+	) {
+		return meetService.getAllMeetByTeacher(httpServletRequest,page,size);
+	}
+
 
 
 

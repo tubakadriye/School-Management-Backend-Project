@@ -96,7 +96,7 @@ public class StudentService {
 				.orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,studentId)));
 	}
 
-	private Student isStudentsExistByUsername(String username){
+	public Student isStudentsExistByUsername(String username){
 		Student student =  studentRepository.findByUsernameEquals(username);
 		if(student.getId()==null){
 			throw new ResourceNotFoundException(Messages.NOT_FOUND_USER_MESSAGE);

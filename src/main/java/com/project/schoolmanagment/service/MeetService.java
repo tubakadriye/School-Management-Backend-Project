@@ -13,10 +13,16 @@ import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.MeetRepository;
 import com.project.schoolmanagment.repository.StudentRepository;
 import com.project.schoolmanagment.utils.Messages;
+import com.project.schoolmanagment.utils.ServiceHelpers;
 import com.project.schoolmanagment.utils.TimeControl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -32,6 +38,7 @@ public class MeetService {
 	private final AdvisoryTeacherService advisoryTeacherService;
 	private final StudentService studentService;
 	private final MeetDto meetDto;
+	private final ServiceHelpers serviceHelpers;
 
 	public ResponseMessage<MeetResponse> saveMeet(String username, MeetRequest meetRequest){
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(username);
@@ -96,6 +103,29 @@ public class MeetService {
 				.build();
 	}
 
+	public ResponseEntity getAllMeetByTeacher(HttpServletRequest httpServletRequest){
+		String userName = (String) httpServletRequest.getAttribute("username");
+		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(userName);
+		List<MeetResponse> meetResponseList = meetRepository.getByAdvisoryTeacher_IdEquals(advisoryTeacher.getId())
+				.stream()
+				.map(meetDto::mapMeetToMeetResponse).collect(Collectors.toList());
+		return ResponseEntity.ok(meetResponseList);
+	}
+
+	public List<MeetResponse> getAllMeetByStudent (HttpServletRequest httpServletRequest){
+		String userName = (String) httpServletRequest.getAttribute("username");
+		Student student = studentService.isStudentsExistByUsername(userName);
+		return meetRepository.findByStudentList_IdEquals(student.getId())
+				.stream()
+				.map(meetDto::mapMeetToMeetResponse)
+				.collect(Collectors.toList());
+	}
+
+	public Page<MeetResponse> search (int page, int size){
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size);
+		return meetRepository.findAll(pageable).map(meetDto::mapMeetToMeetResponse);
+	}
+
 	public List<MeetResponse>getAll(){
 		return meetRepository.findAll()
 				.stream()
@@ -124,6 +154,16 @@ public class MeetService {
 				.message("Meet deleted successfully")
 				.httpStatus(HttpStatus.OK)
 				.build();
+	}
+
+	public ResponseEntity<Page<MeetResponse>>getAllMeetByTeacher(HttpServletRequest httpServletRequest,
+	                                                             int page,
+	                                                             int size){
+		String userName = (String) httpServletRequest.getAttribute("username");
+		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(userName);
+		Pageable pageable = serviceHelpers.getPageableWithProperties(page,size);
+		return ResponseEntity.ok(meetRepository.findByAdvisoryTeacher_IdEquals(advisoryTeacher.getId(), pageable)
+				.map(meetDto::mapMeetToMeetResponse));
 	}
 
 
