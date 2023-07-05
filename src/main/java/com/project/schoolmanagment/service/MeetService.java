@@ -3,6 +3,7 @@ package com.project.schoolmanagment.service;
 import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
 import com.project.schoolmanagment.entity.concretes.Meet;
 import com.project.schoolmanagment.exception.BadRequestException;
+import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.payload.request.MeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
@@ -44,6 +45,14 @@ public class MeetService {
 		for (Meet meet :meets){
 			LocalTime existingStartTime = meet.getStartTime();
 			LocalTime existingStopTime = meet.getStopTime();
+
+			if(meet.getDate().equals(date) &&
+					((startTime.isAfter(existingStartTime) && startTime.isBefore(existingStopTime)) ||
+							(stopTime.isAfter(existingStartTime) && stopTime.isBefore(existingStopTime)) ||
+							(startTime.isBefore(existingStartTime) && stopTime.isAfter(existingStopTime)) ||
+							(startTime.equals(existingStartTime) && stopTime.equals(existingStopTime)))){
+				throw new ConflictException("meet hours has conflict with existing meets");
+			}
 		}
 	}
 
