@@ -79,7 +79,7 @@ public class StudentInfoService {
 		StudentInfo studentInfo = isStudentInfoExistById(studentInfoId);
 		EducationTerm educationTerm = educationTermService.getEducationTermById(studentInfoRequest.getEducationTermId());
 
-		Double noteAverage = calculateExamAverage(studentInfo.getMidtermExam(), studentInfo.getFinalExam());
+		Double noteAverage = calculateExamAverage(studentInfoRequest.getMidtermExam(), studentInfoRequest.getFinalExam());
 		Note note = checkLetterGrade(noteAverage);
 		StudentInfo studentInfoForUpdate = studentInfoDto.mapStudentInfoUpdateToStudentInfo(studentInfoRequest,
 																studentInfoId,
