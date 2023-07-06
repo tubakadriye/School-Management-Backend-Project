@@ -1,22 +1,23 @@
-package com.project.schoolmanagment.service;
+package com.project.schoolmanagment.service.user;
 
 import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
 import com.project.schoolmanagment.entity.concretes.LessonProgram;
 import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
-import com.project.schoolmanagment.payload.mappers.StudentDto;
+import com.project.schoolmanagment.service.businnes.AdvisoryTeacherService;
+import com.project.schoolmanagment.service.businnes.LessonProgramService;
+import com.project.schoolmanagment.service.helper.PageableHelper;
+import com.project.schoolmanagment.payload.mappers.StudentMapper;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
 import com.project.schoolmanagment.payload.request.ChooseLessonProgramWithId;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
 import com.project.schoolmanagment.repository.StudentRepository;
-import com.project.schoolmanagment.utils.CheckParameterUpdateMethod;
-import com.project.schoolmanagment.utils.CheckSameLessonProgram;
-import com.project.schoolmanagment.utils.Messages;
-import com.project.schoolmanagment.utils.ServiceHelpers;
+import com.project.schoolmanagment.service.validator.LessonProgramDateTimeValidator;
+import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.LifecycleState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,9 +36,9 @@ public class StudentService {
 
 	private final StudentRepository studentRepository;
 
-	private final ServiceHelpers serviceHelpers;
+	private final UniquePropertyValidator uniquePropertyValidator;
 
-	private final StudentDto studentDto;
+	private final StudentMapper studentMapper;
 
 	private final PasswordEncoder passwordEncoder;
 
@@ -45,7 +46,9 @@ public class StudentService {
 
 	private final LessonProgramService lessonProgramService;
 
-	private final CheckSameLessonProgram checkSameLessonProgram;
+	private final LessonProgramDateTimeValidator lessonProgramDateTimeValidator;
+
+	private final PageableHelper pageableHelper;
 
 
 	public ResponseMessage<StudentResponse>saveStudent(StudentRequest studentRequest){
@@ -53,12 +56,12 @@ public class StudentService {
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisoryTeacherById(studentRequest.getAdvisorTeacherId());
 		//we need to check duplication
 		//correct order since we have varargs
-		serviceHelpers.checkDuplicate(studentRequest.getUsername()
+		uniquePropertyValidator.checkDuplicate(studentRequest.getUsername()
 									,studentRequest.getSsn()
 									,studentRequest.getPhoneNumber()
 									,studentRequest.getEmail());
 
-		Student student = studentDto.mapStudentRequestToStudent(studentRequest);
+		Student student = studentMapper.mapStudentRequestToStudent(studentRequest);
 		student.setAdvisoryTeacher(advisoryTeacher);
 		student.setPassword(passwordEncoder.encode(studentRequest.getPassword()));
 		student.setUserRole(userRoleService.getUserRole(RoleType.STUDENT));
@@ -66,7 +69,7 @@ public class StudentService {
 		student.setStudentNumber(getLastNumber());
 
 		return ResponseMessage.<StudentResponse>builder()
-				.object(studentDto.mapStudentToStudentResponse(studentRepository.save(student)))
+				.object(studentMapper.mapStudentToStudentResponse(studentRepository.save(student)))
 				.message("Student saved Successfully")
 				.build();
 	}
@@ -93,13 +96,13 @@ public class StudentService {
 	public Student isStudentsExist(Long studentId){
 		return studentRepository
 				.findById(studentId)
-				.orElseThrow(()->new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE,studentId)));
+				.orElseThrow(()->new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE,studentId)));
 	}
 
 	public Student isStudentsExistByUsername(String username){
 		Student student =  studentRepository.findByUsernameEquals(username);
 		if(student.getId()==null){
-			throw new ResourceNotFoundException(Messages.NOT_FOUND_USER_MESSAGE);
+			throw new ResourceNotFoundException(ErrorMessages.NOT_FOUND_USER_MESSAGE);
 		}
 		return student;
 	}
@@ -107,7 +110,7 @@ public class StudentService {
 	public List<StudentResponse> getAllStudents(){
 		return studentRepository.findAll()
 				.stream()
-				.map(studentDto::mapStudentToStudentResponse)
+				.map(studentMapper::mapStudentToStudentResponse)
 				.collect(Collectors.toList());
 	}
 
@@ -116,14 +119,14 @@ public class StudentService {
 
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisoryTeacherById(studentRequest.getAdvisorTeacherId());
 
-		if(!CheckParameterUpdateMethod.checkUniquePropertiesForStudent(student,studentRequest)){
-			serviceHelpers.checkDuplicate(studentRequest.getUsername(),
+		if(!UniquePropertyValidator.checkUniquePropertiesForStudent(student,studentRequest)){
+			uniquePropertyValidator.checkDuplicate(studentRequest.getUsername(),
 					studentRequest.getSsn(),
 					studentRequest.getPhoneNumber(),
 					studentRequest.getEmail());
 		}
 
-		Student studentForUpdate = studentDto.mapStudentRequestToUpdatedStudent(studentRequest,studentId);
+		Student studentForUpdate = studentMapper.mapStudentRequestToUpdatedStudent(studentRequest,studentId);
 		studentForUpdate.setPassword(passwordEncoder.encode(studentRequest.getPassword()));
 		studentForUpdate.setAdvisoryTeacher(advisoryTeacher);
 		studentForUpdate.setStudentNumber(student.getStudentNumber());
@@ -131,7 +134,7 @@ public class StudentService {
 		studentForUpdate.setActive(true);
 		studentRepository.save(studentForUpdate);
 		return ResponseMessage.<StudentResponse>builder()
-				.object(studentDto.mapStudentToStudentResponse(studentRepository.save(studentForUpdate)))
+				.object(studentMapper.mapStudentToStudentResponse(studentRepository.save(studentForUpdate)))
 				.message("Student updated successfully")
 				.httpStatus(HttpStatus.OK)
 				.build();
@@ -149,14 +152,14 @@ public class StudentService {
 	public List<StudentResponse> findStudentsByName(String studentName){
 		return studentRepository.getStudentByNameContaining(studentName)
 				.stream()
-				.map(studentDto::mapStudentToStudentResponse)
+				.map(studentMapper::mapStudentToStudentResponse)
 				.collect(Collectors.toList());
 	}
 
 	public Page<StudentResponse>search(int page,int size,String sort,String type){
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
+		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 		return studentRepository.findAll(pageable)
-				.map(studentDto::mapStudentToStudentResponse);
+				.map(studentMapper::mapStudentToStudentResponse);
 	}
 
 	public Student getStudentById(Long id){
@@ -166,7 +169,7 @@ public class StudentService {
 	public List<StudentResponse>getAllByAdvisoryUsername(String advisoryTeacherUserName){
 		return studentRepository.getStudentByAdvisoryTeacher_Username(advisoryTeacherUserName)
 				.stream()
-				.map(studentDto::mapStudentToStudentResponse)
+				.map(studentMapper::mapStudentToStudentResponse)
 				.collect(Collectors.toList());
 	}
 
@@ -175,7 +178,7 @@ public class StudentService {
 		Student student = isStudentsExistByUsername(username);
 		Set<LessonProgram> lessonProgramSet = lessonProgramService.getLessonProgramById(chooseLessonProgramWithId.getLessonProgramId());
 		Set<LessonProgram>studentCurrentLessonProgram = student.getLessonsProgramList();
-		checkSameLessonProgram.checkLessonPrgrams(lessonProgramSet,studentCurrentLessonProgram);
+		lessonProgramDateTimeValidator.checkLessonPrgrams(lessonProgramSet,studentCurrentLessonProgram);
 		studentCurrentLessonProgram.addAll(lessonProgramSet);
 		//we are updating the lesson program of the student
 		student.setLessonsProgramList(studentCurrentLessonProgram);
@@ -184,7 +187,7 @@ public class StudentService {
 
 		return ResponseMessage.<StudentResponse>builder()
 				.message("Lessons added to student")
-				.object(studentDto.mapStudentToStudentResponse(savedStudent))
+				.object(studentMapper.mapStudentToStudentResponse(savedStudent))
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}

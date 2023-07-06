@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class EducationTermDto {
+public class EducationTermMapper {
 
 	public EducationTerm mapEducationTermRequestToEducationTerm(EducationTermRequest educationTermRequest){
 		return EducationTerm.builder()

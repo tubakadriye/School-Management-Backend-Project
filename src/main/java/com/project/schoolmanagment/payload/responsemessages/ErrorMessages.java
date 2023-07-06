@@ -1,8 +1,8 @@
-package com.project.schoolmanagment.utils;
+package com.project.schoolmanagment.payload.responsemessages;
 
-public class Messages {
+public class ErrorMessages {
 
-	private Messages() {
+	private ErrorMessages() {
 	}
 
 	public static final String NOT_PERMITTED_METHOD_MESSAGE = "You do not have any permission to do this operation";

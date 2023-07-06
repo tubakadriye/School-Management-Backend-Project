@@ -8,17 +8,15 @@ import com.project.schoolmanagment.payload.request.StudentInfoRequest;
 import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;
 import com.project.schoolmanagment.payload.response.StudentInfoResponse;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 @Data
 public class StudentInfoDto {
 
 	@Autowired
-	private StudentDto studentDto;
+	private StudentMapper studentMapper;
 
 	public StudentInfo mapStudentInfoRequestToStudentInfo(StudentInfoRequest studentInfoRequest,
 															Note note,
@@ -68,7 +66,7 @@ public class StudentInfoDto {
 				.infoNote(studentInfo.getInfoNote())
 				.note(studentInfo.getLetterGrade())
 				.average(studentInfo.getExamAverage())
-				.studentResponse(studentDto.mapStudentToStudentResponse(studentInfo.getStudent()))
+				.studentResponse(studentMapper.mapStudentToStudentResponse(studentInfo.getStudent()))
 				.build();
 	}
 

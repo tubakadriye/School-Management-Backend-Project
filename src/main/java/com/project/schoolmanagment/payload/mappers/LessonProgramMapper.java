@@ -3,7 +3,6 @@ package com.project.schoolmanagment.payload.mappers;
 import com.project.schoolmanagment.entity.concretes.EducationTerm;
 import com.project.schoolmanagment.entity.concretes.Lesson;
 import com.project.schoolmanagment.entity.concretes.LessonProgram;
-import com.project.schoolmanagment.payload.request.EducationTermRequest;
 import com.project.schoolmanagment.payload.request.LessonProgramRequest;
 import com.project.schoolmanagment.payload.response.LessonProgramResponse;
 import lombok.Data;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 @Data
 @Component
-public class LessonProgramDto {
+public class LessonProgramMapper {
 
 
 	public LessonProgram mapLessonProgramRequestToLessonProgram(LessonProgramRequest lessonProgramRequest, Set<Lesson> lessonSet, EducationTerm educationTerm){

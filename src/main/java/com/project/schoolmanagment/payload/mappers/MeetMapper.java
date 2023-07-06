@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-public class MeetDto {
+public class MeetMapper {
 
 	public Meet mapMeetRequestToMeet(MeetRequest meetRequest) {
 		return Meet.builder()

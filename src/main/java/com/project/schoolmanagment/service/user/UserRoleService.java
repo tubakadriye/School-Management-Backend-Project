@@ -1,15 +1,14 @@
-package com.project.schoolmanagment.service;
+package com.project.schoolmanagment.service.user;
 
 import com.project.schoolmanagment.entity.concretes.UserRole;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.repository.UserRoleRepository;
-import com.project.schoolmanagment.utils.Messages;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class UserRoleService {
 //		}
 
 		return userRoleRepository.findByEnumRoleEquals(roleType).orElseThrow(
-				()-> new ConflictException(Messages.ROLE_NOT_FOUND));
+				()-> new ConflictException(ErrorMessages.ROLE_NOT_FOUND));
 
 
 	}
@@ -42,7 +41,7 @@ public class UserRoleService {
 
 	public UserRole save (RoleType roleType){
 		if(userRoleRepository.existsByEnumRoleEquals(roleType)){
-			throw new ConflictException(Messages.ROLE_ALREADY_EXIST);
+			throw new ConflictException(ErrorMessages.ROLE_ALREADY_EXIST);
 		}
 		UserRole userRole = UserRole.builder().roleType(roleType).build();
 		return userRoleRepository.save(userRole);

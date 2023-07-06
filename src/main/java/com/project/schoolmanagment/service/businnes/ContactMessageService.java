@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.service;
+package com.project.schoolmanagment.service.businnes;
 
 import com.project.schoolmanagment.entity.concretes.ContactMessage;
 import com.project.schoolmanagment.exception.ConflictException;
@@ -6,10 +6,9 @@ import com.project.schoolmanagment.payload.request.ContactMessageRequest;
 import com.project.schoolmanagment.payload.response.ContactMessageResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.ContactMessageRepository;
-import com.project.schoolmanagment.utils.Messages;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +34,7 @@ public class ContactMessageService {
 				contactMessageRepository.existsByEmailEqualsAndDateEquals(contactMessageRequest.getEmail(), LocalDate.now());
 
 		if(isSameMessageWithSameEmailForToday){
-			throw new ConflictException(Messages.ALREADY_SEND_A_MESSAGE_TODAY);
+			throw new ConflictException(ErrorMessages.ALREADY_SEND_A_MESSAGE_TODAY);
 		}
 
 		ContactMessage contactMessage = createContactMessage(contactMessageRequest);

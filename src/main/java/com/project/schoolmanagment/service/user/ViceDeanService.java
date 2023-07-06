@@ -1,16 +1,16 @@
-package com.project.schoolmanagment.service;
+package com.project.schoolmanagment.service.user;
 
 import com.project.schoolmanagment.entity.concretes.ViceDean;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
-import com.project.schoolmanagment.payload.mappers.ViceDeanDto;
+import com.project.schoolmanagment.payload.mappers.ViceDeanMapper;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
 import com.project.schoolmanagment.repository.ViceDeanRepository;
-import com.project.schoolmanagment.utils.CheckParameterUpdateMethod;
-import com.project.schoolmanagment.utils.ServiceHelpers;
-import com.project.schoolmanagment.utils.Messages;
+import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
+import com.project.schoolmanagment.service.helper.PageableHelper;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,22 +28,23 @@ public class ViceDeanService {
 
 	private final ViceDeanRepository viceDeanRepository;
 
-	public final ServiceHelpers serviceHelpers;
+	public final UniquePropertyValidator uniquePropertyValidator;
 
-	public final ViceDeanDto viceDeanDto;
+	public final ViceDeanMapper viceDeanMapper;
 
 	public final PasswordEncoder passwordEncoder;
 
 	public final UserRoleService userRoleService;
 
+	private final PageableHelper pageableHelper;
 
 	public ResponseMessage<ViceDeanResponse> saveViceDean(ViceDeanRequest viceDeanRequest) {
 
-		serviceHelpers.checkDuplicate(viceDeanRequest.getUsername(),
+		uniquePropertyValidator.checkDuplicate(viceDeanRequest.getUsername(),
 				viceDeanRequest.getSsn(),
 				viceDeanRequest.getPhoneNumber());
 
-		ViceDean viceDean = viceDeanDto.mapViceDeanRequestToViceDean(viceDeanRequest);
+		ViceDean viceDean = viceDeanMapper.mapViceDeanRequestToViceDean(viceDeanRequest);
 		viceDean.setPassword(passwordEncoder.encode(viceDeanRequest.getPassword()));
 		viceDean.setUserRole(userRoleService.getUserRole(RoleType.ASSISTANT_MANAGER));
 
@@ -52,14 +53,14 @@ public class ViceDeanService {
 		return ResponseMessage.<ViceDeanResponse>builder()
 				.message("Vice Dean Saved")
 				.httpStatus(HttpStatus.CREATED)
-				.object(viceDeanDto.mapViceDeanToViceDeanResponse(savedViceDean))
+				.object(viceDeanMapper.mapViceDeanToViceDeanResponse(savedViceDean))
 				.build();
 	}
 
 	private Optional<ViceDean> isViceDeanExist(Long viceDeanId) {
 		Optional<ViceDean> viceDean = viceDeanRepository.findById(viceDeanId);
 		if (!viceDeanRepository.findById(viceDeanId).isPresent()) {
-			throw new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE, viceDeanId));
+			throw new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE, viceDeanId));
 		} else {
 			return viceDean;
 		}
@@ -80,27 +81,27 @@ public class ViceDeanService {
 		return ResponseMessage.<ViceDeanResponse>builder()
 				.message("Vice Dean Found")
 				.httpStatus(HttpStatus.OK)
-				.object(viceDeanDto.mapViceDeanToViceDeanResponse(isViceDeanExist(viceDeanId).get()))
+				.object(viceDeanMapper.mapViceDeanToViceDeanResponse(isViceDeanExist(viceDeanId).get()))
 				.build();
 	}
 
 	public ResponseMessage<ViceDeanResponse> updateViceDean(ViceDeanRequest viceDeanRequest, Long viceDeanId){
 		Optional<ViceDean>viceDean = isViceDeanExist(viceDeanId);
 
-		if(!CheckParameterUpdateMethod.checkUniqueProperties(viceDean.get(),viceDeanRequest)){
-			serviceHelpers.checkDuplicate(viceDeanRequest.getUsername(),
+		if(!UniquePropertyValidator.checkUniqueProperties(viceDean.get(),viceDeanRequest)){
+			uniquePropertyValidator.checkDuplicate(viceDeanRequest.getUsername(),
 										viceDeanRequest.getSsn(),
 										viceDeanRequest.getPhoneNumber());
 		}
 
-		ViceDean updatedViceDean = viceDeanDto.mapViceDeanRequestToUpdatedViceDean(viceDeanRequest,viceDeanId);
+		ViceDean updatedViceDean = viceDeanMapper.mapViceDeanRequestToUpdatedViceDean(viceDeanRequest,viceDeanId);
 		updatedViceDean.setPassword(passwordEncoder.encode(viceDeanRequest.getPassword()));
 		ViceDean savedViceDean = viceDeanRepository.save(updatedViceDean);
 
 		return ResponseMessage.<ViceDeanResponse>builder()
 				.message("Vice Dean Updated")
 				.httpStatus(HttpStatus.OK)
-				.object(viceDeanDto.mapViceDeanToViceDeanResponse(savedViceDean))
+				.object(viceDeanMapper.mapViceDeanToViceDeanResponse(savedViceDean))
 				.build();
 	}
 
@@ -108,22 +109,15 @@ public class ViceDeanService {
 	public List<ViceDeanResponse> getAllViceDeans(){
 		return viceDeanRepository.findAll()
 				.stream()
-				.map(viceDeanDto::mapViceDeanToViceDeanResponse)
+				.map(viceDeanMapper::mapViceDeanToViceDeanResponse)
 				.collect(Collectors.toList());
 	}
 
 	public Page<ViceDeanResponse> getAllViceDeansByPage(int page, int size, String sort, String type){
 
-		//we created a helper method in utils package
+		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 
-//		Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
-//		if(Objects.equals(type,"desc")){
-//			pageable = PageRequest.of(page,size, Sort.by(sort).descending());
-//		}
-
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
-
-		return viceDeanRepository.findAll(pageable).map(viceDeanDto::mapViceDeanToViceDeanResponse);
+		return viceDeanRepository.findAll(pageable).map(viceDeanMapper::mapViceDeanToViceDeanResponse);
 	}
 
 

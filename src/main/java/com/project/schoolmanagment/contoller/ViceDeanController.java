@@ -3,7 +3,7 @@ package com.project.schoolmanagment.contoller;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
-import com.project.schoolmanagment.service.ViceDeanService;
+import com.project.schoolmanagment.service.user.ViceDeanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.service;
+package com.project.schoolmanagment.service.businnes;
 
 import com.project.schoolmanagment.entity.concretes.*;
 import com.project.schoolmanagment.entity.enums.Note;
@@ -10,8 +10,11 @@ import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentInfoResponse;
 import com.project.schoolmanagment.repository.StudentInfoRepository;
-import com.project.schoolmanagment.utils.Messages;
-import com.project.schoolmanagment.utils.ServiceHelpers;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.service.helper.PageableHelper;
+import com.project.schoolmanagment.service.user.StudentService;
+import com.project.schoolmanagment.service.user.TeacherService;
+import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -33,7 +36,9 @@ public class StudentInfoService {
 	private final LessonService lessonService;
 	private final StudentInfoRepository studentInfoRepository;
 	private final StudentInfoDto studentInfoDto;
-	private final ServiceHelpers serviceHelpers;
+	private final UniquePropertyValidator uniquePropertyValidator;
+
+	private final PageableHelper pageableHelper;
 	@Value("${midterm.exam.impact.percentage}")
 	private Double midtermExamPercentage;
 	@Value("${final.exam.impact.percentage}")
@@ -105,12 +110,12 @@ public class StudentInfoService {
 				.stream()
 				.anyMatch((e)->e.getLesson().getLessonName().equalsIgnoreCase(lessonName));
 		if(isLessonDupliucationExist){
-			throw new ConflictException(String.format(Messages.ALREADY_REGISTER_LESSON_MESSAGE,lessonName));
+			throw new ConflictException(String.format(ErrorMessages.ALREADY_REGISTER_LESSON_MESSAGE,lessonName));
 		}
 	}
 
 	public Page<StudentInfoResponse>getAllForTeacher(HttpServletRequest httpServletRequest, int page, int size){
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size);
+		Pageable pageable = pageableHelper.getPageableWithProperties(page, size);
 		String username = (String) httpServletRequest.getAttribute("username");
 		return studentInfoRepository
 				.findByTeacherId_UsernameEquals(username,pageable)
@@ -118,7 +123,7 @@ public class StudentInfoService {
 	}
 
 	public Page<StudentInfoResponse>getAllForStudent(HttpServletRequest httpServletRequest, int page, int size){
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size);
+		Pageable pageable = pageableHelper.getPageableWithProperties(page, size);
 		String username = (String) httpServletRequest.getAttribute("username");
 		return studentInfoRepository
 				.findByStudentId_UsernameEquals(username,pageable)
@@ -128,7 +133,7 @@ public class StudentInfoService {
 	public List<StudentInfoResponse> getStudentInfoByStudentId(Long studentId){
 		studentService.isStudentsExist(studentId);
 		if(!studentInfoRepository.existsByStudent_IdEquals(studentId)){
-			throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND_BY_STUDENT_ID,studentId));
+			throw new ResourceNotFoundException(String.format(ErrorMessages.STUDENT_INFO_NOT_FOUND_BY_STUDENT_ID,studentId));
 		}
 
 		return studentInfoRepository.findByStudent_IdEquals(studentId)
@@ -182,14 +187,14 @@ public class StudentInfoService {
 	public StudentInfo isStudentInfoExistById(Long id){
 		boolean isExist = studentInfoRepository.existsByIdEquals(id);
 		if(!isExist){
-			throw new ResourceNotFoundException(String.format(Messages.STUDENT_INFO_NOT_FOUND,id));
+			throw new ResourceNotFoundException(String.format(ErrorMessages.STUDENT_INFO_NOT_FOUND,id));
 		} else {
 			return studentInfoRepository.findById(id).get();
 		}
 	}
 
 	public Page<StudentInfoResponse> search(int page,int size, String sort,String type){
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
+		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 		return studentInfoRepository.findAll(pageable).map(studentInfoDto::mapStudentInfoToStudentInfoResponse);
 	}
 

@@ -1,20 +1,22 @@
-package com.project.schoolmanagment.service;
+package com.project.schoolmanagment.service.businnes;
 
 import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
 import com.project.schoolmanagment.entity.concretes.Meet;
 import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
-import com.project.schoolmanagment.payload.mappers.MeetDto;
+import com.project.schoolmanagment.payload.mappers.MeetMapper;
 import com.project.schoolmanagment.payload.request.MeetRequest;
 import com.project.schoolmanagment.payload.request.UpdateMeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.MeetRepository;
 import com.project.schoolmanagment.repository.StudentRepository;
-import com.project.schoolmanagment.utils.Messages;
-import com.project.schoolmanagment.utils.ServiceHelpers;
-import com.project.schoolmanagment.utils.TimeControl;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.service.helper.PageableHelper;
+import com.project.schoolmanagment.service.user.StudentService;
+import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
+import com.project.schoolmanagment.service.validator.TimeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,26 +39,28 @@ public class MeetService {
 	private final StudentRepository studentRepository;
 	private final AdvisoryTeacherService advisoryTeacherService;
 	private final StudentService studentService;
-	private final MeetDto meetDto;
-	private final ServiceHelpers serviceHelpers;
+	private final MeetMapper meetMapper;
+	private final UniquePropertyValidator uniquePropertyValidator;
+
+	private final PageableHelper pageableHelper;
 
 	public ResponseMessage<MeetResponse> saveMeet(String username, MeetRequest meetRequest){
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(username);
-		TimeControl.checkTimeWithException(meetRequest.getStartTime(),meetRequest.getStopTime());
+		TimeValidator.checkTimeWithException(meetRequest.getStartTime(),meetRequest.getStopTime());
 
 		for (Long studentId : meetRequest.getStudentIds()){
 			studentService.isStudentsExist(studentId);
 			checkMeetConflict(studentId,meetRequest.getDate(),meetRequest.getStartTime(),meetRequest.getStopTime());
 		}
 		List<Student>students = studentService.getStudentById(meetRequest.getStudentIds());
-		Meet meet = meetDto.mapMeetRequestToMeet(meetRequest);
+		Meet meet = meetMapper.mapMeetRequestToMeet(meetRequest);
 		meet.setStudentList(students);
 		meet.setAdvisoryTeacher(advisoryTeacher);
 		Meet savedMeet = meetRepository.save(meet);
 
 		return ResponseMessage.<MeetResponse>builder()
 				.message("Meet successfully saved")
-				.object(meetDto.mapMeetToMeetResponse(savedMeet))
+				.object(meetMapper.mapMeetToMeetResponse(savedMeet))
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -79,7 +83,7 @@ public class MeetService {
 
 	public ResponseMessage<MeetResponse>updateMeet(UpdateMeetRequest updateMeetRequest,Long meetId){
 		Meet meet = isMeetExistById(meetId);
-		TimeControl.checkTimeWithException(updateMeetRequest.getStartTime(),updateMeetRequest.getStopTime());
+		TimeValidator.checkTimeWithException(updateMeetRequest.getStartTime(),updateMeetRequest.getStopTime());
 		if(!(meet.getDate().equals(updateMeetRequest.getDate()) &&
 				meet.getStartTime().equals(updateMeetRequest.getStartTime()) &&
 				meet.getStopTime().equals(updateMeetRequest.getStopTime()))){
@@ -91,7 +95,7 @@ public class MeetService {
 		}
 
 		List<Student>students = studentService.getStudentById(updateMeetRequest.getStudentIds());
-		Meet updateMeet = meetDto.mapMeetUpdateRequestToMeet(updateMeetRequest,meetId);
+		Meet updateMeet = meetMapper.mapMeetUpdateRequestToMeet(updateMeetRequest,meetId);
 		updateMeet.setStudentList(students);
 		//TODO write new API for update the teacher
 		updateMeet.setAdvisoryTeacher(meet.getAdvisoryTeacher());
@@ -99,7 +103,7 @@ public class MeetService {
 		return ResponseMessage.<MeetResponse>builder()
 				.message("Meet is Updated successfully")
 				.httpStatus(HttpStatus.OK)
-				.object(meetDto.mapMeetToMeetResponse(updatedMeet))
+				.object(meetMapper.mapMeetToMeetResponse(updatedMeet))
 				.build();
 	}
 
@@ -108,7 +112,7 @@ public class MeetService {
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(userName);
 		List<MeetResponse> meetResponseList = meetRepository.getByAdvisoryTeacher_IdEquals(advisoryTeacher.getId())
 				.stream()
-				.map(meetDto::mapMeetToMeetResponse).collect(Collectors.toList());
+				.map(meetMapper::mapMeetToMeetResponse).collect(Collectors.toList());
 		return ResponseEntity.ok(meetResponseList);
 	}
 
@@ -117,19 +121,19 @@ public class MeetService {
 		Student student = studentService.isStudentsExistByUsername(userName);
 		return meetRepository.findByStudentList_IdEquals(student.getId())
 				.stream()
-				.map(meetDto::mapMeetToMeetResponse)
+				.map(meetMapper::mapMeetToMeetResponse)
 				.collect(Collectors.toList());
 	}
 
 	public Page<MeetResponse> search (int page, int size){
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size);
-		return meetRepository.findAll(pageable).map(meetDto::mapMeetToMeetResponse);
+		Pageable pageable = pageableHelper.getPageableWithProperties(page, size);
+		return meetRepository.findAll(pageable).map(meetMapper::mapMeetToMeetResponse);
 	}
 
 	public List<MeetResponse>getAll(){
 		return meetRepository.findAll()
 				.stream()
-				.map(meetDto::mapMeetToMeetResponse)
+				.map(meetMapper::mapMeetToMeetResponse)
 				.collect(Collectors.toList());
 	}
 
@@ -137,14 +141,14 @@ public class MeetService {
 		return ResponseMessage.<MeetResponse>builder()
 				.message("Meet Successfully found")
 				.httpStatus(HttpStatus.OK)
-				.object(meetDto.mapMeetToMeetResponse(isMeetExistById(meetId)))
+				.object(meetMapper.mapMeetToMeetResponse(isMeetExistById(meetId)))
 				.build();
 	}
 
 	private Meet isMeetExistById(Long meetId){
 		return meetRepository
 				.findById(meetId).orElseThrow(
-				()->new ResourceNotFoundException(String.format(Messages.MEET_NOT_FOUND_MESSAGE,meetId)));
+				()->new ResourceNotFoundException(String.format(ErrorMessages.MEET_NOT_FOUND_MESSAGE,meetId)));
 	}
 
 	public ResponseMessage delete(Long meetId){
@@ -161,9 +165,9 @@ public class MeetService {
 	                                                             int size){
 		String userName = (String) httpServletRequest.getAttribute("username");
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(userName);
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page,size);
+		Pageable pageable = pageableHelper.getPageableWithProperties(page,size);
 		return ResponseEntity.ok(meetRepository.findByAdvisoryTeacher_IdEquals(advisoryTeacher.getId(), pageable)
-				.map(meetDto::mapMeetToMeetResponse));
+				.map(meetMapper::mapMeetToMeetResponse));
 	}
 
 

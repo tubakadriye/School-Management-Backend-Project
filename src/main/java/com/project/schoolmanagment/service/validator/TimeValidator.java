@@ -1,10 +1,11 @@
-package com.project.schoolmanagment.utils;
+package com.project.schoolmanagment.service.validator;
 
 import com.project.schoolmanagment.exception.BadRequestException;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
 
 import java.time.LocalTime;
 
-public class TimeControl {
+public class TimeValidator {
 
 	//start time should be earlier than stop time
 	public static boolean checkTime(LocalTime start, LocalTime stop){
@@ -13,7 +14,7 @@ public class TimeControl {
 
 	public static void checkTimeWithException(LocalTime start,LocalTime stop){
 		if (checkTime(start,stop)) {
-			throw new BadRequestException(Messages.TIME_NOT_VALID_MESSAGE);
+			throw new BadRequestException(ErrorMessages.TIME_NOT_VALID_MESSAGE);
 		}
 	}
 }

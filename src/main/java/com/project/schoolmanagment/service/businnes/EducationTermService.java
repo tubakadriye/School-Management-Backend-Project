@@ -1,14 +1,15 @@
-package com.project.schoolmanagment.service;
+package com.project.schoolmanagment.service.businnes;
 
 import com.project.schoolmanagment.entity.concretes.EducationTerm;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
-import com.project.schoolmanagment.payload.mappers.EducationTermDto;
+import com.project.schoolmanagment.payload.mappers.EducationTermMapper;
 import com.project.schoolmanagment.payload.request.EducationTermRequest;
 import com.project.schoolmanagment.payload.response.EducationTermResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.EducationTermRepository;
-import com.project.schoolmanagment.utils.Messages;
-import com.project.schoolmanagment.utils.ServiceHelpers;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.service.helper.PageableHelper;
+import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,20 +25,22 @@ public class EducationTermService {
 
 	private final EducationTermRepository educationTermRepository;
 
-	private final EducationTermDto educationTermDto;
+	private final EducationTermMapper educationTermMapper;
 
-	private final ServiceHelpers serviceHelpers;
+	private final UniquePropertyValidator uniquePropertyValidator;
+
+	private final PageableHelper pageableHelper;
 
 
 	public ResponseMessage<EducationTermResponse> saveEducationTerm(EducationTermRequest educationTermRequest){
 
 		validateEducationTermDates(educationTermRequest);
 
-		EducationTerm savedEducationTerm = educationTermRepository.save(educationTermDto.mapEducationTermRequestToEducationTerm(educationTermRequest));
+		EducationTerm savedEducationTerm = educationTermRepository.save(educationTermMapper.mapEducationTermRequestToEducationTerm(educationTermRequest));
 
 		return ResponseMessage.<EducationTermResponse>builder()
 													.message("Education Term Saved")
-													.object(educationTermDto.mapEducationTermToEducationTermResponse(savedEducationTerm))
+													.object(educationTermMapper.mapEducationTermToEducationTermResponse(savedEducationTerm))
 													.httpStatus(HttpStatus.CREATED)
 													.build();
 
@@ -46,7 +49,7 @@ public class EducationTermService {
 	public List<EducationTermResponse> getAllEducationTerms(){
 		return educationTermRepository.findAll()
 										.stream()
-										.map(educationTermDto::mapEducationTermToEducationTermResponse)
+										.map(educationTermMapper::mapEducationTermToEducationTermResponse)
 										.collect(Collectors.toList());
 	}
 
@@ -58,7 +61,7 @@ public class EducationTermService {
 
 		EducationTerm term = isEducationTermExist(id);
 
-		return educationTermDto.mapEducationTermToEducationTermResponse(term);
+		return educationTermMapper.mapEducationTermToEducationTermResponse(term);
 
 	}
 
@@ -81,9 +84,9 @@ public class EducationTermService {
 
 
 	public Page<EducationTermResponse> getAllEducationTermsByPage (int page,int size,String sort,String type){
-		Pageable pageable = serviceHelpers.getPageableWithProperties(page, size, sort, type);
+		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 
-		return educationTermRepository.findAll(pageable).map(educationTermDto::mapEducationTermToEducationTermResponse);
+		return educationTermRepository.findAll(pageable).map(educationTermMapper::mapEducationTermToEducationTermResponse);
 	}
 
 	public ResponseMessage<EducationTermResponse>updateEducationTerm(Long id,EducationTermRequest educationTermRequest){
@@ -92,12 +95,12 @@ public class EducationTermService {
 
 		validateEducationTermDatesForUpdate(educationTermRequest);
 
-		EducationTerm educationTermUpdated = educationTermRepository.save(educationTermDto.mapEducationTermRequestToUpdatedEducationTerm(id,educationTermRequest));
+		EducationTerm educationTermUpdated = educationTermRepository.save(educationTermMapper.mapEducationTermRequestToUpdatedEducationTerm(id,educationTermRequest));
 
 		return ResponseMessage.<EducationTermResponse>builder()
 				.message("Education Term Updated")
 				.httpStatus(HttpStatus.OK)
-				.object(educationTermDto.mapEducationTermToEducationTermResponse(educationTermUpdated))
+				.object(educationTermMapper.mapEducationTermToEducationTermResponse(educationTermUpdated))
 				.build();
 
 	}
@@ -105,7 +108,7 @@ public class EducationTermService {
 	private EducationTerm isEducationTermExist(Long id){
 		EducationTerm term = educationTermRepository.findByIdEquals(id);
 		if(term==null){
-			throw new ResourceNotFoundException(String.format(Messages.EDUCATION_TERM_NOT_FOUND_MESSAGE,id));
+			throw new ResourceNotFoundException(String.format(ErrorMessages.EDUCATION_TERM_NOT_FOUND_MESSAGE,id));
 		} else {
 			return term;
 		}
@@ -124,7 +127,7 @@ public class EducationTermService {
 
 		// if any education term exist in these year with this term
 		if(educationTermRepository.existsByTermAndYear(educationTermRequest.getTerm(),educationTermRequest.getStartDate().getYear())){
-			throw new ResourceNotFoundException(Messages.EDUCATION_TERM_IS_ALREADY_EXIST_BY_TERM_AND_YEAR_MESSAGE);
+			throw new ResourceNotFoundException(ErrorMessages.EDUCATION_TERM_IS_ALREADY_EXIST_BY_TERM_AND_YEAR_MESSAGE);
 		}
 
 
@@ -137,12 +140,12 @@ public class EducationTermService {
 
 		// registration > start
 		if(educationTermRequest.getLastRegistrationDate().isAfter(educationTermRequest.getStartDate())){
-			throw new ResourceNotFoundException(Messages.EDUCATION_START_DATE_IS_EARLIER_THAN_LAST_REGISTRATION_DATE);
+			throw new ResourceNotFoundException(ErrorMessages.EDUCATION_START_DATE_IS_EARLIER_THAN_LAST_REGISTRATION_DATE);
 		}
 
 		// end > start
 		if(educationTermRequest.getEndDate().isBefore(educationTermRequest.getStartDate())){
-			throw new ResourceNotFoundException(Messages.EDUCATION_END_DATE_IS_EARLIER_THAN_START_DATE);
+			throw new ResourceNotFoundException(ErrorMessages.EDUCATION_END_DATE_IS_EARLIER_THAN_START_DATE);
 		}
 
 

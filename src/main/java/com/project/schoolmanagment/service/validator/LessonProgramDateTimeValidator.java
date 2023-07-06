@@ -1,13 +1,14 @@
-package com.project.schoolmanagment.utils;
+package com.project.schoolmanagment.service.validator;
 
 import com.project.schoolmanagment.entity.concretes.LessonProgram;
 import com.project.schoolmanagment.exception.BadRequestException;
+import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 @Component
-public class CheckSameLessonProgram {
+public class LessonProgramDateTimeValidator {
 
 	//TODO we have to validate also old lesson program and new lesson program time schedule matching.
 
@@ -30,7 +31,7 @@ public class CheckSameLessonProgram {
 		for (LessonProgram lessonProgram : lessonPrograms){
 			String lessonProgramKey = lessonProgram.getDay().name() + lessonProgram.getStartTime();
 			if(uniqueLessonProgramKeys.contains(lessonProgramKey)){
-				throw new BadRequestException(Messages.LESSON_PROGRAM_EXIST_MESSAGE);
+				throw new BadRequestException(ErrorMessages.LESSON_PROGRAM_EXIST_MESSAGE);
 			}
 			uniqueLessonProgramKeys.add(lessonProgramKey);
 		}
@@ -41,7 +42,7 @@ public class CheckSameLessonProgram {
 			if (existLessonProgram.stream().anyMatch(lessonProgram ->
 					lessonProgram.getStartTime().equals(requestLessonProgram.getStartTime() )
 					&& 	lessonProgram.getDay().name().equals(requestLessonProgram.getDay().name()))){
-				throw new BadRequestException(Messages.LESSON_PROGRAM_EXIST_MESSAGE);
+				throw new BadRequestException(ErrorMessages.LESSON_PROGRAM_EXIST_MESSAGE);
 			}
 		}
 	}

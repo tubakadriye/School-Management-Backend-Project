@@ -4,13 +4,13 @@ import com.project.schoolmanagment.entity.concretes.ViceDean;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
-import com.project.schoolmanagment.service.UserRoleService;
+import com.project.schoolmanagment.service.user.UserRoleService;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class ViceDeanDto {
+public class ViceDeanMapper {
 
 	private final UserRoleService userRoleService;
 

@@ -3,8 +3,8 @@ package com.project.schoolmanagment;
 import com.project.schoolmanagment.entity.enums.Gender;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.payload.request.AdminRequest;
-import com.project.schoolmanagment.service.AdminService;
-import com.project.schoolmanagment.service.UserRoleService;
+import com.project.schoolmanagment.service.user.AdminService;
+import com.project.schoolmanagment.service.user.UserRoleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -54,7 +54,7 @@ public class SchoolManagementApplication implements CommandLineRunner {
             adminRequest.setGender(Gender.FEMALE);
             adminRequest.setBirthDay(LocalDate.of(1980,2,2));
             adminRequest.setBirthPlace("Texas");
-            adminService.save(adminRequest);
+            adminService.saveAdmin(adminRequest);
         }
 
 

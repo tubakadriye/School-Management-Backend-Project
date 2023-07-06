@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-public class StudentDto {
+public class StudentMapper {
 
 	public Student mapStudentRequestToStudent(StudentRequest studentRequest){
 		return Student.builder()

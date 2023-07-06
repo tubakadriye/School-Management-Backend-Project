@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class LessonDto {
+public class LessonMapper {
 
 	public Lesson mapLessonRequestToLesson(LessonRequest lessonRequest){
 		return Lesson.builder()
