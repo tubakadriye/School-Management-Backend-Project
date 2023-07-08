@@ -45,12 +45,12 @@ public class SchoolManagementApplication implements CommandLineRunner {
 
         if(adminService.countAllAdmins()==0){
             AdminRequest adminRequest  = new AdminRequest();
-            adminRequest.setUsername("Admin");
-            adminRequest.setSsn("987-99-9999");
+            adminRequest.setUsername("superAdmin");
+            adminRequest.setSsn("111-11-1111");
             adminRequest.setPassword(passwordEncoder.encode("Ankara06*"));
             adminRequest.setName("Lars");
             adminRequest.setSurname("Urich");
-            adminRequest.setPhoneNumber("555-444-4321");
+            adminRequest.setPhoneNumber("111-111-1111");
             adminRequest.setGender(Gender.FEMALE);
             adminRequest.setBirthDay(LocalDate.of(1980,2,2));
             adminRequest.setBirthPlace("Texas");

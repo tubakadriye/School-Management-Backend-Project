@@ -85,11 +85,11 @@ public class StudentController {
 		return studentService.getAllByAdvisoryUsername(userName);
 	}
 
-	@PreAuthorize("hasAnyAuthority('STUDENT','ADMIN')")
+	@PreAuthorize("hasAnyAuthority('STUDENT')")
 	@PostMapping("/chooseLesson")
 	public ResponseMessage<StudentResponse>chooseLesson(HttpServletRequest request,
 											@RequestBody @Valid ChooseLessonProgramWithId chooseLessonProgramWithId){
-		String userName = request.getHeader("username");
+		String userName = (String) request.getAttribute("username");
 		return studentService.chooseLesson(userName,chooseLessonProgramWithId);
 	}
 

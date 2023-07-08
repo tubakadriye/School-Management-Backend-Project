@@ -34,7 +34,7 @@ public class Student extends User {
 	private AdvisoryTeacher advisoryTeacher;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
 	private List<StudentInfo> studentInfos;
 
 

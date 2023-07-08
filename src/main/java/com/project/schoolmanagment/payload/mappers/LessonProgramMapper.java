@@ -20,7 +20,7 @@ public class LessonProgramMapper {
 				.startTime(lessonProgramRequest.getStartTime())
 				.stopTime(lessonProgramRequest.getStopTime())
 				.day(lessonProgramRequest.getDay())
-				.lesson(lessonSet)
+				.lessons(lessonSet)
 				.educationTerm(educationTerm)
 				.build();
 	}
@@ -32,7 +32,7 @@ public class LessonProgramMapper {
 				.startTime(lessonProgram.getStartTime())
 				.stopTime(lessonProgram.getStopTime())
 				.lessonProgramId(lessonProgram.getId())
-				.lessonName(lessonProgram.getLesson())
+				.lessonName(lessonProgram.getLessons())
 				.build();
 	}
 }

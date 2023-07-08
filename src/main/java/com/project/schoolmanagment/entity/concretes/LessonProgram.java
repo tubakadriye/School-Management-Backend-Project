@@ -38,7 +38,7 @@ public class LessonProgram {
 			joinColumns = @JoinColumn(name = "lessonprogram_id"),
 			inverseJoinColumns = @JoinColumn(name = "lesson_id")
 	)
-	private Set<Lesson>lesson;
+	private Set<Lesson>lessons;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private EducationTerm educationTerm;
