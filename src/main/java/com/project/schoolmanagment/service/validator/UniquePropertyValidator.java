@@ -35,9 +35,9 @@ public class UniquePropertyValidator {
 	 * @return true if they are the same
 	 */
 	public void checkUniqueProperties(User user, BaseUserRequest baseUserRequest){
-		String updatedUsername = user.getUsername();
-		String updatedSnn = user.getSsn();
-		String updatedPhone = user.getPhoneNumber();
+		String updatedUsername = "";
+		String updatedSnn = "";
+		String updatedPhone = "";
 		if(!user.getUsername().equalsIgnoreCase(baseUserRequest.getUsername())){
 			updatedUsername = baseUserRequest.getUsername();
 		}
