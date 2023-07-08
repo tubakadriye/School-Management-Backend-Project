@@ -34,20 +34,60 @@ public class UniquePropertyValidator {
 	 * @param baseUserRequest DTO from UI to be changed
 	 * @return true if they are the same
 	 */
-	public static boolean checkUniqueProperties(User user, BaseUserRequest baseUserRequest){
-		return user.getSsn().equalsIgnoreCase(baseUserRequest.getSsn())
-				|| user.getPhoneNumber().equalsIgnoreCase(baseUserRequest.getPhoneNumber())
-				|| user.getUsername().equalsIgnoreCase(baseUserRequest.getUsername());
+	public void checkUniqueProperties(User user, BaseUserRequest baseUserRequest){
+		String updatedUsername = user.getUsername();
+		String updatedSnn = user.getSsn();
+		String updatedPhone = user.getPhoneNumber();
+		if(!user.getUsername().equalsIgnoreCase(baseUserRequest.getUsername())){
+			updatedUsername = baseUserRequest.getUsername();
+		}
+		if(!user.getSsn().equalsIgnoreCase(baseUserRequest.getSsn())){
+			updatedSnn = baseUserRequest.getSsn();
+		}
+		if(!user.getPhoneNumber().equalsIgnoreCase(baseUserRequest.getPhoneNumber())){
+			updatedPhone = baseUserRequest.getPhoneNumber();
+		}
+			checkDuplicate(updatedUsername,updatedSnn,updatedPhone);
 	}
 
-	public static boolean checkUniquePropertiesForTeacher(Teacher teacher, TeacherRequest teacherRequest){
-		return checkUniqueProperties(teacher,teacherRequest)
-				|| teacher.getEmail().equalsIgnoreCase(teacherRequest.getEmail());
+	public void checkUniquePropertiesForTeacher(Teacher teacher, TeacherRequest teacherRequest){
+		String updatedUsername = teacher.getUsername();
+		String updatedSnn = teacher.getSsn();
+		String updatedPhone = teacher.getPhoneNumber();
+		String updatedEmail = teacher.getEmail();
+		if(!teacher.getUsername().equalsIgnoreCase(teacherRequest.getUsername())){
+			updatedUsername = teacherRequest.getUsername();
+		}
+		if(!teacher.getSsn().equalsIgnoreCase(teacherRequest.getSsn())){
+			updatedSnn = teacherRequest.getSsn();
+		}
+		if(!teacher.getPhoneNumber().equalsIgnoreCase(teacherRequest.getPhoneNumber())){
+			updatedPhone = teacherRequest.getPhoneNumber();
+		}
+		if(!teacher.getEmail().equalsIgnoreCase(teacherRequest.getEmail())){
+			updatedEmail = teacherRequest.getEmail();
+		}
+		checkDuplicate(updatedUsername,updatedSnn,updatedPhone,updatedEmail);
 	}
 
-	public static boolean checkUniquePropertiesForStudent(Student student, StudentRequest studentRequest){
-		return checkUniqueProperties(student,studentRequest)
-				|| student.getEmail().equalsIgnoreCase(studentRequest.getEmail());
+	public void checkUniquePropertiesForStudent(Student student, StudentRequest studentRequest){
+		String updatedUsername = student.getUsername();
+		String updatedSnn = student.getSsn();
+		String updatedPhone = student.getPhoneNumber();
+		String updatedEmail = student.getEmail();
+		if(!student.getUsername().equalsIgnoreCase(studentRequest.getUsername())){
+			updatedUsername = studentRequest.getUsername();
+		}
+		if(!student.getSsn().equalsIgnoreCase(studentRequest.getSsn())){
+			updatedSnn = studentRequest.getSsn();
+		}
+		if(!student.getPhoneNumber().equalsIgnoreCase(studentRequest.getPhoneNumber())){
+			updatedPhone = studentRequest.getPhoneNumber();
+		}
+		if(!student.getEmail().equalsIgnoreCase(studentRequest.getEmail())){
+			updatedEmail = studentRequest.getEmail();
+		}
+		checkDuplicate(updatedUsername,updatedSnn,updatedPhone,updatedEmail);
 	}
 
 

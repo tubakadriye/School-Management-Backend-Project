@@ -89,11 +89,7 @@ public class ViceDeanService {
 	public ResponseMessage<ViceDeanResponse> updateViceDean(ViceDeanRequest viceDeanRequest, Long viceDeanId){
 		Optional<ViceDean>viceDean = isViceDeanExist(viceDeanId);
 
-		if(!UniquePropertyValidator.checkUniqueProperties(viceDean.get(),viceDeanRequest)){
-			uniquePropertyValidator.checkDuplicate(viceDeanRequest.getUsername(),
-										viceDeanRequest.getSsn(),
-										viceDeanRequest.getPhoneNumber());
-		}
+		uniquePropertyValidator.checkUniqueProperties(viceDean.get(),viceDeanRequest);
 
 		ViceDean updatedViceDean = viceDeanMapper.mapViceDeanRequestToUpdatedViceDean(viceDeanRequest,viceDeanId);
 		updatedViceDean.setPassword(passwordEncoder.encode(viceDeanRequest.getPassword()));

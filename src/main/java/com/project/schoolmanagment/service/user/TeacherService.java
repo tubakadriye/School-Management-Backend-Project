@@ -123,12 +123,7 @@ public class TeacherService {
 	public ResponseMessage<TeacherResponse>updateTeacher(TeacherRequest teacherRequest, Long userId){
 		Teacher teacher = isTeacherExist(userId);
 		Set<LessonProgram>lessonPrograms = lessonProgramService.getLessonProgramById(teacherRequest.getLessonsIdList());
-		if(!UniquePropertyValidator.checkUniquePropertiesForTeacher(teacher,teacherRequest)){
-			uniquePropertyValidator.checkDuplicate(teacherRequest.getUsername(),
-					teacherRequest.getSsn(),
-					teacherRequest.getPhoneNumber(),
-					teacherRequest.getEmail());
-		}
+		uniquePropertyValidator.checkUniquePropertiesForTeacher(teacher,teacherRequest);
 		Teacher updatedTeacher = teacherMapper.mapTeacherRequestToUpdatedTeacher(teacherRequest,userId);
 		//props. that does not exist in mappers
 		updatedTeacher.setPassword(passwordEncoder.encode(teacherRequest.getPassword()));

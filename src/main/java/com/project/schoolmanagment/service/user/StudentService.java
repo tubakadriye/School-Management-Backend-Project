@@ -121,12 +121,7 @@ public class StudentService {
 
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisoryTeacherById(studentRequest.getAdvisorTeacherId());
 
-		if(!UniquePropertyValidator.checkUniquePropertiesForStudent(student,studentRequest)){
-			uniquePropertyValidator.checkDuplicate(studentRequest.getUsername(),
-					studentRequest.getSsn(),
-					studentRequest.getPhoneNumber(),
-					studentRequest.getEmail());
-		}
+		uniquePropertyValidator.checkUniquePropertiesForStudent(student,studentRequest);
 
 		Student studentForUpdate = studentMapper.mapStudentRequestToUpdatedStudent(studentRequest,studentId);
 		studentForUpdate.setPassword(passwordEncoder.encode(studentRequest.getPassword()));

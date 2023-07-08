@@ -59,11 +59,7 @@ public class DeanService {
 		Dean dean = isDeanExist(deanId);
 
 			//we are preventing the user to change the username + ssn + phoneNumber
-		if (!UniquePropertyValidator.checkUniqueProperties(dean, deanRequest)) {   //DEAN -> DEAN2
-			uniquePropertyValidator.checkDuplicate(deanRequest.getUsername(),
-										deanRequest.getSsn(),
-										deanRequest.getPhoneNumber());
-		}
+		uniquePropertyValidator.checkUniqueProperties(dean, deanRequest);
 
 		Dean updatedDean = deanMapper.mapDeanRequestToUpdatedDean(deanRequest, deanId);
 		updatedDean.setPassword(passwordEncoder.encode(deanRequest.getPassword()));
