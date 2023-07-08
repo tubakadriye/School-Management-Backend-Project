@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("meet")
+@RequestMapping("/meet")
 @RequiredArgsConstructor
 public class MeetController {
 
@@ -26,8 +26,7 @@ public class MeetController {
 	@PostMapping("/save")
 	public ResponseMessage<MeetResponse>saveMeet(HttpServletRequest httpServletRequest,
 	                                             @RequestBody @Valid MeetRequest meetRequest){
-		String username = (String) httpServletRequest.getAttribute("username");
-		return meetService.saveMeet(username,meetRequest);
+		return meetService.saveMeet(httpServletRequest,meetRequest);
 	}
 
 	@PreAuthorize("hasAnyAuthority( 'ADMIN')")
@@ -69,11 +68,11 @@ public class MeetController {
 
 	@PreAuthorize("hasAnyAuthority( 'ADMIN')")
 	@GetMapping("/search")
-	public Page<MeetResponse> search(
+	public Page<MeetResponse> getAllMeetByPage(
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size
 	){
-		return meetService.search(page,size);
+		return meetService.getAllMeetByPage(page,size);
 	}
 	@PreAuthorize("hasAnyAuthority('TEACHER')")
 	@GetMapping("/getAllMeetByAdvisorAsPage")

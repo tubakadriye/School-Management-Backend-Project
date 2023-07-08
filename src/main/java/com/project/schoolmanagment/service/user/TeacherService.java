@@ -8,7 +8,7 @@ import com.project.schoolmanagment.service.businnes.AdvisoryTeacherService;
 import com.project.schoolmanagment.service.businnes.LessonProgramService;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.payload.mappers.TeacherMapper;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.payload.request.ChooseLessonTeacherRequest;
 import com.project.schoolmanagment.payload.request.TeacherRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;

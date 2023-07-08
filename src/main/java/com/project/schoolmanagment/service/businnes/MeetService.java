@@ -6,16 +6,16 @@ import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.MeetMapper;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.MeetRequest;
 import com.project.schoolmanagment.payload.request.UpdateMeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.MeetRepository;
 import com.project.schoolmanagment.repository.StudentRepository;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.user.StudentService;
-import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import com.project.schoolmanagment.service.validator.TimeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,17 +34,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MeetService {
 
-
 	private final MeetRepository meetRepository;
-	private final StudentRepository studentRepository;
 	private final AdvisoryTeacherService advisoryTeacherService;
 	private final StudentService studentService;
 	private final MeetMapper meetMapper;
-	private final UniquePropertyValidator uniquePropertyValidator;
-
 	private final PageableHelper pageableHelper;
 
-	public ResponseMessage<MeetResponse> saveMeet(String username, MeetRequest meetRequest){
+	public ResponseMessage<MeetResponse> saveMeet(HttpServletRequest httpServletRequest, MeetRequest meetRequest){
+		String username = (String) httpServletRequest.getAttribute("username");
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(username);
 		TimeValidator.checkTimeWithException(meetRequest.getStartTime(),meetRequest.getStopTime());
 
@@ -59,7 +56,7 @@ public class MeetService {
 		Meet savedMeet = meetRepository.save(meet);
 
 		return ResponseMessage.<MeetResponse>builder()
-				.message("Meet successfully saved")
+				.message(SuccessMessages.MEET_SAVE)
 				.object(meetMapper.mapMeetToMeetResponse(savedMeet))
 				.httpStatus(HttpStatus.OK)
 				.build();
@@ -101,7 +98,7 @@ public class MeetService {
 		updateMeet.setAdvisoryTeacher(meet.getAdvisoryTeacher());
 		Meet updatedMeet = meetRepository.save(updateMeet);
 		return ResponseMessage.<MeetResponse>builder()
-				.message("Meet is Updated successfully")
+				.message(SuccessMessages.MEET_UPDATE)
 				.httpStatus(HttpStatus.OK)
 				.object(meetMapper.mapMeetToMeetResponse(updatedMeet))
 				.build();
@@ -125,7 +122,7 @@ public class MeetService {
 				.collect(Collectors.toList());
 	}
 
-	public Page<MeetResponse> search (int page, int size){
+	public Page<MeetResponse> getAllMeetByPage(int page, int size){
 		Pageable pageable = pageableHelper.getPageableWithProperties(page, size);
 		return meetRepository.findAll(pageable).map(meetMapper::mapMeetToMeetResponse);
 	}
@@ -139,7 +136,7 @@ public class MeetService {
 
 	public ResponseMessage<MeetResponse>getMeetById(Long meetId){
 		return ResponseMessage.<MeetResponse>builder()
-				.message("Meet Successfully found")
+				.message(SuccessMessages.MEET_FOUND)
 				.httpStatus(HttpStatus.OK)
 				.object(meetMapper.mapMeetToMeetResponse(isMeetExistById(meetId)))
 				.build();
@@ -155,7 +152,7 @@ public class MeetService {
 		isMeetExistById(meetId);
 		meetRepository.deleteById(meetId);
 		return ResponseMessage.builder()
-				.message("Meet deleted successfully")
+				.message(SuccessMessages.MEET_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}

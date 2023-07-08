@@ -1,9 +1,8 @@
-package com.project.schoolmanagment.contoller;
+package com.project.schoolmanagment.contactmessage;
 
 import com.project.schoolmanagment.payload.request.ContactMessageRequest;
 import com.project.schoolmanagment.payload.response.ContactMessageResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.service.businnes.ContactMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;

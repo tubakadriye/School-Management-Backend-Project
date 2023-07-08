@@ -1,7 +1,6 @@
-package com.project.schoolmanagment.repository;
+package com.project.schoolmanagment.contactmessage;
 
-import com.project.schoolmanagment.entity.concretes.ContactMessage;
-import com.project.schoolmanagment.payload.response.ContactMessageResponse;
+import com.project.schoolmanagment.contactmessage.ContactMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

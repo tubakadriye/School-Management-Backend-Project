@@ -1,12 +1,10 @@
-package com.project.schoolmanagment.service.businnes;
+package com.project.schoolmanagment.contactmessage;
 
-import com.project.schoolmanagment.entity.concretes.ContactMessage;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.payload.request.ContactMessageRequest;
 import com.project.schoolmanagment.payload.response.ContactMessageResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.repository.ContactMessageRepository;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

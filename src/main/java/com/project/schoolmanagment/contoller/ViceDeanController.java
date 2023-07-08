@@ -30,9 +30,7 @@ public class ViceDeanController {
 	public ResponseMessage<ViceDeanResponse> updateViceDean(@RequestBody @Valid ViceDeanRequest viceDeanRequest
 															,@PathVariable Long userId){
 		return viceDeanService.updateViceDean(viceDeanRequest,userId);
-
 	}
-
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
 	@DeleteMapping("/delete/{userId}")
@@ -58,7 +56,6 @@ public class ViceDeanController {
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort",defaultValue = "name") String sort,
 			@RequestParam(value = "type",defaultValue = "desc") String type){
-
 		return viceDeanService.getAllViceDeansByPage(page,size,sort,type);
 	}
 

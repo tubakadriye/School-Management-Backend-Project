@@ -3,13 +3,13 @@ package com.project.schoolmanagment.service.businnes;
 import com.project.schoolmanagment.entity.concretes.Lesson;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.LessonMapper;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.LessonRequest;
 import com.project.schoolmanagment.payload.response.LessonResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.LessonRepository;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
-import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,12 +22,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class LessonService {
 
-
 	private final LessonMapper lessonMapper;
 
 	private final LessonRepository lessonRepository;
-
-	private final UniquePropertyValidator uniquePropertyValidator;
 
 	private final PageableHelper pageableHelper;
 
@@ -39,7 +36,7 @@ public class LessonService {
 
 		return ResponseMessage.<LessonResponse>builder()
 				.object(lessonMapper.mapLessonToLessonResponse(savedLesson))
-				.message("Lesson Created Successfully")
+				.message(SuccessMessages.LESSON_SAVE)
 				.httpStatus(HttpStatus.CREATED)
 				.build();
 	}
@@ -50,16 +47,22 @@ public class LessonService {
 		lessonRepository.deleteById(id);
 
 		return ResponseMessage.builder()
-				.message("Lesson is deleted successfully")
+				.message(SuccessMessages.LESSON_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 
 	public ResponseMessage<LessonResponse>getLessonByLessonName(String lessonName){
-		return ResponseMessage.<LessonResponse>builder()
-				.message("Lesson is successfully found")
-				.object(lessonMapper.mapLessonToLessonResponse(lessonRepository.getLessonByLessonName(lessonName).get()))
-				.build();
+		if(lessonRepository.getLessonByLessonName(lessonName).isPresent()){
+			return ResponseMessage.<LessonResponse>builder()
+					.message(SuccessMessages.LESSON_FOUND)
+					.object(lessonMapper.mapLessonToLessonResponse(lessonRepository.getLessonByLessonName(lessonName).get()))
+					.build();
+		}else {
+			return ResponseMessage.<LessonResponse>builder()
+					.message(ErrorMessages.NOT_FOUND_LESSON_MESSAGE)
+					.build();
+		}
 	}
 
 	public Page<LessonResponse> findLessonByPage (int page, int size, String sort, String type){
@@ -67,13 +70,10 @@ public class LessonService {
 		return lessonRepository.findAll(pageable).map(lessonMapper::mapLessonToLessonResponse);
 	}
 
-
 	//TODO in case of returning empty collection, exception handling may be implemented
 	public Set<Lesson> getLessonByLessonIdSet(Set<Long> lessons){
 		return lessonRepository.getLessonByLessonIdList(lessons);
 	}
-
-
 
 	private boolean isLessonExistByLessonName(String lessonName){
 		boolean lessonExist = lessonRepository.existsLessonByLessonNameEqualsIgnoreCase(lessonName);
@@ -88,7 +88,4 @@ public class LessonService {
 		return lessonRepository.findById(id)
 				.orElseThrow(()-> new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_LESSON_MESSAGE, id)));
 	}
-
-
-
 }

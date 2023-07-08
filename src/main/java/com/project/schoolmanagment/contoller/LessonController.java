@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.Set;
 
 @RestController
-@RequestMapping("lessons")
+@RequestMapping("/lessons")
 @RequiredArgsConstructor
 public class LessonController {
 

@@ -28,8 +28,7 @@ public class StudentInfoController {
 	@PostMapping("/save")
 	public ResponseMessage<StudentInfoResponse>saveStudentInfo(HttpServletRequest httpServletRequest,
 	                                                           @RequestBody @Valid StudentInfoRequest studentInfoRequest){
-			String username = (String) httpServletRequest.getAttribute("username");
-			return studentInfoService.saveStudentInfo(username,studentInfoRequest);
+			return studentInfoService.saveStudentInfo(httpServletRequest,studentInfoRequest);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")

@@ -1,5 +1,6 @@
 package com.project.schoolmanagment.contoller;
 
+import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
 import com.project.schoolmanagment.payload.response.AdvisorTeacherResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.service.businnes.AdvisoryTeacherService;
@@ -36,7 +37,7 @@ public class AdvisoryTeacherController {
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
 	@DeleteMapping("/delete/{id}")
-	public ResponseMessage deleteAdvisorTeacher(@PathVariable Long id){
+	public ResponseMessage<AdvisoryTeacher> deleteAdvisorTeacher(@PathVariable Long id){
 		return advisoryTeacherService.deleteAdvisorTeacherById(id);
 	}
 

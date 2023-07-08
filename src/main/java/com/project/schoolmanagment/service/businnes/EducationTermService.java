@@ -3,13 +3,13 @@ package com.project.schoolmanagment.service.businnes;
 import com.project.schoolmanagment.entity.concretes.EducationTerm;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.EducationTermMapper;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.EducationTermRequest;
 import com.project.schoolmanagment.payload.response.EducationTermResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.EducationTermRepository;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
-import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,23 +27,17 @@ public class EducationTermService {
 
 	private final EducationTermMapper educationTermMapper;
 
-	private final UniquePropertyValidator uniquePropertyValidator;
-
 	private final PageableHelper pageableHelper;
 
 
 	public ResponseMessage<EducationTermResponse> saveEducationTerm(EducationTermRequest educationTermRequest){
-
 		validateEducationTermDates(educationTermRequest);
-
 		EducationTerm savedEducationTerm = educationTermRepository.save(educationTermMapper.mapEducationTermRequestToEducationTerm(educationTermRequest));
-
 		return ResponseMessage.<EducationTermResponse>builder()
-													.message("Education Term Saved")
+													.message(SuccessMessages.EDUCATION_TERM_SAVE)
 													.object(educationTermMapper.mapEducationTermToEducationTermResponse(savedEducationTerm))
 													.httpStatus(HttpStatus.CREATED)
 													.build();
-
 	}
 
 	public List<EducationTermResponse> getAllEducationTerms(){
@@ -55,14 +49,8 @@ public class EducationTermService {
 
 
 	public EducationTermResponse getEducationTermResponseById(Long id){
-
-//		return educationTermDto.mapEducationTermToEducationTermResponse
-//				(educationTermRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Could not find Education term with id " + id)));
-
 		EducationTerm term = isEducationTermExist(id);
-
 		return educationTermMapper.mapEducationTermToEducationTermResponse(term);
-
 	}
 
 	public EducationTerm getEducationTermById(Long id){
@@ -70,14 +58,11 @@ public class EducationTermService {
 	}
 
 
-	public ResponseMessage<?>deleteEducationTermById(Long id){
-
+	public ResponseMessage deleteEducationTermById(Long id){
 		isEducationTermExist(id);
-
 		educationTermRepository.deleteById(id);
-
 		return ResponseMessage.builder()
-				.message("Education Term Deleted Successfully")
+				.message(SuccessMessages.EDUCATION_TERM_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -98,7 +83,7 @@ public class EducationTermService {
 		EducationTerm educationTermUpdated = educationTermRepository.save(educationTermMapper.mapEducationTermRequestToUpdatedEducationTerm(id,educationTermRequest));
 
 		return ResponseMessage.<EducationTermResponse>builder()
-				.message("Education Term Updated")
+				.message(SuccessMessages.EDUCATION_TERM_UPDATE)
 				.httpStatus(HttpStatus.OK)
 				.object(educationTermMapper.mapEducationTermToEducationTermResponse(educationTermUpdated))
 				.build();
@@ -120,8 +105,6 @@ public class EducationTermService {
 
 		//TODO another requirement can be needed for validating ->  registration > end
 		// check the dates also for TODAY
-
-
 		validateEducationTermDatesForUpdate(educationTermRequest);
 		// we need one more validatetion in addition to validation above
 
@@ -134,21 +117,16 @@ public class EducationTermService {
 	}
 
 	private void validateEducationTermDatesForUpdate(EducationTermRequest educationTermRequest){
-
 		//TODO another requirement can be needed for validating ->  registration > end
 		// check the dates also for TODAY
-
 		// registration > start
 		if(educationTermRequest.getLastRegistrationDate().isAfter(educationTermRequest.getStartDate())){
 			throw new ResourceNotFoundException(ErrorMessages.EDUCATION_START_DATE_IS_EARLIER_THAN_LAST_REGISTRATION_DATE);
 		}
-
 		// end > start
 		if(educationTermRequest.getEndDate().isBefore(educationTermRequest.getStartDate())){
 			throw new ResourceNotFoundException(ErrorMessages.EDUCATION_END_DATE_IS_EARLIER_THAN_START_DATE);
 		}
-
-
 	}
 
 

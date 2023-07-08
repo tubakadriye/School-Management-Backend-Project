@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

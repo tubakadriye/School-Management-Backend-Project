@@ -5,10 +5,11 @@ import com.project.schoolmanagment.entity.concretes.Teacher;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.AdvisoryTeacherMapper;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.response.AdvisorTeacherResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.AdvisoryTeacherRepository;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.user.UserRoleService;
 import lombok.RequiredArgsConstructor;
@@ -85,11 +86,11 @@ public class AdvisoryTeacherService {
 				.map(advisoryTeacherMapper::mapAdvisorTeacherToAdvisorTeacherResponse);
 	}
 
-	public ResponseMessage deleteAdvisorTeacherById(Long id){
+	public ResponseMessage<AdvisoryTeacher> deleteAdvisorTeacherById(Long id){
 		AdvisoryTeacher advisoryTeacher = getAdvisoryTeacherById(id);
 		advisoryTeacherRepository.deleteById(advisoryTeacher.getId());
 		return ResponseMessage.<AdvisoryTeacher>builder()
-				.message("Advisor Teacher Deleted Successfully")
+				.message(SuccessMessages.ADVISOR_TEACHER_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}

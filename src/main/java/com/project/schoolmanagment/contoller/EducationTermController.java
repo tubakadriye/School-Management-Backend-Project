@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("educationTerms")
+@RequestMapping("/educationTerms")
 @RequiredArgsConstructor
 public class EducationTermController {
 
@@ -60,8 +60,6 @@ public class EducationTermController {
 		return educationTermService.updateEducationTerm(id,educationTermRequest);
 	}
 
-	//TODO homework  please write down a request that gets all education term starts dates later then entered Date
-	//  hint - > should be get request with parameter
 
 
 

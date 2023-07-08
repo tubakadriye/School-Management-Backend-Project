@@ -6,11 +6,12 @@ import com.project.schoolmanagment.entity.concretes.LessonProgram;
 import com.project.schoolmanagment.exception.BadRequestException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.LessonProgramMapper;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.LessonProgramRequest;
 import com.project.schoolmanagment.payload.response.LessonProgramResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.LessonProgramRepository;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import com.project.schoolmanagment.service.validator.TimeValidator;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,8 +38,6 @@ public class LessonProgramService {
 
 	private final LessonProgramMapper lessonProgramMapper;
 
-	private final UniquePropertyValidator uniquePropertyValidator;
-
 	private final PageableHelper pageableHelper;
 
 
@@ -47,13 +47,10 @@ public class LessonProgramService {
 
 		EducationTerm educationTerm = educationTermService.getEducationTermById(lessonProgramRequest.getEducationTermId());
 
-		if(lessons.size()==0){
+		if(lessons.isEmpty()){
 			throw new ResourceNotFoundException(ErrorMessages.NOT_FOUND_LESSON_IN_LIST);
 		}
-		// old usage
-//		else if (TimeControl.checkTime(lessonProgramRequest.getStartTime(),lessonProgramRequest.getStopTime())) {
-//			throw new BadRequestException(Messages.TIME_NOT_VALID_MESSAGE);
-//		}
+
 		TimeValidator.checkTimeWithException(lessonProgramRequest.getStartTime(),lessonProgramRequest.getStopTime());
 
 		LessonProgram lessonProgram = lessonProgramMapper.mapLessonProgramRequestToLessonProgram(lessonProgramRequest,lessons,educationTerm);
@@ -61,7 +58,7 @@ public class LessonProgramService {
 		LessonProgram savedLessonProgram = lessonProgramRepository.save(lessonProgram);
 
 		return ResponseMessage.<LessonProgramResponse>builder()
-				.message("Lesson Program is Created")
+				.message(SuccessMessages.LESSON_PROGRAM_SAVE)
 				.httpStatus(HttpStatus.CREATED)
 				.object(lessonProgramMapper.mapLessonProgramtoLessonProgramResponse(savedLessonProgram))
 				.build();
@@ -69,8 +66,9 @@ public class LessonProgramService {
 
 	//TODO add a validation for empty collection and send a meaningful response
 
-	public Set<LessonProgramResponse> getLessonProgramByTeacher(String username){
-		return lessonProgramRepository.getLessonProgramByTeachersUsername(username)
+	public Set<LessonProgramResponse> getLessonProgramByTeacher(HttpServletRequest httpServletRequest){
+		String userName = (String) httpServletRequest.getAttribute("username");
+		return lessonProgramRepository.getLessonProgramByTeachersUsername(userName)
 				.stream().map(lessonProgramMapper::mapLessonProgramtoLessonProgramResponse)
 				.collect(Collectors.toSet());
 	}
@@ -90,8 +88,7 @@ public class LessonProgramService {
 	}
 
 	public LessonProgramResponse getLessonProgramById(Long id){
-		isLessonProgramExistById(id);
-		return lessonProgramMapper.mapLessonProgramtoLessonProgramResponse(lessonProgramRepository.findById(id).get());
+		return lessonProgramMapper.mapLessonProgramtoLessonProgramResponse(isLessonProgramExistById(id));
 	}
 
 	public List<LessonProgramResponse>getAllLessonProgramUnassigned(){
@@ -112,13 +109,13 @@ public class LessonProgramService {
 		isLessonProgramExistById(id);
 		lessonProgramRepository.deleteById(id);
 		return ResponseMessage.builder()
-				.message("Lesson program is deleted successfully")
+				.message(SuccessMessages.LESSON_PROGRAM_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 
-	private void isLessonProgramExistById(Long id){
-		lessonProgramRepository.findById(id)
+	private LessonProgram isLessonProgramExistById(Long id){
+		return lessonProgramRepository.findById(id)
 				.orElseThrow(()-> new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_LESSON_PROGRAM_MESSAGE,id)));
 	}
 

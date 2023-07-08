@@ -8,11 +8,11 @@ import com.project.schoolmanagment.payload.mappers.AdminMapper;
 import com.project.schoolmanagment.payload.request.AdminRequest;
 import com.project.schoolmanagment.payload.response.AdminResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.payload.responsemessages.SuccessMessages;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.repository.*;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +54,7 @@ public class AdminService {
 
 		//In response message savedAdmin instance may not be sent back to front-end.
 		return ResponseMessage.<AdminResponse>builder()
-				.message(SuccessMessages.ADMIN_CREATION)
+				.message(SuccessMessages.ADMIN_CREATE)
 				.object(adminMapper.mapAdminToAdminResponse(savedAdmin))
 				.build();
 	}
@@ -78,7 +78,7 @@ public class AdminService {
 
 		if (admin.isPresent()){
 			adminRepository.deleteById(id);
-			return SuccessMessages.ADMIN_DELETION;
+			return SuccessMessages.ADMIN_DELETE;
 		}
 		return String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE,id);
 

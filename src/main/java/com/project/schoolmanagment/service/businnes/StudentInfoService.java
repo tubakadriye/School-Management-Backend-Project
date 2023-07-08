@@ -5,16 +5,16 @@ import com.project.schoolmanagment.entity.enums.Note;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.StudentInfoDto;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.StudentInfoRequest;
 import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentInfoResponse;
 import com.project.schoolmanagment.repository.StudentInfoRepository;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.user.StudentService;
 import com.project.schoolmanagment.service.user.TeacherService;
-import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -36,7 +36,6 @@ public class StudentInfoService {
 	private final LessonService lessonService;
 	private final StudentInfoRepository studentInfoRepository;
 	private final StudentInfoDto studentInfoDto;
-	private final UniquePropertyValidator uniquePropertyValidator;
 
 	private final PageableHelper pageableHelper;
 	@Value("${midterm.exam.impact.percentage}")
@@ -44,7 +43,8 @@ public class StudentInfoService {
 	@Value("${final.exam.impact.percentage}")
 	private Double finalExamPercentage;
 
-	public ResponseMessage<StudentInfoResponse>saveStudentInfo(String teacherUsername, StudentInfoRequest studentInfoRequest){
+	public ResponseMessage<StudentInfoResponse>saveStudentInfo(HttpServletRequest httpServletRequest, StudentInfoRequest studentInfoRequest){
+		String teacherUsername = (String) httpServletRequest.getAttribute("username");
 		// we need entity for creation of StudentInfo
 		Student student = studentService.isStudentsExist(studentInfoRequest.getStudentId());
 		Teacher teacher = teacherService.getTeacherByUsername(teacherUsername);
@@ -72,7 +72,7 @@ public class StudentInfoService {
 		StudentInfo savedStudentInfo = studentInfoRepository.save(studentInfo);
 
 		return ResponseMessage.<StudentInfoResponse>builder()
-				.message("Student Info Saved Successfully")
+				.message(SuccessMessages.STUDENT_INFO_SAVE)
 				.object(studentInfoDto.mapStudentInfoToStudentInfoResponse(savedStudentInfo))
 				.httpStatus(HttpStatus.OK)
 				.build();
@@ -97,7 +97,7 @@ public class StudentInfoService {
 		studentInfoForUpdate.setTeacher(studentInfo.getTeacher());
 		StudentInfo updatedStudentInfo = studentInfoRepository.save(studentInfoForUpdate);
 		return ResponseMessage.<StudentInfoResponse>builder()
-				.message("Student info updated successfully")
+				.message(SuccessMessages.STUDENT_INFO_UPDATE)
 				.httpStatus(HttpStatus.OK)
 				.object(studentInfoDto.mapStudentInfoToStudentInfoResponse(updatedStudentInfo))
 				.build();
@@ -179,7 +179,7 @@ public class StudentInfoService {
 		studentInfoRepository.deleteById(studentInfo.getId());
 
 		return ResponseMessage.builder()
-				.message("Student Info deleted Successfully")
+				.message(SuccessMessages.STUDENT_INFO_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}

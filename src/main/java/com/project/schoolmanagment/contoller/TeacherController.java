@@ -43,6 +43,7 @@ public class TeacherController {
 	public ResponseMessage deleteTeacherById(@PathVariable Long id){
 		return teacherService.deleteTeacherById(id);
 	}
+
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
 	@GetMapping("/getSavedTeacherById/{id}")
 	public ResponseMessage<TeacherResponse> findTeacherById(@PathVariable Long id){
@@ -59,8 +60,6 @@ public class TeacherController {
 		return teacherService.findTeacherByPage(page,size,sort,type);
 	}
 
-
-
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
 	@PutMapping("/update/{userId}")
 	public ResponseMessage<TeacherResponse>updateTeacher(@RequestBody @Valid TeacherRequest teacherRequest,
@@ -68,6 +67,7 @@ public class TeacherController {
 		return teacherService.updateTeacher(teacherRequest,userId);
 
 	}
+
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
 	@PostMapping("/chooseLesson")
 	public ResponseMessage<TeacherResponse> chooseLesson(@RequestBody @Valid ChooseLessonTeacherRequest chooseLessonTeacherRequest){

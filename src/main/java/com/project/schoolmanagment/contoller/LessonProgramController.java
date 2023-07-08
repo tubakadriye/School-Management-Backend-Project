@@ -63,7 +63,7 @@ public class LessonProgramController {
 
 	@GetMapping("/search")
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
-	public Page<LessonProgramResponse> search (
+	public Page<LessonProgramResponse> getAllLessonProgramByPage (
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort") String sort,
@@ -71,11 +71,10 @@ public class LessonProgramController {
 		return lessonProgramService.getAllLessonProgramByPage(page,size,sort,type);
 	}
 
-	@PreAuthorize("hasAnyAuthority('TEACHER','ADMIN','MANAGER','ASSISTANT_MANAGER')")
+	@PreAuthorize("hasAnyAuthority('TEACHER')")
 	@GetMapping("/getAllLessonProgramByTeacher")
 	public Set<LessonProgramResponse> getAllLessonProgramByTeacherUserName(HttpServletRequest httpServletRequest){
-		String userName = httpServletRequest.getHeader("username");
-		return lessonProgramService.getLessonProgramByTeacher(userName);
+		return lessonProgramService.getLessonProgramByTeacher(httpServletRequest);
 	}
 
 

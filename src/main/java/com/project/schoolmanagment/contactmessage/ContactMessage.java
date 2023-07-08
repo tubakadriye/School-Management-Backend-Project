@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.entity.concretes;
+package com.project.schoolmanagment.contactmessage;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("dean")
+@RequestMapping("/dean")
 /**
  * Class level authorization
  */
@@ -35,7 +35,7 @@ public class DeanController {
 	}
 
 	@DeleteMapping("/delete/{userId}")
-	public ResponseMessage<?> deleteDeanById(@PathVariable Long userId){
+	public ResponseMessage deleteDeanById(@PathVariable Long userId){
 		return deanService.deleteDeanById(userId);
 	}
 

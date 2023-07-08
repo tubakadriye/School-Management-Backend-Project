@@ -10,7 +10,7 @@ import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.DeanRepository;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import com.project.schoolmanagment.service.helper.PageableHelper;
-import com.project.schoolmanagment.payload.responsemessages.ErrorMessages;
+import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -93,7 +93,7 @@ public class DeanService {
 	}
 
 
-	public ResponseMessage<?> deleteDeanById(Long deanId) {
+	public ResponseMessage deleteDeanById(Long deanId) {
 
 		isDeanExist(deanId);
 
