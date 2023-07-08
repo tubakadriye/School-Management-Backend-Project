@@ -4,6 +4,7 @@ import com.project.schoolmanagment.entity.concretes.ViceDean;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.ViceDeanMapper;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
@@ -51,7 +52,7 @@ public class ViceDeanService {
 		ViceDean savedViceDean = viceDeanRepository.save(viceDean);
 
 		return ResponseMessage.<ViceDeanResponse>builder()
-				.message("Vice Dean Saved")
+				.message(SuccessMessages.VICE_DEAN_SAVE)
 				.httpStatus(HttpStatus.CREATED)
 				.object(viceDeanMapper.mapViceDeanToViceDeanResponse(savedViceDean))
 				.build();
@@ -71,7 +72,7 @@ public class ViceDeanService {
 		viceDeanRepository.deleteById(viceDeanId);
 
 		return ResponseMessage.builder()
-				.message("Vice Dean deleted")
+				.message(SuccessMessages.VICE_DEAN_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -79,7 +80,7 @@ public class ViceDeanService {
 
 	public ResponseMessage<ViceDeanResponse>getViceDeanByViceDeanId(Long viceDeanId){
 		return ResponseMessage.<ViceDeanResponse>builder()
-				.message("Vice Dean Found")
+				.message(SuccessMessages.VICE_DEAN_FOUND)
 				.httpStatus(HttpStatus.OK)
 				.object(viceDeanMapper.mapViceDeanToViceDeanResponse(isViceDeanExist(viceDeanId).get()))
 				.build();
@@ -99,7 +100,7 @@ public class ViceDeanService {
 		ViceDean savedViceDean = viceDeanRepository.save(updatedViceDean);
 
 		return ResponseMessage.<ViceDeanResponse>builder()
-				.message("Vice Dean Updated")
+				.message(SuccessMessages.VICE_DEAN_UPDATE)
 				.httpStatus(HttpStatus.OK)
 				.object(viceDeanMapper.mapViceDeanToViceDeanResponse(savedViceDean))
 				.build();

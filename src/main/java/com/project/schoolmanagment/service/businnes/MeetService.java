@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -73,7 +74,7 @@ public class MeetService {
 							(stopTime.isAfter(existingStartTime) && stopTime.isBefore(existingStopTime)) ||
 							(startTime.isBefore(existingStartTime) && stopTime.isAfter(existingStopTime)) ||
 							(startTime.equals(existingStartTime) && stopTime.equals(existingStopTime)))){
-				throw new ConflictException("meet hours has conflict with existing meets");
+				throw new ConflictException(ErrorMessages.MEET_HOURS_CONFLICT);
 			}
 		}
 	}

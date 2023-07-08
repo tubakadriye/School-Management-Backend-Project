@@ -4,6 +4,7 @@ import com.project.schoolmanagment.entity.concretes.Dean;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.DeanMapper;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.DeanRequest;
 import com.project.schoolmanagment.payload.response.DeanResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
@@ -39,9 +40,6 @@ public class DeanService {
 
 	private final PageableHelper pageableHelper;
 
-
-
-	//TODO use mapsturct in your 3. repository
 	public ResponseMessage<DeanResponse> save(DeanRequest deanRequest) {
 		uniquePropertyValidator.checkDuplicate(deanRequest.getUsername(), deanRequest.getSsn(), deanRequest.getPhoneNumber());
 		Dean dean = deanMapper.mapDeanRequestToDean(deanRequest);
@@ -51,17 +49,17 @@ public class DeanService {
 		Dean savedDean = deanRepository.save(dean);
 
 		return ResponseMessage.<DeanResponse>builder()
-				.message("Dean Saved")
+				.message(SuccessMessages.DEAN_SAVE)
 				.httpStatus(HttpStatus.CREATED)
 				.object(deanMapper.mapDeanToDeanResponse(savedDean))
 				.build();
 	}
 
 	public ResponseMessage<DeanResponse> update(DeanRequest deanRequest, Long deanId) {
-		Optional<Dean> dean = isDeanExist(deanId);
+		Dean dean = isDeanExist(deanId);
 
 			//we are preventing the user to change the username + ssn + phoneNumber
-		if (!UniquePropertyValidator.checkUniqueProperties(dean.get(), deanRequest)) {   //DEAN -> DEAN2
+		if (!UniquePropertyValidator.checkUniqueProperties(dean, deanRequest)) {   //DEAN -> DEAN2
 			uniquePropertyValidator.checkDuplicate(deanRequest.getUsername(),
 										deanRequest.getSsn(),
 										deanRequest.getPhoneNumber());
@@ -72,24 +70,16 @@ public class DeanService {
 		Dean savedDean = deanRepository.save(updatedDean);
 
 		return ResponseMessage.<DeanResponse>builder()
-				.message("Dean Updated Successfully")
+				.message(SuccessMessages.DEAN_UPDATE)
 				.httpStatus(HttpStatus.OK)
 				.object(deanMapper.mapDeanToDeanResponse(savedDean))
 				.build();
 
 	}
 
-	private Optional<Dean> isDeanExist(Long deanId) {
-		Optional<Dean> dean = deanRepository.findById(deanId);
-
-//		Optional<Dean> dean = deanRepository.findById(deanId)
-//				.orElseThrow(()-> new ResourceNotFoundException(String.format(Messages.NOT_FOUND_USER_MESSAGE, deanId)));
-
-		if (!deanRepository.findById(deanId).isPresent()) {
-			throw new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE, deanId));
-		} else {
-			return dean;
-		}
+	private Dean isDeanExist(Long deanId) {
+		return  deanRepository.findById(deanId)
+				.orElseThrow(()-> new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE, deanId)));
 	}
 
 
@@ -100,16 +90,16 @@ public class DeanService {
 		deanRepository.deleteById(deanId);
 
 		return ResponseMessage.builder()
-				.message("Dean deleted")
+				.message(SuccessMessages.DEAN_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
 
 	public ResponseMessage<DeanResponse>getDeanById(Long deanId){
 		return ResponseMessage.<DeanResponse>builder()
-				.message("Dean successfully found")
+				.message(SuccessMessages.DEAN_FOUND)
 				.httpStatus(HttpStatus.OK)
-				.object(deanMapper.mapDeanToDeanResponse(isDeanExist(deanId).get()))
+				.object(deanMapper.mapDeanToDeanResponse(isDeanExist(deanId)))
 				.build();
 	}
 

@@ -4,6 +4,7 @@ import com.project.schoolmanagment.entity.concretes.LessonProgram;
 import com.project.schoolmanagment.entity.concretes.Teacher;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.service.businnes.AdvisoryTeacherService;
 import com.project.schoolmanagment.service.businnes.LessonProgramService;
 import com.project.schoolmanagment.service.helper.PageableHelper;
@@ -70,7 +71,7 @@ public class TeacherService {
 		}
 
 		return ResponseMessage.<TeacherResponse>builder()
-				.message("Teacher saved successfully")
+				.message(SuccessMessages.TEACHER_SAVE)
 				.httpStatus(HttpStatus.CREATED)
 				.object(teacherMapper.mapTeacherToTeacherResponse(savedTeacher))
 				.build();
@@ -96,7 +97,7 @@ public class TeacherService {
 		teacherRepository.deleteById(id);
 
 		return ResponseMessage.builder()
-				.message("Teacher deleted successfully")
+				.message(SuccessMessages.TEACHER_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -109,7 +110,7 @@ public class TeacherService {
 
 		return ResponseMessage.<TeacherResponse>builder()
 				.object(teacherMapper.mapTeacherToTeacherResponse(isTeacherExist(id)))
-				.message("Teacher successfully found")
+				.message(SuccessMessages.TEACHER_FOUND)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -139,7 +140,7 @@ public class TeacherService {
 
 		return ResponseMessage.<TeacherResponse>builder()
 				.object(teacherMapper.mapTeacherToTeacherResponse(savedTeacher))
-				.message("Teacher successfully updated")
+				.message(SuccessMessages.TEACHER_UPDATE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -157,7 +158,7 @@ public class TeacherService {
 		Teacher updatedTeacher = teacherRepository.save(teacher);
 
 		return ResponseMessage.<TeacherResponse>builder()
-				.message("Lesson Program added to teacher")
+				.message(SuccessMessages.LESSON_PROGRAM_ADD_TO_TEACHER)
 				.httpStatus(HttpStatus.CREATED)
 				.object(teacherMapper.mapTeacherToTeacherResponse(updatedTeacher))
 				.build();

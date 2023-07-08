@@ -5,6 +5,7 @@ import com.project.schoolmanagment.entity.concretes.LessonProgram;
 import com.project.schoolmanagment.entity.concretes.Student;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
+import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.service.businnes.AdvisoryTeacherService;
 import com.project.schoolmanagment.service.businnes.LessonProgramService;
 import com.project.schoolmanagment.service.helper.PageableHelper;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -70,7 +72,7 @@ public class StudentService {
 
 		return ResponseMessage.<StudentResponse>builder()
 				.object(studentMapper.mapStudentToStudentResponse(studentRepository.save(student)))
-				.message("Student saved Successfully")
+				.message(SuccessMessages.STUDENT_SAVE)
 				.build();
 	}
 
@@ -135,7 +137,7 @@ public class StudentService {
 		studentRepository.save(studentForUpdate);
 		return ResponseMessage.<StudentResponse>builder()
 				.object(studentMapper.mapStudentToStudentResponse(studentRepository.save(studentForUpdate)))
-				.message("Student updated successfully")
+				.message(SuccessMessages.STUDENT_UPDATE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -144,7 +146,7 @@ public class StudentService {
 		isStudentsExist(id);
 		studentRepository.deleteById(id);
 		return ResponseMessage.builder()
-				.message("Student Deleted Successfully")
+				.message(SuccessMessages.STUDENT_DELETE)
 				.httpStatus(HttpStatus.OK)
 				.build();
 	}
@@ -186,7 +188,7 @@ public class StudentService {
 		Student savedStudent = studentRepository.save(student);
 
 		return ResponseMessage.<StudentResponse>builder()
-				.message("Lessons added to student")
+				.message(SuccessMessages.LESSON_PROGRAM_ADD_TO_STUDENT)
 				.object(studentMapper.mapStudentToStudentResponse(savedStudent))
 				.httpStatus(HttpStatus.OK)
 				.build();
