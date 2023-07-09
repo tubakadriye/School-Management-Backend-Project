@@ -1,8 +1,8 @@
 package com.project.schoolmanagment.service.businnes;
 
-import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
-import com.project.schoolmanagment.entity.concretes.Meet;
-import com.project.schoolmanagment.entity.concretes.Student;
+import com.project.schoolmanagment.entity.concretes.user.AdvisoryTeacher;
+import com.project.schoolmanagment.entity.concretes.businnes.Meet;
+import com.project.schoolmanagment.entity.concretes.user.Student;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.MeetMapper;

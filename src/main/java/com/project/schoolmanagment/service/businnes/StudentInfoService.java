@@ -1,6 +1,10 @@
 package com.project.schoolmanagment.service.businnes;
 
-import com.project.schoolmanagment.entity.concretes.*;
+import com.project.schoolmanagment.entity.concretes.businnes.EducationTerm;
+import com.project.schoolmanagment.entity.concretes.businnes.Lesson;
+import com.project.schoolmanagment.entity.concretes.businnes.StudentInfo;
+import com.project.schoolmanagment.entity.concretes.user.Student;
+import com.project.schoolmanagment.entity.concretes.user.Teacher;
 import com.project.schoolmanagment.entity.enums.Note;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;

@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.contoller;
+package com.project.schoolmanagment.contoller.businnes;
 
 import com.project.schoolmanagment.payload.request.StudentInfoRequest;
 import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;

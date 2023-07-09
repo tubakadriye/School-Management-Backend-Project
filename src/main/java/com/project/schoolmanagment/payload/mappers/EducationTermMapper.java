@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.payload.mappers;
 
-import com.project.schoolmanagment.entity.concretes.EducationTerm;
+import com.project.schoolmanagment.entity.concretes.businnes.EducationTerm;
 import com.project.schoolmanagment.payload.request.EducationTermRequest;
 import com.project.schoolmanagment.payload.response.EducationTermResponse;
 import lombok.Data;

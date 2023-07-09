@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.service.businnes;
 
-import com.project.schoolmanagment.entity.concretes.EducationTerm;
+import com.project.schoolmanagment.entity.concretes.businnes.EducationTerm;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.EducationTermMapper;
 import com.project.schoolmanagment.payload.messages.SuccessMessages;

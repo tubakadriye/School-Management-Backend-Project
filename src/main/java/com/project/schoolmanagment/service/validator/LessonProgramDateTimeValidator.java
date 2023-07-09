@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.service.validator;
 
-import com.project.schoolmanagment.entity.concretes.LessonProgram;
+import com.project.schoolmanagment.entity.concretes.businnes.LessonProgram;
 import com.project.schoolmanagment.exception.BadRequestException;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import org.springframework.stereotype.Component;

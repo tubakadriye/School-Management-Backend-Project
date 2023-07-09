@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.repository.user;
 
-import com.project.schoolmanagment.entity.concretes.Teacher;
+import com.project.schoolmanagment.entity.concretes.user.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

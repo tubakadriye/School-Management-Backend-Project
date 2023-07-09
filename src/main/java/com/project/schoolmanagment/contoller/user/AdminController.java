@@ -1,6 +1,6 @@
-package com.project.schoolmanagment.contoller;
+package com.project.schoolmanagment.contoller.user;
 
-import com.project.schoolmanagment.entity.concretes.Admin;
+import com.project.schoolmanagment.entity.concretes.user.Admin;
 import com.project.schoolmanagment.payload.request.AdminRequest;
 import com.project.schoolmanagment.payload.response.AdminResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;

@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.repository.user;
 
-import com.project.schoolmanagment.entity.concretes.UserRole;
+import com.project.schoolmanagment.entity.concretes.user.UserRole;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.contoller;
+package com.project.schoolmanagment.contoller.user;
 
 import com.project.schoolmanagment.payload.request.DeanRequest;
 import com.project.schoolmanagment.payload.response.DeanResponse;

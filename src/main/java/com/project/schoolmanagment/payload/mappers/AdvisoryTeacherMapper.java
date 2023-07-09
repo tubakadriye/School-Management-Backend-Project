@@ -1,7 +1,7 @@
 package com.project.schoolmanagment.payload.mappers;
 
-import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
-import com.project.schoolmanagment.entity.concretes.Teacher;
+import com.project.schoolmanagment.entity.concretes.user.AdvisoryTeacher;
+import com.project.schoolmanagment.entity.concretes.user.Teacher;
 import com.project.schoolmanagment.payload.response.AdvisorTeacherResponse;
 import lombok.Data;
 import org.springframework.stereotype.Component;

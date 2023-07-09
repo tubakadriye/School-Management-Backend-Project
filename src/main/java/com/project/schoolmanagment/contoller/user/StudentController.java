@@ -1,6 +1,6 @@
-package com.project.schoolmanagment.contoller;
+package com.project.schoolmanagment.contoller.user;
 
-import com.project.schoolmanagment.entity.concretes.Student;
+import com.project.schoolmanagment.entity.concretes.user.Student;
 import com.project.schoolmanagment.payload.request.ChooseLessonProgramWithId;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;

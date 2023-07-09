@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.repository.businnes;
 
-import com.project.schoolmanagment.entity.concretes.EducationTerm;
+import com.project.schoolmanagment.entity.concretes.businnes.EducationTerm;
 import com.project.schoolmanagment.entity.enums.Term;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.repository.user;
 
-import com.project.schoolmanagment.entity.concretes.Admin;
+import com.project.schoolmanagment.entity.concretes.user.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AdminRepository extends JpaRepository<Admin,Long> {

@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.entity.concretes;
+package com.project.schoolmanagment.entity.concretes.user;
 
 import com.project.schoolmanagment.entity.enums.RoleType;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.contoller;
+package com.project.schoolmanagment.contoller.user;
 
 import com.project.schoolmanagment.payload.request.LoginRequest;
 import com.project.schoolmanagment.payload.response.AuthResponse;
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
 

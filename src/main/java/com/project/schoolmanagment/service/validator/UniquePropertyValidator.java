@@ -1,8 +1,8 @@
 package com.project.schoolmanagment.service.validator;
 
 import com.project.schoolmanagment.entity.abstracts.User;
-import com.project.schoolmanagment.entity.concretes.Student;
-import com.project.schoolmanagment.entity.concretes.Teacher;
+import com.project.schoolmanagment.entity.concretes.user.Student;
+import com.project.schoolmanagment.entity.concretes.user.Teacher;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.request.TeacherRequest;

@@ -1,15 +1,14 @@
 package com.project.schoolmanagment.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.schoolmanagment.entity.concretes.EducationTerm;
-import com.project.schoolmanagment.entity.concretes.Lesson;
+import com.project.schoolmanagment.entity.concretes.businnes.EducationTerm;
+import com.project.schoolmanagment.entity.concretes.businnes.Lesson;
 import com.project.schoolmanagment.entity.enums.Day;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 

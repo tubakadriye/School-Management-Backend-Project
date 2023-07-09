@@ -1,8 +1,8 @@
 package com.project.schoolmanagment.payload.mappers;
 
-import com.project.schoolmanagment.entity.concretes.EducationTerm;
-import com.project.schoolmanagment.entity.concretes.Lesson;
-import com.project.schoolmanagment.entity.concretes.StudentInfo;
+import com.project.schoolmanagment.entity.concretes.businnes.EducationTerm;
+import com.project.schoolmanagment.entity.concretes.businnes.Lesson;
+import com.project.schoolmanagment.entity.concretes.businnes.StudentInfo;
 import com.project.schoolmanagment.entity.enums.Note;
 import com.project.schoolmanagment.payload.request.StudentInfoRequest;
 import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;

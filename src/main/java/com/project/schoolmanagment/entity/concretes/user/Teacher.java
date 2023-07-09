@@ -1,8 +1,10 @@
-package com.project.schoolmanagment.entity.concretes;
+package com.project.schoolmanagment.entity.concretes.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.schoolmanagment.entity.abstracts.User;
+import com.project.schoolmanagment.entity.concretes.businnes.LessonProgram;
+import com.project.schoolmanagment.entity.concretes.businnes.StudentInfo;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

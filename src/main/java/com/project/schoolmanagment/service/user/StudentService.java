@@ -1,8 +1,8 @@
 package com.project.schoolmanagment.service.user;
 
-import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
-import com.project.schoolmanagment.entity.concretes.LessonProgram;
-import com.project.schoolmanagment.entity.concretes.Student;
+import com.project.schoolmanagment.entity.concretes.user.AdvisoryTeacher;
+import com.project.schoolmanagment.entity.concretes.businnes.LessonProgram;
+import com.project.schoolmanagment.entity.concretes.user.Student;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.messages.SuccessMessages;

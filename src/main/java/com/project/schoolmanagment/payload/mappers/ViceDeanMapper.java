@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.payload.mappers;
 
-import com.project.schoolmanagment.entity.concretes.ViceDean;
+import com.project.schoolmanagment.entity.concretes.user.ViceDean;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;

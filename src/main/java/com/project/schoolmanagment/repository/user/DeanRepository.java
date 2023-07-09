@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.repository.user;
 
-import com.project.schoolmanagment.entity.concretes.Dean;
+import com.project.schoolmanagment.entity.concretes.user.Dean;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DeanRepository extends JpaRepository<Dean,Long> {

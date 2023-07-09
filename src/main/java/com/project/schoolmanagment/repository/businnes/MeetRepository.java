@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.repository.businnes;
 
-import com.project.schoolmanagment.entity.concretes.Meet;
+import com.project.schoolmanagment.entity.concretes.businnes.Meet;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

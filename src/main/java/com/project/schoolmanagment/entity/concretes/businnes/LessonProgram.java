@@ -1,8 +1,10 @@
-package com.project.schoolmanagment.entity.concretes;
+package com.project.schoolmanagment.entity.concretes.businnes;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.schoolmanagment.entity.concretes.user.Student;
+import com.project.schoolmanagment.entity.concretes.user.Teacher;
 import com.project.schoolmanagment.entity.enums.Day;
 import lombok.*;
 

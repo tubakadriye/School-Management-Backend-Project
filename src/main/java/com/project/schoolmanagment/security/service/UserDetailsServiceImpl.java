@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.security.service;
 
-import com.project.schoolmanagment.entity.concretes.*;
+import com.project.schoolmanagment.entity.concretes.user.*;
 import com.project.schoolmanagment.repository.user.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

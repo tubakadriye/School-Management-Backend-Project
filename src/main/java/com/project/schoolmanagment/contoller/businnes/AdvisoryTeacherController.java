@@ -1,6 +1,6 @@
-package com.project.schoolmanagment.contoller;
+package com.project.schoolmanagment.contoller.businnes;
 
-import com.project.schoolmanagment.entity.concretes.AdvisoryTeacher;
+import com.project.schoolmanagment.entity.concretes.user.AdvisoryTeacher;
 import com.project.schoolmanagment.payload.response.AdvisorTeacherResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.service.businnes.AdvisoryTeacherService;

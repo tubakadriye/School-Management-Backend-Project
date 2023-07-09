@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.service.user;
 
-import com.project.schoolmanagment.entity.concretes.Admin;
+import com.project.schoolmanagment.entity.concretes.user.Admin;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;

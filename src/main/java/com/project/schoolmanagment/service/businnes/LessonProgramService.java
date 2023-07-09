@@ -1,8 +1,8 @@
 package com.project.schoolmanagment.service.businnes;
 
-import com.project.schoolmanagment.entity.concretes.EducationTerm;
-import com.project.schoolmanagment.entity.concretes.Lesson;
-import com.project.schoolmanagment.entity.concretes.LessonProgram;
+import com.project.schoolmanagment.entity.concretes.businnes.EducationTerm;
+import com.project.schoolmanagment.entity.concretes.businnes.Lesson;
+import com.project.schoolmanagment.entity.concretes.businnes.LessonProgram;
 import com.project.schoolmanagment.exception.BadRequestException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.LessonProgramMapper;

@@ -1,14 +1,15 @@
-package com.project.schoolmanagment.entity.concretes;
+package com.project.schoolmanagment.entity.concretes.businnes;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.schoolmanagment.entity.concretes.user.AdvisoryTeacher;
+import com.project.schoolmanagment.entity.concretes.user.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;

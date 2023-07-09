@@ -1,7 +1,9 @@
-package com.project.schoolmanagment.entity.concretes;
+package com.project.schoolmanagment.entity.concretes.businnes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.schoolmanagment.entity.concretes.user.Student;
+import com.project.schoolmanagment.entity.concretes.user.Teacher;
 import com.project.schoolmanagment.entity.enums.Note;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

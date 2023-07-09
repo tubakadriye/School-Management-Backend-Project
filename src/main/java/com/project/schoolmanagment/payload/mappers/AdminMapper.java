@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.payload.mappers;
 
-import com.project.schoolmanagment.entity.concretes.Admin;
+import com.project.schoolmanagment.entity.concretes.user.Admin;
 import com.project.schoolmanagment.payload.request.AdminRequest;
 import com.project.schoolmanagment.payload.response.AdminResponse;
 import org.springframework.stereotype.Component;

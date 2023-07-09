@@ -1,6 +1,6 @@
 package com.project.schoolmanagment.repository.businnes;
 
-import com.project.schoolmanagment.entity.concretes.Lesson;
+import com.project.schoolmanagment.entity.concretes.businnes.Lesson;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
