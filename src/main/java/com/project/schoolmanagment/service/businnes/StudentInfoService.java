@@ -10,7 +10,7 @@ import com.project.schoolmanagment.payload.request.StudentInfoRequest;
 import com.project.schoolmanagment.payload.request.UpdateStudentInfoRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentInfoResponse;
-import com.project.schoolmanagment.repository.StudentInfoRepository;
+import com.project.schoolmanagment.repository.businnes.StudentInfoRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.user.StudentService;

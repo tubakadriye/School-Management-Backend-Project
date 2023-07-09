@@ -14,7 +14,7 @@ import com.project.schoolmanagment.payload.request.ChooseLessonTeacherRequest;
 import com.project.schoolmanagment.payload.request.TeacherRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.TeacherResponse;
-import com.project.schoolmanagment.repository.TeacherRepository;
+import com.project.schoolmanagment.repository.user.TeacherRepository;
 import com.project.schoolmanagment.service.validator.LessonProgramDateTimeValidator;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;

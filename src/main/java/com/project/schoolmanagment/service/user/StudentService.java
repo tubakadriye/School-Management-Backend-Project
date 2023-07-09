@@ -15,7 +15,7 @@ import com.project.schoolmanagment.payload.request.ChooseLessonProgramWithId;
 import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
-import com.project.schoolmanagment.repository.StudentRepository;
+import com.project.schoolmanagment.repository.user.StudentRepository;
 import com.project.schoolmanagment.service.validator.LessonProgramDateTimeValidator;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

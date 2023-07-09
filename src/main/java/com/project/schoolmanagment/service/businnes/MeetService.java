@@ -11,8 +11,7 @@ import com.project.schoolmanagment.payload.request.MeetRequest;
 import com.project.schoolmanagment.payload.request.UpdateMeetRequest;
 import com.project.schoolmanagment.payload.response.MeetResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.repository.MeetRepository;
-import com.project.schoolmanagment.repository.StudentRepository;
+import com.project.schoolmanagment.repository.businnes.MeetRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.user.StudentService;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;

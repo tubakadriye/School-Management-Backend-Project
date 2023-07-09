@@ -9,7 +9,7 @@ import com.project.schoolmanagment.payload.request.AdminRequest;
 import com.project.schoolmanagment.payload.response.AdminResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.messages.SuccessMessages;
-import com.project.schoolmanagment.repository.*;
+import com.project.schoolmanagment.repository.user.AdminRepository;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;

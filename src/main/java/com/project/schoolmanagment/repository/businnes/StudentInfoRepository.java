@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.repository;
+package com.project.schoolmanagment.repository.businnes;
 
 import com.project.schoolmanagment.entity.concretes.StudentInfo;
 import org.springframework.data.domain.Page;

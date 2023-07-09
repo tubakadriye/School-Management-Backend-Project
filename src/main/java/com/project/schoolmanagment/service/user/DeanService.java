@@ -8,7 +8,7 @@ import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.DeanRequest;
 import com.project.schoolmanagment.payload.response.DeanResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.repository.DeanRepository;
+import com.project.schoolmanagment.repository.user.DeanRepository;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

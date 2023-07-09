@@ -7,7 +7,7 @@ import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.EducationTermRequest;
 import com.project.schoolmanagment.payload.response.EducationTermResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.repository.EducationTermRepository;
+import com.project.schoolmanagment.repository.businnes.EducationTermRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;

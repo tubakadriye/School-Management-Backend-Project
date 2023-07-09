@@ -3,7 +3,7 @@ package com.project.schoolmanagment.service.user;
 import com.project.schoolmanagment.entity.concretes.UserRole;
 import com.project.schoolmanagment.entity.enums.RoleType;
 import com.project.schoolmanagment.exception.ConflictException;
-import com.project.schoolmanagment.repository.UserRoleRepository;
+import com.project.schoolmanagment.repository.user.UserRoleRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

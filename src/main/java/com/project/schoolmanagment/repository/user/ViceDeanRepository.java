@@ -1,4 +1,4 @@
-package com.project.schoolmanagment.repository;
+package com.project.schoolmanagment.repository.user;
 
 
 import com.project.schoolmanagment.entity.concretes.ViceDean;

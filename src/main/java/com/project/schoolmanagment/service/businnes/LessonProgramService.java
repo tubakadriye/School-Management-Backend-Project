@@ -10,7 +10,7 @@ import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.LessonProgramRequest;
 import com.project.schoolmanagment.payload.response.LessonProgramResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.repository.LessonProgramRepository;
+import com.project.schoolmanagment.repository.businnes.LessonProgramRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.validator.TimeValidator;

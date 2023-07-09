@@ -8,7 +8,7 @@ import com.project.schoolmanagment.payload.mappers.AdvisoryTeacherMapper;
 import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.response.AdvisorTeacherResponse;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
-import com.project.schoolmanagment.repository.AdvisoryTeacherRepository;
+import com.project.schoolmanagment.repository.businnes.AdvisoryTeacherRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.user.UserRoleService;

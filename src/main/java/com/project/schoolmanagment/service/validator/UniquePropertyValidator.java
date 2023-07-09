@@ -8,7 +8,7 @@ import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.request.TeacherRequest;
 import com.project.schoolmanagment.payload.request.abstracts.BaseUserRequest;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
-import com.project.schoolmanagment.repository.*;
+import com.project.schoolmanagment.repository.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

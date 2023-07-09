@@ -8,7 +8,7 @@ import com.project.schoolmanagment.payload.messages.SuccessMessages;
 import com.project.schoolmanagment.payload.request.ViceDeanRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.ViceDeanResponse;
-import com.project.schoolmanagment.repository.ViceDeanRepository;
+import com.project.schoolmanagment.repository.user.ViceDeanRepository;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
