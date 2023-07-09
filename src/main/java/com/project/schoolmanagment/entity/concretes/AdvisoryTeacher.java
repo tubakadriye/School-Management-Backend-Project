@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,6 +26,10 @@ public class AdvisoryTeacher {
 
 	@OneToOne
 	private Teacher teacher;
+
+
+	@OneToMany(mappedBy = "advisoryTeacher", cascade = CascadeType.ALL)
+	private List<Student> students;
 
 
 

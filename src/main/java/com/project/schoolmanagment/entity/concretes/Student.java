@@ -29,8 +29,9 @@ public class Student extends User {
 	@Column(unique = true)
 	private String email;
 
-	@ManyToOne
 	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "advisory_teacher_id")
 	private AdvisoryTeacher advisoryTeacher;
 
 	@JsonIgnore

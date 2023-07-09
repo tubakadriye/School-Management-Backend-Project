@@ -16,6 +16,10 @@ public interface AdvisoryTeacherRepository extends JpaRepository<AdvisoryTeacher
 
 	Optional<AdvisoryTeacher>findByTeacher_UsernameEquals(String username);
 
+	@Modifying
+	@Query("DELETE FROM AdvisoryTeacher s WHERE s.id = :id")
+	void deleteById(@Param("id") Long id);
+
 
 
 }

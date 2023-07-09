@@ -26,7 +26,6 @@ public class UniquePropertyValidator {
 
 	private final TeacherRepository teacherRepository;
 
-	private final GuestUserRepository guestUserRepository;
 
 	/**
 	 *
@@ -86,15 +85,15 @@ public class UniquePropertyValidator {
 
 		if (adminRepository.existsByUsername(username) || deanRepository.existsByUsername(username) ||
 				studentRepository.existsByUsername(username) || teacherRepository.existsByUsername(username) ||
-				viceDeanRepository.existsByUsername(username) || guestUserRepository.existsByUsername(username)) {
+				viceDeanRepository.existsByUsername(username) ) {
 			throw new ConflictException(String.format(ErrorMessages.ALREADY_REGISTER_MESSAGE_USERNAME, username));
 		} else if (adminRepository.existsBySsn(ssn) || deanRepository.existsBySsn(ssn) ||
 				studentRepository.existsBySsn(ssn) || teacherRepository.existsBySsn(ssn) ||
-				viceDeanRepository.existsBySsn(ssn) || guestUserRepository.existsBySsn(ssn)) {
+				viceDeanRepository.existsBySsn(ssn) ) {
 			throw new ConflictException(String.format(ErrorMessages.ALREADY_REGISTER_MESSAGE_SSN, ssn));
 		} else if (adminRepository.existsByPhoneNumber(phone) || deanRepository.existsByPhoneNumber(phone) ||
 				studentRepository.existsByPhoneNumber(phone) || teacherRepository.existsByPhoneNumber(phone) ||
-				viceDeanRepository.existsByPhoneNumber(phone) || guestUserRepository.existsByPhoneNumber(phone)) {
+				viceDeanRepository.existsByPhoneNumber(phone) ) {
 			throw new ConflictException(String.format(ErrorMessages.ALREADY_REGISTER_MESSAGE_PHONE_NUMBER, phone));
 		} else if (studentRepository.existsByEmail(email) || teacherRepository.existsByEmail(email)) {
 			throw new ConflictException(String.format(ErrorMessages.ALREADY_REGISTER_MESSAGE_SSN, email));

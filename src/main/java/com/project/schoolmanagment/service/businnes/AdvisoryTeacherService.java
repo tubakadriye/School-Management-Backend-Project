@@ -63,6 +63,8 @@ public class AdvisoryTeacherService {
 				//these teacher is not advisory teacher anymore
 				advisoryTeacherRepository.deleteById(advisoryTeacher.get().getId());
 			}
+		} else {
+			advisoryTeacherRepository.save(advisoryTeacherBuilder.build());
 		}
 	}
 
