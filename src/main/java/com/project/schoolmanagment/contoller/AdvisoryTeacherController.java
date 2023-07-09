@@ -26,13 +26,13 @@ public class AdvisoryTeacherController {
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
 	@GetMapping("/search")
-	public Page<AdvisorTeacherResponse> search(
+	public Page<AdvisorTeacherResponse> getAllAdvisorTeacherByPage(
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort") String sort,
 			@RequestParam(value = "type") String type
 	){
-		return advisoryTeacherService.search(page,size,sort,type);
+		return advisoryTeacherService.getAllAdvisorTeacherByPage(page,size,sort,type);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")

@@ -19,9 +19,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class LessonProgramController {
 
-
 	private final LessonProgramService lessonProgramService;
-
 
 	@PostMapping("/save")
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")

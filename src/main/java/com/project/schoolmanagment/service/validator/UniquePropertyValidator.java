@@ -73,46 +73,6 @@ public class UniquePropertyValidator {
 
 	}
 
-//	public void checkUniquePropertiesForTeacher(Teacher teacher, TeacherRequest teacherRequest){
-//		String updatedUsername = teacher.getUsername();
-//		String updatedSnn = teacher.getSsn();
-//		String updatedPhone = teacher.getPhoneNumber();
-//		String updatedEmail = teacher.getEmail();
-//		if(!teacher.getUsername().equalsIgnoreCase(teacherRequest.getUsername())){
-//			updatedUsername = teacherRequest.getUsername();
-//		}
-//		if(!teacher.getSsn().equalsIgnoreCase(teacherRequest.getSsn())){
-//			updatedSnn = teacherRequest.getSsn();
-//		}
-//		if(!teacher.getPhoneNumber().equalsIgnoreCase(teacherRequest.getPhoneNumber())){
-//			updatedPhone = teacherRequest.getPhoneNumber();
-//		}
-//		if(!teacher.getEmail().equalsIgnoreCase(teacherRequest.getEmail())){
-//			updatedEmail = teacherRequest.getEmail();
-//		}
-//		checkDuplicate(updatedUsername,updatedSnn,updatedPhone,updatedEmail);
-//	}
-//
-//	public void checkUniquePropertiesForStudent(Student student, StudentRequest studentRequest){
-//		String updatedUsername = student.getUsername();
-//		String updatedSnn = student.getSsn();
-//		String updatedPhone = student.getPhoneNumber();
-//		String updatedEmail = student.getEmail();
-//		if(!student.getUsername().equalsIgnoreCase(studentRequest.getUsername())){
-//			updatedUsername = studentRequest.getUsername();
-//		}
-//		if(!student.getSsn().equalsIgnoreCase(studentRequest.getSsn())){
-//			updatedSnn = studentRequest.getSsn();
-//		}
-//		if(!student.getPhoneNumber().equalsIgnoreCase(studentRequest.getPhoneNumber())){
-//			updatedPhone = studentRequest.getPhoneNumber();
-//		}
-//		if(!student.getEmail().equalsIgnoreCase(studentRequest.getEmail())){
-//			updatedEmail = studentRequest.getEmail();
-//		}
-//		checkDuplicate(updatedUsername,updatedSnn,updatedPhone,updatedEmail);
-//	}
-
 
 	public void checkDuplicate(String... values) {
 		String username = values[0];

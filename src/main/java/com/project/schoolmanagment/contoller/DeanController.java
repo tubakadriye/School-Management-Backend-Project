@@ -39,7 +39,6 @@ public class DeanController {
 		return deanService.deleteDeanById(userId);
 	}
 
-	//TODO HOMEWORK write this delete messega again with requestParam
 
 	@GetMapping("/getManagerById/{userId}")
 	public ResponseMessage<DeanResponse> getDeanById(@PathVariable Long userId){
@@ -48,7 +47,6 @@ public class DeanController {
 
 	@GetMapping("/getAll")
 	public List<DeanResponse> getAllDeans(){
-
 		return deanService.getAllDeans();
 	}
 

@@ -78,7 +78,6 @@ public class DeanService {
 				.orElseThrow(()-> new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE, deanId)));
 	}
 
-
 	public ResponseMessage deleteDeanById(Long deanId) {
 
 		isDeanExist(deanId);

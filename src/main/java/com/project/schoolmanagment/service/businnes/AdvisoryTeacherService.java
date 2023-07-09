@@ -79,7 +79,7 @@ public class AdvisoryTeacherService {
 				.collect(Collectors.toList());
 	}
 
-	public Page<AdvisorTeacherResponse>search(int page,int size,String sort,String type){
+	public Page<AdvisorTeacherResponse> getAllAdvisorTeacherByPage(int page, int size, String sort, String type){
 		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 		return advisoryTeacherRepository
 				.findAll(pageable)

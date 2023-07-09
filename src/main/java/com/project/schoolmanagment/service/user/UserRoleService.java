@@ -17,22 +17,8 @@ public class UserRoleService {
 	private final UserRoleRepository userRoleRepository;
 
 	public UserRole getUserRole (RoleType roleType){
-
-		//Optional<UserRole> userRole = userRoleRepository.findByEnumRoleEquals(roleType);
-
-//		/**
-//		 * check the optional usages in spring boot.
-//		 */
-//		if(userRole.isPresent()){
-//			return userRole.get();
-//		} else {
-//			throw new ConflictException(Messages.ROLE_NOT_FOUND);
-//		}
-
 		return userRoleRepository.findByEnumRoleEquals(roleType).orElseThrow(
 				()-> new ConflictException(ErrorMessages.ROLE_NOT_FOUND));
-
-
 	}
 
 	public List<UserRole>getAllUserRole(){

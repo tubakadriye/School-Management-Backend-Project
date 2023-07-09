@@ -69,19 +69,13 @@ public class AdminService {
 	public String deleteAdminById(Long id){
 		//we should check the database if it really exists
 		Optional<Admin>admin = adminRepository.findById(id);
-		if(!admin.isPresent()){
+		if(admin.isEmpty()){
 			throw new ResourceNotFoundException(ErrorMessages.NOT_FOUND_USER_MESSAGE);
 		} else if (admin.get().isBuilt_in()) {
 			throw new ConflictException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
 		}
-
-
-		if (admin.isPresent()){
 			adminRepository.deleteById(id);
 			return SuccessMessages.ADMIN_DELETE;
-		}
-		return String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE,id);
-
 	}
 
 
