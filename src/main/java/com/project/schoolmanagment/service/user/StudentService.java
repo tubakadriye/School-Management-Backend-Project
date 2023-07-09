@@ -16,7 +16,7 @@ import com.project.schoolmanagment.payload.request.StudentRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.StudentResponse;
 import com.project.schoolmanagment.repository.user.StudentRepository;
-import com.project.schoolmanagment.service.validator.LessonProgramDateTimeValidator;
+import com.project.schoolmanagment.service.validator.DateTimeValidator;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -47,7 +47,7 @@ public class StudentService {
 
 	private final LessonProgramService lessonProgramService;
 
-	private final LessonProgramDateTimeValidator lessonProgramDateTimeValidator;
+	private final DateTimeValidator dateTimeValidator;
 
 	private final PageableHelper pageableHelper;
 
@@ -174,7 +174,7 @@ public class StudentService {
 		Student student = isStudentsExistByUsername(username);
 		Set<LessonProgram> lessonProgramSet = lessonProgramService.getLessonProgramById(chooseLessonProgramWithId.getLessonProgramId());
 		Set<LessonProgram>studentCurrentLessonProgram = student.getLessonsProgramList();
-		lessonProgramDateTimeValidator.checkLessonPrgrams(lessonProgramSet,studentCurrentLessonProgram);
+		dateTimeValidator.checkLessonPrograms(lessonProgramSet,studentCurrentLessonProgram);
 		studentCurrentLessonProgram.addAll(lessonProgramSet);
 		//we are updating the lesson program of the student
 		student.setLessonsProgramList(studentCurrentLessonProgram);

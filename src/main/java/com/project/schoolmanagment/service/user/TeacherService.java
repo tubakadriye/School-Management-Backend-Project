@@ -15,7 +15,7 @@ import com.project.schoolmanagment.payload.request.TeacherRequest;
 import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.payload.response.TeacherResponse;
 import com.project.schoolmanagment.repository.user.TeacherRepository;
-import com.project.schoolmanagment.service.validator.LessonProgramDateTimeValidator;
+import com.project.schoolmanagment.service.validator.DateTimeValidator;
 import com.project.schoolmanagment.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,7 +46,7 @@ public class TeacherService {
 
 	private final AdvisoryTeacherService advisoryTeacherService;
 
-	private final LessonProgramDateTimeValidator lessonProgramDateTimeValidator;
+	private final DateTimeValidator dateTimeValidator;
 
 	private final PageableHelper pageableHelper;
 
@@ -147,7 +147,7 @@ public class TeacherService {
 
 		Set<LessonProgram>teachersLessonProgram = teacher.getLessonsProgramList();
 
-		lessonProgramDateTimeValidator.checkLessonPrgrams(teachersLessonProgram ,lessonPrograms);
+		dateTimeValidator.checkLessonPrograms(teachersLessonProgram ,lessonPrograms);
 		teachersLessonProgram.addAll(lessonPrograms);
 		teacher.setLessonsProgramList(teachersLessonProgram);
 		Teacher updatedTeacher = teacherRepository.save(teacher);

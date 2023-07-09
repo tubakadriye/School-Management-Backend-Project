@@ -5,18 +5,28 @@ import com.project.schoolmanagment.exception.BadRequestException;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 @Component
-public class LessonProgramDateTimeValidator {
+public class DateTimeValidator {
 
 	//TODO we have to validate also old lesson program and new lesson program time schedule matching.
 
 	// 09:00 - 12:00
 	// 11:00 - 13:00
+	public boolean checkTime(LocalTime start, LocalTime stop){
+		return start.isAfter(stop) || start.equals(stop);
+	}
+
+	public void checkTimeWithException(LocalTime start,LocalTime stop){
+		if (checkTime(start,stop)) {
+			throw new BadRequestException(ErrorMessages.TIME_NOT_VALID_MESSAGE);
+		}
+	}
 
 
-	public void checkLessonPrgrams(Set<LessonProgram> existLessonProgram, Set<LessonProgram> lessonProgramRequest){
+	public void checkLessonPrograms(Set<LessonProgram> existLessonProgram, Set<LessonProgram> lessonProgramRequest){
 		if(existLessonProgram.isEmpty() && lessonProgramRequest.size()>1){
 			checkDuplicateLessonPrograms(lessonProgramRequest);
 		} else {

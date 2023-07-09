@@ -13,7 +13,7 @@ import com.project.schoolmanagment.payload.response.ResponseMessage;
 import com.project.schoolmanagment.repository.businnes.LessonProgramRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
-import com.project.schoolmanagment.service.validator.TimeValidator;
+import com.project.schoolmanagment.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +39,8 @@ public class LessonProgramService {
 
 	private final PageableHelper pageableHelper;
 
+	private final DateTimeValidator dateTimeValidator;
+
 
 	public ResponseMessage<LessonProgramResponse>saveLessonProgram(LessonProgramRequest lessonProgramRequest){
 
@@ -50,7 +52,7 @@ public class LessonProgramService {
 			throw new ResourceNotFoundException(ErrorMessages.NOT_FOUND_LESSON_IN_LIST);
 		}
 
-		TimeValidator.checkTimeWithException(lessonProgramRequest.getStartTime(),lessonProgramRequest.getStopTime());
+		dateTimeValidator.checkTimeWithException(lessonProgramRequest.getStartTime(),lessonProgramRequest.getStopTime());
 
 		LessonProgram lessonProgram = lessonProgramMapper.mapLessonProgramRequestToLessonProgram(lessonProgramRequest,lessons,educationTerm);
 

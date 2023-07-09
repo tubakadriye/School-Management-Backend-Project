@@ -15,7 +15,7 @@ import com.project.schoolmanagment.repository.businnes.MeetRepository;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.user.StudentService;
-import com.project.schoolmanagment.service.validator.TimeValidator;
+import com.project.schoolmanagment.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,11 +38,12 @@ public class MeetService {
 	private final StudentService studentService;
 	private final MeetMapper meetMapper;
 	private final PageableHelper pageableHelper;
+	private final DateTimeValidator dateTimeValidator;
 
 	public ResponseMessage<MeetResponse> saveMeet(HttpServletRequest httpServletRequest, MeetRequest meetRequest){
 		String username = (String) httpServletRequest.getAttribute("username");
 		AdvisoryTeacher advisoryTeacher = advisoryTeacherService.getAdvisorTeacherByUsername(username);
-		TimeValidator.checkTimeWithException(meetRequest.getStartTime(),meetRequest.getStopTime());
+		dateTimeValidator.checkTimeWithException(meetRequest.getStartTime(),meetRequest.getStopTime());
 
 		for (Long studentId : meetRequest.getStudentIds()){
 			studentService.isStudentsExist(studentId);
@@ -79,7 +80,7 @@ public class MeetService {
 
 	public ResponseMessage<MeetResponse>updateMeet(UpdateMeetRequest updateMeetRequest,Long meetId){
 		Meet meet = isMeetExistById(meetId);
-		TimeValidator.checkTimeWithException(updateMeetRequest.getStartTime(),updateMeetRequest.getStopTime());
+		dateTimeValidator.checkTimeWithException(updateMeetRequest.getStartTime(),updateMeetRequest.getStopTime());
 		if(!(meet.getDate().equals(updateMeetRequest.getDate()) &&
 				meet.getStartTime().equals(updateMeetRequest.getStartTime()) &&
 				meet.getStopTime().equals(updateMeetRequest.getStopTime()))){
