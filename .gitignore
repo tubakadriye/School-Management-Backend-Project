@@ -18,7 +18,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-/logs
+/log
 .idea
 *.iws
 *.iml

@@ -10,11 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 
 @Aspect
 @Component
 public class LoggingAspect {
+
     private final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
     @After("execution(* com.project.schoolmanagment.service.user.AdminService.*(..))")
@@ -27,7 +27,10 @@ public class LoggingAspect {
         logAuthentication(joinPoint);
     }
 
-    @AfterThrowing(pointcut = "execution(* com.project.schoolmanagment.*.*.*.*(..))", throwing = "e")
+    @AfterThrowing(pointcut = "execution(* com.project.schoolmanagment.service..*(..)) " +
+            "|| execution(* com.project.schoolmanagment.repository..*(..))" +
+            "|| execution(* com.project.schoolmanagment.contoller..*(..))" +
+            "|| execution(* com.project.schoolmanagment.payload..*(..))", throwing = "e")
     public void logException(JoinPoint joinPoint, Throwable e) {
         log.error("Exception in method {}: {}", joinPoint.getSignature().getName(), e.getMessage());
     }
