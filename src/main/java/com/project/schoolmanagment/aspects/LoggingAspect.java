@@ -17,13 +17,13 @@ import java.util.Map;
 public class LoggingAspect {
     private final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
-    @After("execution(* com.project.schoolmanagment.service.user.AdminService.*(..))")  //
-    public void createLog(JoinPoint joinPoint) { // !!! JoinPoint = cagrilacak method kim, parametre ne gibi degerleri tutuyor
+    @After("execution(* com.project.schoolmanagment.service.user.AdminService.*(..))")
+    public void createLogForAdminServiceMethods(JoinPoint joinPoint) {
         logAuthentication(joinPoint);
     }
 
-    @After("execution(* com.project.schoolmanagment.service.*.*.delete*(..))")  //
-    public void createLog2(JoinPoint joinPoint) {
+    @After("execution(* com.project.schoolmanagment.service.*.*.delete*(..))")
+    public void createLogForDeleteOperations(JoinPoint joinPoint) {
         logAuthentication(joinPoint);
     }
 
