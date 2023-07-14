@@ -27,7 +27,7 @@ public class AdminController {
 	}
 
 
-	@GetMapping("/getAll")
+	@GetMapping("/getAllAdminsByPage")
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<Page<Admin>>getAllAdminsByPage(
 			@RequestParam(value = "page",defaultValue = "0") int page,

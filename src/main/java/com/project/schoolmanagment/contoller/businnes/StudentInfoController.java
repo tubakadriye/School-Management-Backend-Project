@@ -38,14 +38,14 @@ public class StudentInfoController {
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-	@GetMapping("/search")
-	public Page<StudentInfoResponse> search(
+	@GetMapping("/getAllStudentInfoByPage")
+	public Page<StudentInfoResponse> getAllStudentInfoByPage(
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort") String sort,
 			@RequestParam(value = "type") String type
 	) {
-		return  studentInfoService.search(page,size,sort,type);
+		return  studentInfoService.getAllStudentInfoByPage(page,size,sort,type);
 	}
 	@PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")
 	@PutMapping("/update/{studentInfo}")

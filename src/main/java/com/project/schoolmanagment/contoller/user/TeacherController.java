@@ -51,13 +51,13 @@ public class TeacherController {
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-	@GetMapping("/search")
-	public Page<TeacherResponse> search(
+	@GetMapping("/getAllTeacherByPage")
+	public Page<TeacherResponse> getAllTeacherByPage(
 			@RequestParam(value = "page")int page,
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort") String sort,
 			@RequestParam(value = "type") String type){
-		return teacherService.findTeacherByPage(page,size,sort,type);
+		return teacherService.getAllTeacherByPage(page,size,sort,type);
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")

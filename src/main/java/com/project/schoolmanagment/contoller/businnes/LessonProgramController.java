@@ -59,7 +59,7 @@ public class LessonProgramController {
 		return lessonProgramService.deleteLessonProgramById(id);
 	}
 
-	@GetMapping("/search")
+	@GetMapping("/getAllLessonProgramByPage")
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
 	public Page<LessonProgramResponse> getAllLessonProgramByPage (
 			@RequestParam(value = "page") int page,

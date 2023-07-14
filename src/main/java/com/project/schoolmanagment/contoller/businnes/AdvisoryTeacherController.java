@@ -25,7 +25,7 @@ public class AdvisoryTeacherController {
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
-	@GetMapping("/search")
+	@GetMapping("/getAllAdvisorTeacherByPage")
 	public Page<AdvisorTeacherResponse> getAllAdvisorTeacherByPage(
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size,

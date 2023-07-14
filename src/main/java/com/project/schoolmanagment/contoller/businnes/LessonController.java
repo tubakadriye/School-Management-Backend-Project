@@ -38,9 +38,9 @@ public class LessonController {
 	public ResponseMessage<LessonResponse> getLessonByLessonName(@RequestParam String lessonName){
 		return lessonService.getLessonByLessonName(lessonName);
 	}
-	@GetMapping("/search")
+	@GetMapping("/findLessonByPage")
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-	public Page<LessonResponse> search(
+	public Page<LessonResponse> findLessonByPage(
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort") String sort,

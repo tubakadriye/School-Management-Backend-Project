@@ -51,7 +51,7 @@ public class DeanController {
 	}
 
 
-	@GetMapping("/search")
+	@GetMapping("/getAllDeansByPage")
 	public Page<DeanResponse> getAllDeansByPage(
 			@RequestParam(value = "page")int page,
 			@RequestParam(value = "size") int size,

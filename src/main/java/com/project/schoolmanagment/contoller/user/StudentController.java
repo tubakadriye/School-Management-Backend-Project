@@ -60,14 +60,14 @@ public class StudentController {
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANTMANAGER')")
-	@GetMapping("/search")
-	public Page<StudentResponse> search(
+	@GetMapping("/getAllStudentByPage")
+	public Page<StudentResponse> getAllStudentByPAge(
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort") String sort,
 			@RequestParam(value = "type") String type
 	){
-		return studentService.search(page,size,sort,type);
+		return studentService.getAllStudentByPAge(page,size,sort,type);
 	}
 
 	//TODO instead of returning entity type, DTO type should be returned

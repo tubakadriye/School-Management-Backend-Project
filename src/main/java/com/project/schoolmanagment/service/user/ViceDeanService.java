@@ -110,7 +110,7 @@ public class ViceDeanService {
 				.collect(Collectors.toList());
 	}
 
-	public Page<ViceDeanResponse> getAllViceDeansByPage(int page, int size, String sort, String type){
+	public Page<ViceDeanResponse> getAllViceDeanByPage(int page, int size, String sort, String type){
 
 		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 

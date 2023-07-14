@@ -115,7 +115,7 @@ public class TeacherService {
 				.build();
 	}
 
-	public Page<TeacherResponse> findTeacherByPage(int page,int size,String sort,String type){
+	public Page<TeacherResponse> getAllTeacherByPage(int page, int size, String sort, String type){
 		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 		return teacherRepository.findAll(pageable).map(teacherMapper::mapTeacherToTeacherResponse);
 	}

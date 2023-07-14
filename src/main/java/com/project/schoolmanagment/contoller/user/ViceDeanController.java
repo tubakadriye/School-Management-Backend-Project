@@ -34,7 +34,7 @@ public class ViceDeanController {
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
 	@DeleteMapping("/delete/{userId}")
-	public ResponseMessage<?> deleteViceDeanByAdmin(@PathVariable Long userId){
+	public ResponseMessage deleteViceDeanByAdmin(@PathVariable Long userId){
 		return viceDeanService.deleteViceDeanByUserId(userId);
 	}
 
@@ -50,13 +50,13 @@ public class ViceDeanController {
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
-	@GetMapping("/search")
-	public Page<ViceDeanResponse> getAllViceDeansByPage(
+	@GetMapping("/getAllViceDeanByPage")
+	public Page<ViceDeanResponse> getAllViceDeanByPage(
 			@RequestParam(value = "page",defaultValue = "0",required = false) int page,
 			@RequestParam(value = "size") int size,
 			@RequestParam(value = "sort",defaultValue = "name") String sort,
 			@RequestParam(value = "type",defaultValue = "desc") String type){
-		return viceDeanService.getAllViceDeansByPage(page,size,sort,type);
+		return viceDeanService.getAllViceDeanByPage(page,size,sort,type);
 	}
 
 

@@ -152,7 +152,7 @@ public class StudentService {
 				.collect(Collectors.toList());
 	}
 
-	public Page<StudentResponse>search(int page,int size,String sort,String type){
+	public Page<StudentResponse> getAllStudentByPAge(int page, int size, String sort, String type){
 		Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
 		return studentRepository.findAll(pageable)
 				.map(studentMapper::mapStudentToStudentResponse);

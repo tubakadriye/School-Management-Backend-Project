@@ -67,7 +67,7 @@ public class MeetController {
 	}
 
 	@PreAuthorize("hasAnyAuthority( 'ADMIN')")
-	@GetMapping("/search")
+	@GetMapping("/getAllMeetByPage")
 	public Page<MeetResponse> getAllMeetByPage(
 			@RequestParam(value = "page") int page,
 			@RequestParam(value = "size") int size

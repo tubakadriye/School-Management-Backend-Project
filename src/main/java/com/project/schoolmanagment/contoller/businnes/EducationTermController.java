@@ -38,7 +38,7 @@ public class EducationTermController {
 	}
 
 	@PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER')")
-	@GetMapping("/search")
+	@GetMapping("/getAllEducationTermsPyPage")
 	public Page<EducationTermResponse> getAllEducationTermsPyPage(
 			@RequestParam (value = "page",defaultValue = "0") int page,
 			@RequestParam(value = "size",defaultValue = "10") int size,
