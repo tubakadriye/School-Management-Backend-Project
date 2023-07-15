@@ -1,4 +1,4 @@
-package contactmessage;
+package com.project.schoolmanagment.contactmessage;
 
 import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.payload.request.ContactMessageRequest;

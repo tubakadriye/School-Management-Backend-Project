@@ -1,4 +1,4 @@
-package contactmessage;
+package com.project.schoolmanagment.contactmessage;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package contactmessage;
+package com.project.schoolmanagment.contactmessage;
 
 import com.project.schoolmanagment.payload.request.ContactMessageRequest;
 import com.project.schoolmanagment.payload.response.ContactMessageResponse;
@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("contactMessages")
+@RequestMapping("/contactMessages")
 @RequiredArgsConstructor
 public class ContactMessageController {
 

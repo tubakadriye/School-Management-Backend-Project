@@ -120,6 +120,7 @@ public class WebSecurityConfig {
 			"/images/**",
 			"/css/**",
 			"/js/**",
+			"/contactMessages/save",
 			"/auth/login"
 
 	};
