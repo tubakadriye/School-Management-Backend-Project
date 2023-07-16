@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  spring-boot-car-rental:
+  spring-boot-school-management:
     container_name: spring-boot-school-management
     image: student-management:latest
     build: ./
