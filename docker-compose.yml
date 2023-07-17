@@ -2,7 +2,7 @@ version: '3.7'
 services:
   spring-boot-school-management:
     container_name: spring-boot-school-management
-    image: student-management:latest
+    image: school-managment:0.0.1-SNAPSHOT
     build: ./
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/school_management_base_refactor
