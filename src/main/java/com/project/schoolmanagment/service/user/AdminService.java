@@ -16,6 +16,7 @@ import com.project.schoolmanagment.payload.messages.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +35,8 @@ public class AdminService {
 
 	private final AdminMapper adminMapper;
 
+	private final PasswordEncoder passwordEncoder;
+
 	public ResponseMessage<AdminResponse> saveAdmin(AdminRequest adminRequest){
 
 		uniquePropertyValidator.checkDuplicate(adminRequest.getUsername(), adminRequest.getSsn(), adminRequest.getPhoneNumber());
@@ -49,7 +52,7 @@ public class AdminService {
 		admin.setUserRole(userRoleService.getUserRole(RoleType.ADMIN));
 
 		//we will implement password encoder here
-
+		admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 		Admin savedAdmin = adminRepository.save(admin);
 
 		//In response message savedAdmin instance may not be sent back to front-end.
