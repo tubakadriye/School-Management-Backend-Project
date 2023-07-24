@@ -1,19 +1,15 @@
-# Use an official OpenJDK image as the base image
+# Use a base image with Java support, such as OpenJDK
 FROM openjdk:11-jdk
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the JAR file from the build output to the image
-COPY target/school-managment-0.0.1-SNAPSHOT.jar app.jar
+# Copy the JAR file to the container
+COPY target/school-management-0.0.1-SNAPSHOT.jar /app.jar
 
-# Expose the port that the application will run on
-EXPOSE 8080
-
-# Start the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Command to run the Spring Boot application
+CMD ["java", "-jar", "/app.jar"]
 
 
-#docker build -t school-management .
-
-
+#docker build -t sametyaprak/school-management:0.0.1-SNAPSHOT .
+#docker run sametyaprak/school-management:0.0.1-SNAPSHOT

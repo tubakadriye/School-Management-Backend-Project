@@ -20,12 +20,10 @@ public class SchoolManagementApplication implements CommandLineRunner {
 
     private final UserRoleService userRoleService;
     private final AdminService adminService;
-    private final PasswordEncoder passwordEncoder;
 
-    public SchoolManagementApplication(UserRoleService userRoleService, AdminService adminService, PasswordEncoder passwordEncoder) {
+    public SchoolManagementApplication(UserRoleService userRoleService, AdminService adminService) {
         this.userRoleService = userRoleService;
         this.adminService = adminService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public static void main(String[] args) {
@@ -49,7 +47,7 @@ public class SchoolManagementApplication implements CommandLineRunner {
             AdminRequest adminRequest  = new AdminRequest();
             adminRequest.setUsername("superAdmin");
             adminRequest.setSsn("111-11-1111");
-            adminRequest.setPassword(passwordEncoder.encode("Ankara06*"));
+            adminRequest.setPassword("Ankara06*");
             adminRequest.setName("Lars");
             adminRequest.setSurname("Urich");
             adminRequest.setPhoneNumber("111-111-1111");
