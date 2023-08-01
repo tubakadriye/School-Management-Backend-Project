@@ -74,6 +74,13 @@ public class LessonProgramService {
 				.collect(Collectors.toSet());
 	}
 
+	public Set<LessonProgramResponse> getLessonProgramByStudent(String username) {
+		return lessonProgramRepository.getLessonProgramByStudentUsername(username)
+				.stream()
+				.map(lessonProgramMapper::mapLessonProgramtoLessonProgramResponse)
+				.collect(Collectors.toSet());
+	}
+
 
 	public List<LessonProgramResponse> getAllLessonProgramList(){
 		return lessonProgramRepository

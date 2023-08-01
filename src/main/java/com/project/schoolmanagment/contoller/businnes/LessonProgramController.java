@@ -69,6 +69,15 @@ public class LessonProgramController {
 		return lessonProgramService.getAllLessonProgramByPage(page,size,sort,type);
 	}
 
+	@GetMapping("getAllLessonProgramByStudent")
+	@PreAuthorize("hasAnyAuthority('STUDENT')")
+	public Set<LessonProgramResponse> getAllLessonProgramByStudent(
+			HttpServletRequest httpServletRequest
+	) {
+		String username = (String) httpServletRequest.getAttribute("username");
+		return lessonProgramService.getLessonProgramByStudent(username);
+	}
+
 	@PreAuthorize("hasAnyAuthority('TEACHER')")
 	@GetMapping("/getAllLessonProgramByTeacher")
 	public Set<LessonProgramResponse> getAllLessonProgramByTeacherUserName(HttpServletRequest httpServletRequest){

@@ -18,6 +18,9 @@ public interface LessonProgramRepository extends JpaRepository<LessonProgram,Lon
 	@Query("SELECT l FROM LessonProgram l INNER JOIN l.teachers teachers WHERE teachers.username = ?1")
 	Set<LessonProgram> getLessonProgramByTeachersUsername(String username);
 
+	@Query("select l from LessonProgram l inner join l.students students where students.username = ?1")
+	List<LessonProgram> getLessonProgramByStudentUsername(String username);
+
 
 	//SQL -> SELECT * FROM lesson_program  WHERE lesson_program.id IN (2,3);
 	@Query("SELECT l FROM LessonProgram  l WHERE l.id IN :myProperty")

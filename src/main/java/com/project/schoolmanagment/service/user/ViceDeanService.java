@@ -69,6 +69,8 @@ public class ViceDeanService {
 
 	public ResponseMessage<?> deleteViceDeanByUserId(Long viceDeanId) {
 
+		isViceDeanExist(viceDeanId);
+
 		viceDeanRepository.deleteById(viceDeanId);
 
 		return ResponseMessage.builder()
