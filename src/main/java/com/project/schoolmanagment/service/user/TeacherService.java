@@ -66,7 +66,7 @@ public class TeacherService {
 		teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
 
 		Teacher savedTeacher = teacherRepository.save(teacher);
-		if(teacherRequest.isAdvisorTeacher()){
+		if(teacherRequest.getIsAdvisorTeacher()){
 			advisoryTeacherService.saveAdvisoryTeacher(teacher);
 		}
 
@@ -131,7 +131,7 @@ public class TeacherService {
 		updatedTeacher.setUserRole(userRoleService.getUserRole(RoleType.TEACHER));
 
 		Teacher savedTeacher = teacherRepository.save(updatedTeacher);
-		advisoryTeacherService.updateAdvisoryTeacher(teacherRequest.isAdvisorTeacher(),savedTeacher);
+		advisoryTeacherService.updateAdvisoryTeacher(teacherRequest.getIsAdvisorTeacher(),savedTeacher);
 
 		return ResponseMessage.<TeacherResponse>builder()
 				.object(teacherMapper.mapTeacherToTeacherResponse(savedTeacher))

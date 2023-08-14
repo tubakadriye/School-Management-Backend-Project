@@ -128,13 +128,9 @@ public class LessonProgramService {
 	}
 
 	public Set<LessonProgram> getLessonProgramById(Set<Long> lessonIdSet){
-
-		Set<LessonProgram> lessonPrograms = lessonProgramRepository.getLessonProgramByLessonProgramIdList(lessonIdSet);
-
-		if(lessonPrograms.isEmpty()){
-			throw new BadRequestException(ErrorMessages.NOT_FOUND_LESSON_PROGRAM_MESSAGE_WITHOUT_ID_INFO);
-		}
-		return lessonPrograms;
+		return lessonIdSet.stream()
+				.map(this::isLessonProgramExistById)
+				.collect(Collectors.toSet());
 	}
 
 }

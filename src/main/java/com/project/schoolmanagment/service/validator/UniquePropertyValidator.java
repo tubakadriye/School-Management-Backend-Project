@@ -38,14 +38,18 @@ public class UniquePropertyValidator {
 		String updatedSnn = "";
 		String updatedPhone = "";
 		String updatedEmail = "";
+		boolean isChanged = false;
 		if(!user.getUsername().equalsIgnoreCase(baseUserRequest.getUsername())){
 			updatedUsername = baseUserRequest.getUsername();
+			isChanged = true;
 		}
 		if(!user.getSsn().equalsIgnoreCase(baseUserRequest.getSsn())){
 			updatedSnn = baseUserRequest.getSsn();
+			isChanged = true;
 		}
 		if(!user.getPhoneNumber().equalsIgnoreCase(baseUserRequest.getPhoneNumber())){
 			updatedPhone = baseUserRequest.getPhoneNumber();
+			isChanged = true;
 		}
 		boolean teacherOrStudent = false;
 		if(user instanceof Teacher && baseUserRequest instanceof TeacherRequest){
@@ -64,11 +68,14 @@ public class UniquePropertyValidator {
 				updatedEmail = studentRequest.getEmail();
 			}
 		}
-		if (teacherOrStudent){
-			checkDuplicate(updatedUsername,updatedSnn,updatedPhone,updatedEmail);
-		}else {
-			checkDuplicate(updatedUsername,updatedSnn,updatedPhone);
+		if(isChanged){
+			if (teacherOrStudent ){
+				checkDuplicate(updatedUsername,updatedSnn,updatedPhone,updatedEmail);
+			}else {
+				checkDuplicate(updatedUsername,updatedSnn,updatedPhone);
+			}
 		}
+
 
 	}
 

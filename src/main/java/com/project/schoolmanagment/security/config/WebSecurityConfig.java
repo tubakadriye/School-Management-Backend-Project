@@ -122,7 +122,6 @@ public class WebSecurityConfig {
 			"/js/**",
 			"/contactMessages/save",
 			"/auth/login"
-
 	};
 
 

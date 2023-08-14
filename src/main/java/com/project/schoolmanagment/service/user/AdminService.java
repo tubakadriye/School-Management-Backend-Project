@@ -45,7 +45,7 @@ public class AdminService {
 		admin.setBuilt_in(false);
 
 		//if username is also Admin we are setting built_in prop. to FALSE
-		if(Objects.equals(adminRequest.getUsername(),"Admin")){
+		if(Objects.equals(adminRequest.getUsername(),"superAdmin")){
 			admin.setBuilt_in(true);
 		}
 

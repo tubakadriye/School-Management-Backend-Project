@@ -22,7 +22,7 @@ public class TeacherMapper {
 				.password(teacherRequest.getPassword())
 				.phoneNumber(teacherRequest.getPhoneNumber())
 				.email(teacherRequest.getEmail())
-				.isAdvisor(teacherRequest.isAdvisorTeacher())
+				.isAdvisor(teacherRequest.getIsAdvisorTeacher())
 				.gender(teacherRequest.getGender())
 				.build();
 	}
