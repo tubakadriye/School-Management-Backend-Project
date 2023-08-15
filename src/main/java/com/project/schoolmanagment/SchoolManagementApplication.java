@@ -1,64 +1,19 @@
 package com.project.schoolmanagment;
 
-import com.project.schoolmanagment.entity.enums.Gender;
-import com.project.schoolmanagment.entity.enums.RoleType;
-import com.project.schoolmanagment.payload.request.AdminRequest;
-import com.project.schoolmanagment.service.user.AdminService;
-import com.project.schoolmanagment.service.user.UserRoleService;
-import org.springframework.boot.CommandLineRunner;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDate;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public class SchoolManagementApplication implements CommandLineRunner {
-
-
-    private final UserRoleService userRoleService;
-    private final AdminService adminService;
-
-    public SchoolManagementApplication(UserRoleService userRoleService, AdminService adminService) {
-        this.userRoleService = userRoleService;
-        this.adminService = adminService;
-    }
+public class SchoolManagementApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(SchoolManagementApplication.class, args);
 
     }
 
-    @Override
-    public void run(String... args) {
-        if(userRoleService.getAllUserRole().isEmpty()){
-            userRoleService.save(RoleType.ADMIN);
-            userRoleService.save(RoleType.MANAGER);
-            userRoleService.save(RoleType.ASSISTANT_MANAGER);
-            userRoleService.save(RoleType.TEACHER);
-            userRoleService.save(RoleType.STUDENT);
-            userRoleService.save(RoleType.ADVISORY_TEACHER);
-            userRoleService.save(RoleType.GUEST_USER);
-        }
-
-        if(adminService.countAllAdmins()==0){
-            AdminRequest adminRequest  = new AdminRequest();
-            adminRequest.setUsername("superAdmin");
-            adminRequest.setSsn("111-11-1111");
-            adminRequest.setPassword("Ankara06*");
-            adminRequest.setName("Lars");
-            adminRequest.setSurname("Urich");
-            adminRequest.setPhoneNumber("111-111-1111");
-            adminRequest.setGender(Gender.FEMALE);
-            adminRequest.setBirthDay(LocalDate.of(1980,2,2));
-            adminRequest.setBirthPlace("Texas");
-            adminService.saveAdmin(adminRequest);
-        }
-
-
-    }
 }
 
 
