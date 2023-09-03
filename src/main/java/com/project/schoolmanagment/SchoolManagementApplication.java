@@ -18,7 +18,9 @@ public class SchoolManagementApplication implements CommandLineRunner {
     private final UserRoleService userRoleService;
     private final AdminService adminService;
 
-    public SchoolManagementApplication(UserRoleService userRoleService, AdminService adminService) {
+
+
+    public SchoolManagementApplication (UserRoleService userRoleService, AdminService adminService) {
         this.userRoleService = userRoleService;
         this.adminService = adminService;
     }
@@ -29,7 +31,7 @@ public class SchoolManagementApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args)  {
 
         if (userRoleService.getAllUserRole().isEmpty()) {
             userRoleService.saveUserRole(RoleType.ADMIN);
@@ -44,7 +46,7 @@ public class SchoolManagementApplication implements CommandLineRunner {
         if (adminService.countAllAdmins() == 0) {
 
             AdminRequest adminRequest = new AdminRequest();
-            adminRequest.setUsername("userAdmin");
+            adminRequest.setUsername("superAdmin");
             adminRequest.setSsn("987-65-4321");
             adminRequest.setPassword("Ankara06*");
             adminRequest.setName("Lars");
