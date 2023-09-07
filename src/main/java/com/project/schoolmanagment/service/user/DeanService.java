@@ -67,4 +67,15 @@ public class DeanService {
                 .build();
 
     }
+
+
+    public ResponseMessage deleteDeanById(Long userId) {
+        isDeanExists(userId);
+        deanRepository.deleteById(userId);
+        return ResponseMessage.builder()
+                .message(SuccessMessages.DEAN_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
 }

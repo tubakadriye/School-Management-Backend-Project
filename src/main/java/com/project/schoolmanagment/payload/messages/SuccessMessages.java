@@ -46,6 +46,21 @@ public abstract class SuccessMessages {
     public static final String TEACHER_DELETE = "Teacher is Deleted Successfully";
 
 
+    //Student Info
+    public static final String STUDENT_INFO_SAVE = "Student Info is Saved";
+    public static final String STUDENT_INFO_UPDATE = "Student Info is Updated Successfully";
+    public static final String STUDENT_INFO_DELETE = "Student Info is Deleted Successfully";
+    //Meet
+    public static final String MEET_SAVE = "Meet is Saved";
+    public static final String MEET_UPDATE = "Meet is Updated Successfully";
+    public static final String MEET_DELETE = "Meet is Deleted Successfully";
+    public static final String MEET_FOUND = "Meet is Found Successfully";
+
+
+    //Advisor teacher
+    public static final String ADVISOR_TEACHER_DELETE = "Advisor Teacher Deleted Successfully";
+
+
 
 
 }

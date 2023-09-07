@@ -24,7 +24,7 @@ public class LessonProgramController {
     private final LessonProgramService lessonProgramService;
 
 
-    @GetMapping("/save")
+    @PostMapping("/save")
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     public ResponseMessage<LessonProgramResponse>saveLessonProgram(@RequestBody @Valid LessonProgramRequest lessonProgramRequest){
 
@@ -86,8 +86,8 @@ public class LessonProgramController {
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") String sort,
             @RequestParam(value = "type") String type){
-        //return lessonProgramService.getAllLessonProgramByPage(page,size,sort,type);
-        return null;
+        return lessonProgramService.getAllLessonProgramByPage(page,size,sort,type);
+
     }
 
     @GetMapping("/getAllLessonProgramByStudent")

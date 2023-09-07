@@ -23,6 +23,7 @@ public class UniquePropertyValidator {
     private final TeacherRepository teacherRepository;
 
     public void checkUniqueProperties(User user, BaseUserRequest baseUserRequest){
+        //not good structure
         String updatedUsername = "";
         String updatedSnn = "";
         String updatedPhone = "";
@@ -74,6 +75,8 @@ public class UniquePropertyValidator {
         String ssn = values[1];
         String phone = values[2];
         String email = "";
+
+        //not good structure
 
         if (values.length==4){
             email = values[3];

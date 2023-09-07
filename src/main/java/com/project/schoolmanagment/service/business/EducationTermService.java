@@ -1,6 +1,7 @@
 package com.project.schoolmanagment.service.business;
 
 import com.project.schoolmanagment.entity.concretes.business.EducationTerm;
+import com.project.schoolmanagment.exception.ConflictException;
 import com.project.schoolmanagment.exception.ResourceNotFoundException;
 import com.project.schoolmanagment.payload.mappers.business.EducationTermMapper;
 import com.project.schoolmanagment.payload.messages.ErrorMessages;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,5 +114,19 @@ public class EducationTermService {
         return educationTermRepository
                 .findAll(pageable)
                 .map(educationTermMapper::mapEducationTermToEducationTermResponse);
+    }
+
+    public List<EducationTermResponse> getAllEducationTermByStartDate(String firstDateString, String secondDateString) {
+        try{
+            LocalDate firstDate = LocalDate.parse(firstDateString);
+            LocalDate secondDate = LocalDate.parse(secondDateString);
+
+            return educationTermRepository.findEducationTermBetweenDates(firstDate, secondDate)
+                    .stream().map(educationTermMapper::mapEducationTermToEducationTermResponse)
+                    .collect(Collectors.toList());
+        } catch (DateTimeParseException e){
+            throw new ConflictException(ErrorMessages.EDUCATION_TERM_WRONG_DATE_FORMAT_MESSAGE);
+        }
+
     }
 }

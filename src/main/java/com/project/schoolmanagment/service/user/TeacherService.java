@@ -128,4 +128,19 @@ public class TeacherService {
 
 
     }
+
+    public ResponseMessage<TeacherResponse> getTeacherById(Long id) {
+        return ResponseMessage.<TeacherResponse>builder()
+                .object(teacherMapper.mapTeacherToTeacherResponse(isTeacherExist(id)))
+                .message(SuccessMessages.TEACHER_FOUND)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    public Teacher getTeacherByUsername(String username){
+        if(!teacherRepository.existsByUsername(username)){
+            throw new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE_USERNAME,username));
+        }
+        return teacherRepository.getTeachersByUsername(username);
+    }
 }

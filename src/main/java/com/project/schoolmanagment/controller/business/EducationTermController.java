@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EducationTermController {
 
-    private EducationTermService educationTermService;
+    private final EducationTermService educationTermService;
 
     @PostMapping("/save")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
@@ -58,4 +58,15 @@ public class EducationTermController {
             @RequestParam(value = "type", defaultValue = "desc") String type) {
         return educationTermService.getAllEducationTermByPage(page, size, sort,type);
     }
+
+
+    @GetMapping("/searchByStartDate")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER')")
+    public List<EducationTermResponse> searchByYear(@RequestParam String firstDateString,
+                                                    @RequestParam String secondDateString){
+        return educationTermService.getAllEducationTermByStartDate(firstDateString, secondDateString);
+    }
+
+
+
 }

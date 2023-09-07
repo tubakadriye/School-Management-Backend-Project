@@ -35,7 +35,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     student.getName(),
                     false,
                     student.getPassword(),
-                    student.getUserRole().getRoleType().name()
+                    student.getUserRole().getRoleType().name(),
+                    student.getSsn()
             );
         } else if (teacher != null) {
             return new UserDetailsImpl(
@@ -44,7 +45,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     teacher.getName(),
                     false,
                     teacher.getPassword(),
-                    teacher.getUserRole().getRoleType().name()
+                    teacher.getUserRole().getRoleType().name(),
+                    teacher.getSsn()
             );
 
         } else if (admin != null) {
@@ -54,7 +56,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     admin.getName(),
                     false,
                     admin.getPassword(),
-                    admin.getUserRole().getRoleType().name()
+                    admin.getUserRole().getRoleType().name(),
+                    admin.getSsn()
             );
 
         } else if (dean != null) {
@@ -64,7 +67,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     dean.getName(),
                     false,
                     dean.getPassword(),
-                    dean.getUserRole().getRoleType().name()
+                    dean.getUserRole().getRoleType().name(),
+                    dean.getSsn()
             );
 
         } else if (viceDean != null) {
@@ -74,11 +78,53 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     viceDean.getName(),
                     false,
                     viceDean.getPassword(),
-                    viceDean.getUserRole().getRoleType().name()
+                    viceDean.getUserRole().getRoleType().name(),
+                    viceDean.getSsn()
             );
 
         }
 
         throw new UsernameNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE_USERNAME, username));
     }
+
+    //	TODO investigate the difference between methods. which one is better? Why?
+//	@Override
+//	@Transactional
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//
+//		User student = studentRepository.findByUsernameEquals(username);
+//		if (student != null) {
+//			return mapUserToUserDetailsImpl(student);
+//		}
+//		User teacher = teacherRepository.findByUsernameEquals(username);
+//		if (teacher != null) {
+//			return mapUserToUserDetailsImpl(teacher);
+//		}
+//		User admin = adminRepository.findByUsernameEquals(username);
+//		if (admin != null) {
+//			return mapUserToUserDetailsImpl(admin);
+//		}
+//		User dean = deanRepository.findByUsernameEquals(username); //200ms
+//		if (dean!=null) {
+//			return mapUserToUserDetailsImpl(dean);
+//		}
+//
+//		User viceDean = viceDeanRepository.findByUsernameEquals(username); //200ms
+//		if (viceDean!=null) {
+//			return mapUserToUserDetailsImpl(viceDean);
+//		}
+//		throw new UsernameNotFoundException("User '" + username+ "  ' not found");
+//	}
+//
+//	private UserDetailsImpl mapUserToUserDetailsImpl(User user){
+//		return new UserDetailsImpl(
+//				user.getId(),
+//				user.getUsername(),
+//				user.getName(),
+//				false,
+//				user.getPassword(),
+//				user.getUserRole().getRoleType().name());
+//	}
+
+
 }

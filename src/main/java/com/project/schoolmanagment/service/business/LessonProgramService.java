@@ -14,6 +14,8 @@ import com.project.schoolmanagment.repository.business.LessonProgramRepository;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import com.project.schoolmanagment.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -113,5 +115,13 @@ public class LessonProgramService {
                 .message(SuccessMessages.LESSON_PROGRAM_DELETE)
                 .httpStatus(HttpStatus.OK)
                 .build();
+    }
+
+    public Page<LessonProgramResponse> getAllLessonProgramByPage(int page, int size, String sort, String type) {
+        Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
+        return lessonProgramRepository
+                .findAll(pageable)
+                .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse);
+
     }
 }

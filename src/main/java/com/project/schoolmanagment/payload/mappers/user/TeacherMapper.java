@@ -3,7 +3,12 @@ package com.project.schoolmanagment.payload.mappers.user;
 import com.project.schoolmanagment.entity.concretes.user.Teacher;
 import com.project.schoolmanagment.payload.request.user.TeacherRequest;
 import com.project.schoolmanagment.payload.response.user.TeacherResponse;
+import lombok.Data;
+import org.springframework.stereotype.Component;
 
+
+@Data
+@Component
 public class TeacherMapper {
 
     public Teacher mapTeacherRequestToTeacher(TeacherRequest teacherRequest) {

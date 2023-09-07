@@ -12,6 +12,8 @@ import com.project.schoolmanagment.payload.response.message.ResponseMessage;
 import com.project.schoolmanagment.repository.business.LessonRepository;
 import com.project.schoolmanagment.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,7 @@ public class LessonService {
         }
     }
 
-    private Lesson isLessonExistById(Long id){
+    public Lesson isLessonExistById(Long id){
         return lessonRepository.findById(id)
                         .orElseThrow(()->new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_LESSON_MESSAGE,id)));
     }
@@ -78,5 +80,11 @@ public class LessonService {
         idSet.forEach(this::isLessonExistById);
 
         return lessonRepository.getLessonByLessonIdIList(idSet);
+    }
+
+    public Page<LessonResponse> findLessonByPage(int page, int size, String sort, String type) {
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return lessonRepository.findAll(pageable).map(lessonMapper::mapLessonToLessonResponse);
+
     }
 }
