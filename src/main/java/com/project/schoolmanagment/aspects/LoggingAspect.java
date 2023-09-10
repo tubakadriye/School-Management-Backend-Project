@@ -29,7 +29,7 @@ public class LoggingAspect {
 
     @AfterThrowing(pointcut = "execution(* com.project.schoolmanagment.service..*(..)) " +
             "|| execution(* com.project.schoolmanagment.repository..*(..))" +
-            "|| execution(* com.project.schoolmanagment.contoller..*(..))" +
+            "|| execution(* com.project.schoolmanagment.controller..*(..))" +
             "|| execution(* com.project.schoolmanagment.payload..*(..))", throwing = "e")
     public void logException(JoinPoint joinPoint, Throwable e) {
         log.error("Exception in method {}: {}", joinPoint.getSignature().getName(), e.getMessage());
@@ -41,7 +41,7 @@ public class LoggingAspect {
         Object result = joinPoint.proceed();
         long end = System.currentTimeMillis();
         long duration = end - start;
-        if(duration>4500) {
+        if(duration>50) {
             log.info("Method {} in class {} took {} ms to execute", joinPoint.getSignature().getName(),
                     joinPoint.getTarget().getClass().getSimpleName(), duration);
         }

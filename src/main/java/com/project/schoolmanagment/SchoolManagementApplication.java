@@ -18,33 +18,27 @@ public class SchoolManagementApplication implements CommandLineRunner {
     private final UserRoleService userRoleService;
     private final AdminService adminService;
 
-
-
-    public SchoolManagementApplication (UserRoleService userRoleService, AdminService adminService) {
+    public SchoolManagementApplication(UserRoleService userRoleService, AdminService adminService) {
         this.userRoleService = userRoleService;
         this.adminService = adminService;
     }
 
     public static void main(String[] args) {
         SpringApplication.run(SchoolManagementApplication.class, args);
-        //commit test
     }
 
     @Override
-    public void run(String... args)  {
-
-        if (userRoleService.getAllUserRole().isEmpty()) {
+    public void run(String... args){
+        if(userRoleService.getAllUserRole().isEmpty()){
             userRoleService.saveUserRole(RoleType.ADMIN);
             userRoleService.saveUserRole(RoleType.MANAGER);
             userRoleService.saveUserRole(RoleType.ASSISTANT_MANAGER);
             userRoleService.saveUserRole(RoleType.TEACHER);
             userRoleService.saveUserRole(RoleType.STUDENT);
             userRoleService.saveUserRole(RoleType.ADVISORY_TEACHER);
-
         }
 
-        if (adminService.countAllAdmins() == 0) {
-
+        if(adminService.countAllAdmins()==0){
             AdminRequest adminRequest = new AdminRequest();
             adminRequest.setUsername("userAdmin");
             adminRequest.setSsn("987-65-4321");
@@ -56,11 +50,9 @@ public class SchoolManagementApplication implements CommandLineRunner {
             adminRequest.setBirthDay(LocalDate.of(1980,2,2));
             adminRequest.setBirthPlace("Texas/San Antonio");
             adminService.saveAdmin(adminRequest);
-
-
         }
-    }
 
+    }
 }
 
 

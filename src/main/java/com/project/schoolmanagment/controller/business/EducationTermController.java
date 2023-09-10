@@ -67,6 +67,12 @@ public class EducationTermController {
         return educationTermService.getAllEducationTermByStartDate(firstDateString, secondDateString);
     }
 
+    @GetMapping("/searchByDateSince/{startDateString}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER')")
+    public List<EducationTermResponse> searchByDateSince(@PathVariable String startDateString) {
+        return educationTermService.getEducationTermsByDateSince(startDateString);
+    }
+
 
 
 }

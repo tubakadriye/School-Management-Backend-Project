@@ -129,4 +129,15 @@ public class EducationTermService {
         }
 
     }
+
+    public List<EducationTermResponse> getEducationTermsByDateSince(String startDateString) {
+
+        try{
+            LocalDate startDate = LocalDate.parse(startDateString);
+            return educationTermRepository.getEducationTermsByStartDateAfter(startDate)
+                    .stream().map(educationTermMapper::mapEducationTermToEducationTermResponse).collect(Collectors.toList());
+        }catch (DateTimeParseException e){
+            throw new ConflictException(ErrorMessages.EDUCATION_TERM_WRONG_DATE_FORMAT_MESSAGE);
+        }
+    }
 }
