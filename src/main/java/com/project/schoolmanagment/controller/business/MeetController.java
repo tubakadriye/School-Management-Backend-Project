@@ -67,4 +67,7 @@ public class MeetController {
         return ResponseEntity.ok(meetService.getAllMeetByStudent(httpServletRequest));
 
     }
+
+    //TODO
+    // write new endpoint that only update the advisory teacher of a meet
 }

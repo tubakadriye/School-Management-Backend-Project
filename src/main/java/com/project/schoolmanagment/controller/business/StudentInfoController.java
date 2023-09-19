@@ -38,6 +38,23 @@ public class StudentInfoController {
         return studentInfoService.updateStudentInfo(updateStudentInfoRequest, studentInfoId);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','TEACHER')")
+    @DeleteMapping("/delete/{studentInfoId}")
+    public ResponseMessage delete (@PathVariable Long studentInfoId){
+        return studentInfoService.deleteStudentInfo(studentInfoId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    @GetMapping("/getAllStudentInfoByPage")
+    public Page<StudentInfoResponse> getAllStudentInfoByPage(
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sort") String sort,
+            @RequestParam(value = "type") String type
+    ){
+        return studentInfoService.getAllStudentInfoByPage(page, size, sort, type);
+    }
+
     @PreAuthorize("hasAnyAuthority('STUDENT')")
     @GetMapping("/getAllForStudent")
     public ResponseEntity<Page<StudentInfoResponse>>getAllForStudent(
@@ -46,6 +63,17 @@ public class StudentInfoController {
             @RequestParam(value = "size") int size
     ){
         return new ResponseEntity<>(studentInfoService.getAllForStudent(httpServletRequest, page, size), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
+    @GetMapping("/getAllForTeacher")
+    public ResponseEntity<Page<StudentInfoResponse>>getAllForTeacher(
+            HttpServletRequest httpServletRequest,
+            @RequestParam(value= "page") int page,
+            @RequestParam(value = "size") int size
+    ){
+        return new ResponseEntity<>(studentInfoService.getAllForTeacher(httpServletRequest,page, size), HttpStatus.OK);
     }
 
 

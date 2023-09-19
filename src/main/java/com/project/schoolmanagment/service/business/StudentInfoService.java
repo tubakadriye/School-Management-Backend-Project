@@ -145,4 +145,31 @@ public class StudentInfoService {
                 .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
 
     }
+
+    public ResponseMessage deleteStudentInfo(Long studentInfoId) {
+        StudentInfo studentInfo = isStudentInfoExistById((studentInfoId));
+        studentInfoRepository.deleteById(studentInfo.getId());
+
+        return ResponseMessage.builder()
+                .message(SuccessMessages.STUDENT_INFO_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    public Page<StudentInfoResponse> getAllStudentInfoByPage(int page, int size, String sort, String type) {
+
+        Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
+        return studentInfoRepository
+                .findAll(pageable)
+                .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
+    }
+
+    public Page<StudentInfoResponse> getAllForTeacher(HttpServletRequest httpServletRequest, int page, int size) {
+        String username= (String) httpServletRequest.getAttribute("username");
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size);
+        return studentInfoRepository.findByTeacherId_UsernameEquals(username, pageable)
+                .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
+
+
+    }
 }
