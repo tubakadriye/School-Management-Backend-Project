@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -139,5 +140,13 @@ public class EducationTermService {
         }catch (DateTimeParseException e){
             throw new ConflictException(ErrorMessages.EDUCATION_TERM_WRONG_DATE_FORMAT_MESSAGE);
         }
+    }
+
+    public List<EducationTermResponse> getEducationTermByYear(Integer year) {
+        List<EducationTerm> educationTerms = educationTermRepository.findAllByStartDateYear(year);
+        if(educationTerms.isEmpty()){
+            throw new ResourceNotFoundException(String.format(ErrorMessages.EDUCATION_TERM_NOT_FOUND_BY_YEAR_MESSAGE, year));
+        }
+        return educationTerms.stream().map(educationTermMapper::mapEducationTermToEducationTermResponse).collect(Collectors.toList());
     }
 }

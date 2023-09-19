@@ -39,15 +39,14 @@ public class LessonProgramController {
     }
 
 
-    //TODO -> OZKAN
     @GetMapping("/getAll")
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
     public List<LessonProgramResponse> getAllLessonProgramByList(){
-        //return lessonProgramService.getAllLessonProgramList();
-        return null;
+        return lessonProgramService.getAllLessonProgramList();
+
     }
 
-    //TODO -> NACI
+
     @GetMapping("getById/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     public LessonProgramResponse getLessonProgramById(@PathVariable Long id){

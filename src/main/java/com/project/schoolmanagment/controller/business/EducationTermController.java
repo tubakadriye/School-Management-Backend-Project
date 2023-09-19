@@ -59,10 +59,16 @@ public class EducationTermController {
         return educationTermService.getAllEducationTermByPage(page, size, sort,type);
     }
 
+    @GetMapping("/searchByYear/{year}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER', 'TEACHER')")
+    public List<EducationTermResponse> searchByYear(@PathVariable Integer year){
+        return educationTermService.getEducationTermByYear(year);
+    }
+
 
     @GetMapping("/searchByStartDate")
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER')")
-    public List<EducationTermResponse> searchByYear(@RequestParam String firstDateString,
+    public List<EducationTermResponse> searchByStartDate(@RequestParam String firstDateString,
                                                     @RequestParam String secondDateString){
         return educationTermService.getAllEducationTermByStartDate(firstDateString, secondDateString);
     }

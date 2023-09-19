@@ -7,9 +7,8 @@ import com.project.schoolmanagment.payload.request.user.AdminRequest;
 import com.project.schoolmanagment.service.user.AdminService;
 import com.project.schoolmanagment.service.user.UserRoleService;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.boot.SpringApplication;
 import java.time.LocalDate;
 
 @SpringBootApplication

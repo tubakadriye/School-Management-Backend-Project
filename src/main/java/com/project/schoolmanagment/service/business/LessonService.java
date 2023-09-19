@@ -15,9 +15,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -86,5 +91,64 @@ public class LessonService {
         Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
         return lessonRepository.findAll(pageable).map(lessonMapper::mapLessonToLessonResponse);
 
+    }
+
+    public ResponseMessage<LessonResponse> findById(Long id) {
+
+        Lesson lesson = isLessonExistById(id);
+
+        return ResponseMessage.<LessonResponse>builder()
+                .message(SuccessMessages.LESSON_FOUND)
+                .object(lessonMapper.mapLessonToLessonResponse(lesson))
+                .httpStatus(HttpStatus.FOUND)
+                .build();
+    }
+
+    @GetMapping("/getLessonsByCreditScoreGreaterThan")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    public ResponseMessage<List<LessonResponse>> getLessonsByCreditScoreGreaterThan(@RequestParam(name = "creditScore") Integer givenValue) {
+
+        List<LessonResponse> lessonResponse =lessonRepository.getLessonsByCreditScoreGreaterThanEqual(givenValue).
+                stream().
+                map(lessonMapper::mapLessonToLessonResponse).
+                collect(Collectors.toList());
+
+        if (lessonResponse.isEmpty()){
+            return ResponseMessage.<List<LessonResponse>>builder()
+                    .message(String.format(ErrorMessages.NOT_FOUND_LESSON_MESSAGE, givenValue))
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .object(lessonResponse)
+                    .build();
+        }
+
+        return ResponseMessage.<List<LessonResponse>>builder()
+                .message(String.format(SuccessMessages.LESSON_FOUND, givenValue))
+                .httpStatus(HttpStatus.FOUND)
+                .object(lessonResponse)
+                .build();
+    }
+
+    public ResponseMessage<LessonResponse> updateLessonById(Long id, LessonRequest lessonRequest) {
+
+        Lesson lesson = isLessonExistById(id);
+        if (!lesson.getLessonName().equalsIgnoreCase(lessonRequest.getLessonName())){
+            if (isLessonExistByName(lessonRequest.getLessonName())){
+                throw new ConflictException(String.format(ErrorMessages.ALREADY_REGISTER_LESSON_MESSAGE, lessonRequest.getLessonName()));
+            }
+        }
+        Lesson updatedLesson =lessonMapper.mapLessonRequestToUpdateLesson(lessonRequest, id);
+        Lesson savedLesson = lessonRepository.save(updatedLesson);
+        return ResponseMessage.<LessonResponse>builder()
+                .message(SuccessMessages.LESSON_UPDATE)
+                .httpStatus(HttpStatus.OK)
+                .object(lessonMapper.mapLessonToLessonResponse(savedLesson))
+                .build();
+    }
+
+    public List<LessonResponse> getAllLesson() {
+        return lessonRepository.findAll()
+                .stream()
+                .map(lessonMapper::mapLessonToLessonResponse)
+                .collect(Collectors.toList());
     }
 }

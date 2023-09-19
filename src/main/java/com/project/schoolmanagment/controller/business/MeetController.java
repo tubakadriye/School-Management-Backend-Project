@@ -35,6 +35,25 @@ public class MeetController {
         return meetService.updateMeet(meetRequest,meetId);
     }
 
+    @PreAuthorize("hasAnyAuthority( 'ADMIN')")
+    @GetMapping("/getAll")
+    public List<MeetResponse> getAll() {
+        return meetService.getAll();
+    }
+
+
+    @PreAuthorize("hasAnyAuthority( 'ADMIN')")
+    @GetMapping("/getMeetById/{meetId}")
+    public ResponseMessage<MeetResponse> getMeetById(@PathVariable Long meetId) {
+        return meetService.getMeetById(meetId);
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER','ADMIN' )")
+    @DeleteMapping("/delete/{meetId}")
+    public ResponseMessage delete(@PathVariable Long meetId) {
+        return meetService.delete(meetId);
+    }
+
     @PreAuthorize("hasAnyAuthority('TEACHER')")
     @GetMapping("/getAllMeetByAdvisorTeacherAsList")
     public ResponseEntity<List<MeetResponse>>getAllMeetByTeacher(HttpServletRequest httpServletRequest){ //response entity is related with api, cennot be in service.

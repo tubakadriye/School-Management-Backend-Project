@@ -124,4 +124,11 @@ public class LessonProgramService {
                 .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse);
 
     }
+
+    public List<LessonProgramResponse> getAllLessonProgramList() {
+        return lessonProgramRepository.findAll()
+                .stream()
+                .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse)
+                .collect(Collectors.toList());
+    }
 }

@@ -127,4 +127,30 @@ public class MeetService {
                 .map(meetMappers::mapMeetToMeetResponse)
                 .collect(Collectors.toList());
     }
+
+    public List<MeetResponse> getAll() {
+        return meetRepository.findAll()
+                .stream()
+                .map(meetMappers::mapMeetToMeetResponse)
+                .collect(Collectors.toList());
+    }
+
+    public ResponseMessage<MeetResponse> getMeetById(Long meetId) {
+        Meet meet = isMeetExistById(meetId);
+
+        return ResponseMessage.<MeetResponse>builder()
+                .object(meetMappers.mapMeetToMeetResponse(meet))
+                .httpStatus(HttpStatus.OK)
+                .message(SuccessMessages.MEET_FOUND)
+                .build();
+    }
+
+    public ResponseMessage delete(Long meetId) {
+        isMeetExistById(meetId);
+        meetRepository.deleteById(meetId);
+        return ResponseMessage.builder()
+                .message(SuccessMessages.MEET_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
 }
